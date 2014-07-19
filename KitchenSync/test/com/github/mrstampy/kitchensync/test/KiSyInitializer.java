@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.handler.KiSyInboundMessageManager;
+import com.github.mrstampy.kitchensync.message.handler.ack.AckMessageHandler;
 import com.github.mrstampy.kitchensync.message.handler.logging.LoggingMessageHandler;
 import com.github.mrstampy.kitchensync.message.handler.pingpong.PingMessageHandler;
 import com.github.mrstampy.kitchensync.message.handler.pingpong.PongMessageHandler;
@@ -40,7 +41,8 @@ public class KiSyInitializer {
 					protected void handlePingTimeMessage(KiSyMessage message) {
 						log.info("Ping time message generated: {}", message);
 					}
-				}
+				},
+				new AckMessageHandler()
 				);
 		//@formatter:on
 	}

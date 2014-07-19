@@ -5,6 +5,7 @@ public enum KiSyMessageType {
 	//@formatter:off
 	PING,
 	PONG,
+	ACK,
 	PING_TIME,
 	NETWORK_STATE,
 	REGISTER,

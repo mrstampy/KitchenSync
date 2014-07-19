@@ -21,6 +21,7 @@ public class KiSyMessage implements Serializable {
 	private long createTime;
 	private String originatingHost;
 	private int originatingPort;
+	private boolean ackRequired;
 
 	private Map<String, String> messageParts = new HashMap<String, String>();
 
@@ -126,6 +127,14 @@ public class KiSyMessage implements Serializable {
 	
 	public InetSocketAddress createReturnAddress() {
 		return new InetSocketAddress(getOriginatingHost(), getOriginatingPort());
+	}
+
+	public boolean isAckRequired() {
+		return ackRequired;
+	}
+
+	public void setAckRequired(boolean ackRequired) {
+		this.ackRequired = ackRequired;
 	}
 
 }
