@@ -19,8 +19,8 @@ public class KiSyMessageProcessor {
 	
 	private ObjectMapper jsonMapper = new ObjectMapper();
 
-	public DatagramPacket createPacket(KiSyMessage message, InetSocketAddress recipient) {
-		return new DatagramPacket(getBuf(message), recipient);
+	public <MSG extends Object> Object createPacket(MSG message, InetSocketAddress recipient) {
+		return new DatagramPacket(getBuf((KiSyMessage)message), recipient);
 	}
 
 	protected ByteBuf getBuf(KiSyMessage message) {

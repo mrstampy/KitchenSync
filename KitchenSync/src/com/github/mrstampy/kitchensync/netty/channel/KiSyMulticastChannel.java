@@ -6,17 +6,17 @@ import io.netty.channel.socket.DatagramChannel;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 
-public interface KiSyMulticastChannel<MSG> extends KiSyChannel<DatagramChannel, MSG> {
+public interface KiSyMulticastChannel extends KiSyChannel<DatagramChannel> {
 
-	ChannelFuture broadcast(MSG message);
+	<MSG> ChannelFuture broadcast(MSG message);
 
 	void multicastBind();
 
 	boolean joinGroup();
 
 	boolean leaveGroup();
-	
+
 	InetSocketAddress getMulticastAddress();
-	
+
 	NetworkInterface getNetworkInterface();
 }

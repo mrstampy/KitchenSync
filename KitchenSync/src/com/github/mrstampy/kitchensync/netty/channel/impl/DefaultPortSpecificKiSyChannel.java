@@ -6,11 +6,9 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 
 import java.net.InetSocketAddress;
 
-import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractPortSpecificKiSyChannel;
 
-public abstract class DefaultPortSpecificKiSyChannel extends
-		AbstractPortSpecificKiSyChannel<DatagramChannel, KiSyMessage> {
+public abstract class DefaultPortSpecificKiSyChannel extends AbstractPortSpecificKiSyChannel<DatagramChannel> {
 
 	protected KiSyMessageProcessor messageProcessor = new KiSyMessageProcessor();
 	protected DefaultChannelRegistry registry = DefaultChannelRegistry.INSTANCE;
@@ -40,7 +38,7 @@ public abstract class DefaultPortSpecificKiSyChannel extends
 	}
 
 	@Override
-	protected Object createMessage(KiSyMessage message, InetSocketAddress address) {
+	protected <MSG extends Object> Object createMessage(MSG message, InetSocketAddress address) {
 		return messageProcessor.createPacket(message, address);
 	}
 

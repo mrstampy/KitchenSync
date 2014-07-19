@@ -1,7 +1,5 @@
 package com.github.mrstampy.kitchensync.message.handler;
 
-import io.netty.channel.socket.DatagramChannel;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,15 +9,14 @@ import rx.functions.Action1;
 
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
-public abstract class AbstractInboundKiSyMessageHandler<MSG, CHANNEL extends KiSyChannel<DatagramChannel, MSG>> implements
-		KiSyInboundMesssageHandler<MSG, CHANNEL> {
+public abstract class AbstractInboundKiSyMessageHandler<MSG> implements KiSyInboundMesssageHandler<MSG> {
 	private static final long serialVersionUID = -4745725747804368460L;
 	private static final Logger log = LoggerFactory.getLogger(AbstractInboundKiSyMessageHandler.class);
 
 	public static final int DEFAULT_EXECUTION_ORDER = 100;
 
 	@Override
-	public void messageReceived(MSG message, CHANNEL channel) {
+	public void messageReceived(MSG message, KiSyChannel<?> channel) {
 		Observable.just(message).subscribe(new Action1<MSG>() {
 
 			@Override
@@ -33,7 +30,7 @@ public abstract class AbstractInboundKiSyMessageHandler<MSG, CHANNEL extends KiS
 		});
 	}
 
-	protected abstract void onReceive(MSG message, CHANNEL channel) throws Exception;
+	protected abstract void onReceive(MSG message, KiSyChannel<?> channel) throws Exception;
 
 	public final String toString() {
 		return ToStringBuilder.reflectionToString(this);

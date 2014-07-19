@@ -7,11 +7,10 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 
 import java.net.InetSocketAddress;
 
-import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyChannel;
 
-public class DefaultKiSyChannel extends AbstractKiSyChannel<DatagramChannel, KiSyMessage> {
+public class DefaultKiSyChannel extends AbstractKiSyChannel<DatagramChannel> {
 	protected KiSyMessageProcessor messageProcessor = new KiSyMessageProcessor();
 
 	protected KiSyOutboundMessageManager outboundManager = KiSyOutboundMessageManager.INSTANCE;
@@ -47,12 +46,12 @@ public class DefaultKiSyChannel extends AbstractKiSyChannel<DatagramChannel, KiS
 	}
 
 	@Override
-	protected Object createMessage(KiSyMessage message, InetSocketAddress address) {
+	protected <MSG extends Object> Object createMessage(MSG message, InetSocketAddress address) {
 		return messageProcessor.createPacket(message, address);
 	}
 
 	@Override
-	protected void presend(KiSyMessage message, InetSocketAddress address) {
+	protected <MSG extends Object> void presend(MSG message, InetSocketAddress address) {
 		outboundManager.presend(message, localAddress(), address);
 	}
 

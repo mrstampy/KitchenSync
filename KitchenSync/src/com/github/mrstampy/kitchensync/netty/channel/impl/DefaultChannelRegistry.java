@@ -7,12 +7,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyChannel;
 
 public class DefaultChannelRegistry {
 
-	private Map<Integer, AbstractKiSyChannel<DatagramChannel, KiSyMessage>> channels = new ConcurrentHashMap<Integer, AbstractKiSyChannel<DatagramChannel, KiSyMessage>>();
+	private Map<Integer, AbstractKiSyChannel<DatagramChannel>> channels = new ConcurrentHashMap<Integer, AbstractKiSyChannel<DatagramChannel>>();
 	private Map<String, DefaultKiSyMulticastChannel> multicastChannels = new ConcurrentHashMap<String, DefaultKiSyMulticastChannel>();
 
 	public static final DefaultChannelRegistry INSTANCE = new DefaultChannelRegistry();
@@ -20,7 +19,7 @@ public class DefaultChannelRegistry {
 	protected DefaultChannelRegistry() {
 	}
 	
-	public AbstractKiSyChannel<DatagramChannel, KiSyMessage> getChannel(int port) {
+	public AbstractKiSyChannel<DatagramChannel> getChannel(int port) {
 		return channels.get(port);
 	}
 	
@@ -39,16 +38,20 @@ public class DefaultChannelRegistry {
 	public Set<String> getMulticastChannelKeys() {
 		return multicastChannels.keySet();
 	}
+	
+	public boolean isMulticastChannel(InetSocketAddress address) {
+		return multicastChannels.containsKey(DefaultKiSyMulticastChannel.createMulticastKey(address));
+	}
 
-	public void addChannel(AbstractKiSyChannel<DatagramChannel, KiSyMessage> channel) {
+	public void addChannel(AbstractKiSyChannel<DatagramChannel> channel) {
 		if (!channels.containsKey(channel.getPort())) channels.put(channel.getPort(), channel);
 	}
 
-	public void removeChannel(AbstractKiSyChannel<DatagramChannel, KiSyMessage> channel) {
+	public void removeChannel(AbstractKiSyChannel<DatagramChannel> channel) {
 		removeChannel(channel.getPort());
 	}
 
-	public AbstractKiSyChannel<DatagramChannel, KiSyMessage> removeChannel(int port) {
+	public AbstractKiSyChannel<DatagramChannel> removeChannel(int port) {
 		return channels.remove(port);
 	}
 

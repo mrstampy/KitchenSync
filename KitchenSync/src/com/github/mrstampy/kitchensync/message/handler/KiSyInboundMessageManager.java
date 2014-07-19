@@ -1,7 +1,5 @@
 package com.github.mrstampy.kitchensync.message.handler;
 
-import io.netty.channel.socket.DatagramChannel;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -60,12 +58,12 @@ public class KiSyInboundMessageManager<MSG> {
 		messageHandlers.clear();
 	}
 
-	public <CHANNEL extends KiSyChannel<DatagramChannel, MSG>> void processMessage(MSG message, CHANNEL channel) {
+	public void processMessage(MSG message, KiSyChannel<?> channel) {
 		log.trace("Processing message {}", message);
 
 		long start = System.nanoTime();
 
-		List<KiSyInboundMesssageHandler<MSG, CHANNEL>> ordered = getHandlersForMessage(message);
+		List<KiSyInboundMesssageHandler<MSG>> ordered = getHandlersForMessage(message);
 
 		if (ordered.isEmpty()) {
 			log.debug("No messages handlers for {}", message);
@@ -78,14 +76,14 @@ public class KiSyInboundMessageManager<MSG> {
 		processMessage(ordered, message, channel, cdl);
 	}
 
-	private <CHANNEL extends KiSyChannel<DatagramChannel, MSG>> void processMessage(
-			List<KiSyInboundMesssageHandler<MSG, CHANNEL>> ordered, MSG message, CHANNEL channel, final CountDownLatch cdl) {
+	private void processMessage(List<KiSyInboundMesssageHandler<MSG>> ordered, MSG message, KiSyChannel<?> channel,
+			final CountDownLatch cdl) {
 		final MSG msg = message;
-		final CHANNEL ch = channel;
-		Observable.from(ordered, scheduler).subscribe(new Action1<KiSyInboundMesssageHandler<MSG, CHANNEL>>() {
+		final KiSyChannel<?> ch = channel;
+		Observable.from(ordered, scheduler).subscribe(new Action1<KiSyInboundMesssageHandler<MSG>>() {
 
 			@Override
-			public void call(KiSyInboundMesssageHandler<MSG, CHANNEL> t1) {
+			public void call(KiSyInboundMesssageHandler<MSG> t1) {
 				try {
 					t1.messageReceived(msg, ch);
 				} catch (Exception e) {
@@ -126,15 +124,14 @@ public class KiSyInboundMessageManager<MSG> {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <CHANNEL extends KiSyChannel<DatagramChannel, MSG>> List<KiSyInboundMesssageHandler<MSG, CHANNEL>> getHandlersForMessage(
-			MSG message) {
-		List<KiSyInboundMesssageHandler<MSG, CHANNEL>> ordered = new ArrayList<KiSyInboundMesssageHandler<MSG, CHANNEL>>();
+	private List<KiSyInboundMesssageHandler<MSG>> getHandlersForMessage(MSG message) {
+		List<KiSyInboundMesssageHandler<MSG>> ordered = new ArrayList<KiSyInboundMesssageHandler<MSG>>();
 
 		ListIterator<KiSyInboundMesssageHandler> it = messageHandlers.listIterator();
 		while (it.hasNext()) {
 			try {
-				KiSyInboundMesssageHandler<MSG, ?> handler = it.next();
-				if (handler.canHandleMessage(message)) ordered.add((KiSyInboundMesssageHandler<MSG, CHANNEL>) handler);
+				KiSyInboundMesssageHandler<MSG> handler = it.next();
+				if (handler.canHandleMessage(message)) ordered.add((KiSyInboundMesssageHandler<MSG>) handler);
 			} catch (Exception e) {
 				log.debug("Handler not applicable for message {}", message, e);
 			}
@@ -145,10 +142,10 @@ public class KiSyInboundMessageManager<MSG> {
 		return ordered;
 	}
 
-	private static class HandlerComparator<MSG> implements Comparator<KiSyInboundMesssageHandler<MSG, ?>> {
+	private static class HandlerComparator<MSG> implements Comparator<KiSyInboundMesssageHandler<MSG>> {
 
 		@Override
-		public int compare(KiSyInboundMesssageHandler<MSG, ?> kisy1, KiSyInboundMesssageHandler<MSG, ?> kisy2) {
+		public int compare(KiSyInboundMesssageHandler<MSG> kisy1, KiSyInboundMesssageHandler<MSG> kisy2) {
 			return kisy1.getExecutionOrder() - kisy2.getExecutionOrder();
 		}
 

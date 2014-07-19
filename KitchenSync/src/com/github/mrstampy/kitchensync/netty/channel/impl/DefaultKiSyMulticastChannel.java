@@ -9,11 +9,10 @@ import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 
-import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyMulticastChannel;
 
-public class DefaultKiSyMulticastChannel extends AbstractKiSyMulticastChannel<KiSyMessage> {
+public class DefaultKiSyMulticastChannel extends AbstractKiSyMulticastChannel {
 
 	protected KiSyMessageProcessor messageProcessor = new KiSyMessageProcessor();
 
@@ -70,12 +69,12 @@ public class DefaultKiSyMulticastChannel extends AbstractKiSyMulticastChannel<Ki
 	}
 
 	@Override
-	protected Object createMessage(KiSyMessage message, InetSocketAddress address) {
+	protected <MSG extends Object> Object createMessage(MSG message, InetSocketAddress address) {
 		return messageProcessor.createPacket(message, address);
 	}
 
 	@Override
-	protected void presend(KiSyMessage message, InetSocketAddress address) {
+	protected <MSG extends Object> void presend(MSG message, InetSocketAddress address) {
 		outboundManager.presend(message, localAddress(), address);
 	}
 

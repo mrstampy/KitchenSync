@@ -10,11 +10,11 @@ import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 public class KiSyMessageCreator {
 	private static final Logger log = LoggerFactory.getLogger(KiSyMessageCreator.class);
 
-	public static KiSyMessage createPing(KiSyChannel<?,?> channel) {
+	public static KiSyMessage createPing(KiSyChannel<?> channel) {
 		return new KiSyMessage(channel.localAddress(), KiSyMessageType.PING);
 	}
 
-	public static KiSyMessage createPong(KiSyChannel<?,?> channel) {
+	public static KiSyMessage createPong(KiSyChannel<?> channel) {
 		return new KiSyMessage(channel.localAddress(), KiSyMessageType.PONG);
 	}
 

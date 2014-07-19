@@ -1,19 +1,16 @@
 package com.github.mrstampy.kitchensync.message.handler;
 
-import io.netty.channel.socket.DatagramChannel;
-
 import java.util.concurrent.locks.Lock;
 
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
-public abstract class AbstractStrictOrderInboundKiSyMessageHandler<MSG, CHANNEL extends KiSyChannel<DatagramChannel, MSG>>
-		extends AbstractInboundKiSyMessageHandler<MSG, CHANNEL> {
+public abstract class AbstractStrictOrderInboundKiSyMessageHandler<MSG> extends AbstractInboundKiSyMessageHandler<MSG> {
 
 	private static final long serialVersionUID = -8783098166337384378L;
 
 	private MessageLocker locker = new MessageLocker();
 
-	protected void onReceive(MSG message, CHANNEL channel) throws Exception {
+	protected void onReceive(MSG message, KiSyChannel<?> channel) throws Exception {
 		Lock lock = locker.getLock(message);
 		lock.lock();
 		try {
@@ -23,5 +20,5 @@ public abstract class AbstractStrictOrderInboundKiSyMessageHandler<MSG, CHANNEL 
 		}
 	}
 
-	protected abstract void onReceive0(MSG message, CHANNEL channel) throws Exception;
+	protected abstract void onReceive0(MSG message, KiSyChannel<?> channel) throws Exception;
 }

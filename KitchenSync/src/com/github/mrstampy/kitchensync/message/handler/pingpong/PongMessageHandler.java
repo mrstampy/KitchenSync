@@ -1,7 +1,5 @@
 package com.github.mrstampy.kitchensync.message.handler.pingpong;
 
-import io.netty.channel.socket.DatagramChannel;
-
 import java.net.InetSocketAddress;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
@@ -10,8 +8,7 @@ import com.github.mrstampy.kitchensync.message.KiSyMessageType;
 import com.github.mrstampy.kitchensync.message.handler.AbstractInboundKiSyMessageHandler;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
-public abstract class PongMessageHandler<CHANNEL extends KiSyChannel<DatagramChannel, KiSyMessage>> extends
-		AbstractInboundKiSyMessageHandler<KiSyMessage, CHANNEL> {
+public abstract class PongMessageHandler extends AbstractInboundKiSyMessageHandler<KiSyMessage> {
 	private static final long serialVersionUID = -8836666741037023222L;
 
 	private PingPongMessageTimer timer = PingPongMessageTimer.TIMER;
@@ -22,7 +19,7 @@ public abstract class PongMessageHandler<CHANNEL extends KiSyChannel<DatagramCha
 	}
 
 	@Override
-	protected void onReceive(KiSyMessage message, CHANNEL channel) {
+	protected void onReceive(KiSyMessage message, KiSyChannel<?> channel) {
 		InetSocketAddress remoteAddress = message.createReturnAddress();
 
 		long time = timer.pongReceived(remoteAddress);

@@ -1,7 +1,5 @@
 package com.github.mrstampy.kitchensync.test;
 
-import io.netty.channel.socket.DatagramChannel;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +11,6 @@ import com.github.mrstampy.kitchensync.message.handler.pingpong.PongMessageHandl
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.message.outbound.logging.LoggingOutboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.outbound.pingpong.PingOutboundMessageHandler;
-import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
 public class KiSyInitializer {
 	private static final Logger log = LoggerFactory.getLogger(KiSyInitializer.class);
@@ -29,7 +26,7 @@ public class KiSyInitializer {
 		//@formatter:on
 	}
 
-	@SuppressWarnings({ "rawtypes", "serial" })
+	@SuppressWarnings({ "serial" })
 	public void initInboundHandlers() {
 		KiSyInboundMessageManager<KiSyMessage> manager = KiSyInboundMessageManager.INSTANCE;
 
@@ -37,7 +34,7 @@ public class KiSyInitializer {
 		manager.addMessageHandlers(
 				new LoggingMessageHandler(),
 				new PingMessageHandler(),
-				new PongMessageHandler<KiSyChannel<DatagramChannel,KiSyMessage>>() {
+				new PongMessageHandler() {
 
 					@Override
 					protected void handlePingTimeMessage(KiSyMessage message) {

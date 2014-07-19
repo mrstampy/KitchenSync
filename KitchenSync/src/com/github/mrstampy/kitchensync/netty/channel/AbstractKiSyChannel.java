@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.netty.Bootstrapper;
 
-public abstract class AbstractKiSyChannel<CHANNEL extends DatagramChannel, MSG> implements KiSyChannel<CHANNEL, MSG> {
+public abstract class AbstractKiSyChannel<CHANNEL extends DatagramChannel> implements KiSyChannel<CHANNEL> {
 	private static final Logger log = LoggerFactory.getLogger(AbstractKiSyChannel.class);
 
 	protected static GenericFutureListener<ChannelFuture> SEND_FUTURE = new GenericFutureListener<ChannelFuture>() {
@@ -100,16 +100,16 @@ public abstract class AbstractKiSyChannel<CHANNEL extends DatagramChannel, MSG> 
 		setChannel(channel);
 	}
 
-	protected abstract Object createMessage(MSG message, InetSocketAddress address);
+	protected abstract <MSG extends Object> Object createMessage(MSG message, InetSocketAddress address);
 
 	@Override
-	public ChannelFuture send(MSG message, InetSocketAddress address) {
+	public <MSG extends Object> ChannelFuture send(MSG message, InetSocketAddress address) {
 		presend(message, address);
 		Object msg = createMessage(message, address);
 		return sendImpl(msg, address);
 	}
 
-	protected abstract void presend(MSG message, InetSocketAddress address);
+	protected abstract <MSG extends Object> void presend(MSG message, InetSocketAddress address);
 
 	protected ChannelFuture sendImpl(Object dp, InetSocketAddress address) {
 		if (!isActive()) {

@@ -15,8 +15,8 @@ import java.net.UnknownHostException;
  * @author burton
  *
  */
-public abstract class AbstractKiSyMulticastChannel<MSG> extends AbstractKiSyChannel<DatagramChannel, MSG> implements
-		KiSyMulticastChannel<MSG> {
+public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel<DatagramChannel> implements
+		KiSyMulticastChannel {
 
 	private InetSocketAddress multicastAddress;
 	private NetworkInterface networkInterface;
@@ -52,7 +52,7 @@ public abstract class AbstractKiSyMulticastChannel<MSG> extends AbstractKiSyChan
 	}
 
 	@Override
-	public ChannelFuture broadcast(MSG message) {
+	public <MSG extends Object> ChannelFuture broadcast(MSG message) {
 		return sendImpl(createMessage(message, getMulticastAddress()), bootstrapper.getMulticastAddress(getChannel()));
 	}
 

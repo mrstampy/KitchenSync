@@ -5,7 +5,7 @@ import io.netty.channel.socket.DatagramChannel;
 
 import java.net.InetSocketAddress;
 
-public interface KiSyChannel<CHANNEL extends DatagramChannel, MSG extends Object>  {
+public interface KiSyChannel<CHANNEL extends DatagramChannel>  {
 
 	boolean isActive();
 
@@ -13,7 +13,7 @@ public interface KiSyChannel<CHANNEL extends DatagramChannel, MSG extends Object
 
 	void bind();
 
-	ChannelFuture send(MSG message, InetSocketAddress address);
+	<MSG extends Object> ChannelFuture send(MSG message, InetSocketAddress address);
 
 	ChannelFuture close();
 
