@@ -1,4 +1,4 @@
-package com.github.mrstampy.kitchensync.message.handler;
+package com.github.mrstampy.kitchensync.message.inbound;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;

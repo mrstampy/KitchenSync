@@ -1,4 +1,4 @@
-package com.github.mrstampy.kitchensync.message.handler.pingpong;
+package com.github.mrstampy.kitchensync.message.inbound.pingpong;
 
 import java.net.InetSocketAddress;
 import java.util.Map;

@@ -4,7 +4,7 @@ import java.net.InetSocketAddress;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
-import com.github.mrstampy.kitchensync.message.handler.pingpong.PingPongMessageTimer;
+import com.github.mrstampy.kitchensync.message.inbound.pingpong.PingPongMessageTimer;
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageHandler;
 
 public class PingOutboundMessageHandler implements KiSyOutboundMessageHandler<KiSyMessage> {

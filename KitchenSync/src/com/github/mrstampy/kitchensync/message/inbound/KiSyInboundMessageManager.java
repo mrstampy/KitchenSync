@@ -1,4 +1,4 @@
-package com.github.mrstampy.kitchensync.message.handler;
+package com.github.mrstampy.kitchensync.message.inbound;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

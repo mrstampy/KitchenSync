@@ -1,15 +1,15 @@
-package com.github.mrstampy.kitchensync.message.handler.logging;
+package com.github.mrstampy.kitchensync.message.inbound.logging;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
-import com.github.mrstampy.kitchensync.message.handler.AbstractInboundKiSyMessageHandler;
+import com.github.mrstampy.kitchensync.message.inbound.AbstractInboundKiSyMessageHandler;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
-public class LoggingMessageHandler extends AbstractInboundKiSyMessageHandler<KiSyMessage> {
+public class LoggingInboundMessageHandler extends AbstractInboundKiSyMessageHandler<KiSyMessage> {
 	private static final long serialVersionUID = 345595930033076784L;
-	private static final Logger log = LoggerFactory.getLogger(LoggingMessageHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(LoggingInboundMessageHandler.class);
 
 	@Override
 	public boolean canHandleMessage(KiSyMessage message) {

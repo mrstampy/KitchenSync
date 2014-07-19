@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
-import com.github.mrstampy.kitchensync.message.handler.KiSyInboundMessageManager;
+import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultChannelRegistry;
 

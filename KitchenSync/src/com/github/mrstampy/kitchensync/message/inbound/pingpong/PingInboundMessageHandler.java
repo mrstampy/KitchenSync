@@ -1,12 +1,12 @@
-package com.github.mrstampy.kitchensync.message.handler.pingpong;
+package com.github.mrstampy.kitchensync.message.inbound.pingpong;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
-import com.github.mrstampy.kitchensync.message.handler.AbstractInboundKiSyMessageHandler;
+import com.github.mrstampy.kitchensync.message.inbound.AbstractInboundKiSyMessageHandler;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
-public class PingMessageHandler extends AbstractInboundKiSyMessageHandler<KiSyMessage> {
+public class PingInboundMessageHandler extends AbstractInboundKiSyMessageHandler<KiSyMessage> {
 	private static final long serialVersionUID = -3848676913366352139L;
 
 	@Override

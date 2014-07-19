@@ -4,11 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
-import com.github.mrstampy.kitchensync.message.handler.KiSyInboundMessageManager;
-import com.github.mrstampy.kitchensync.message.handler.ack.AckMessageHandler;
-import com.github.mrstampy.kitchensync.message.handler.logging.LoggingMessageHandler;
-import com.github.mrstampy.kitchensync.message.handler.pingpong.PingMessageHandler;
-import com.github.mrstampy.kitchensync.message.handler.pingpong.PongMessageHandler;
+import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMessageManager;
+import com.github.mrstampy.kitchensync.message.inbound.ack.AckInboundMessageHandler;
+import com.github.mrstampy.kitchensync.message.inbound.logging.LoggingInboundMessageHandler;
+import com.github.mrstampy.kitchensync.message.inbound.pingpong.PingInboundMessageHandler;
+import com.github.mrstampy.kitchensync.message.inbound.pingpong.PongInboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.message.outbound.logging.LoggingOutboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.outbound.pingpong.PingOutboundMessageHandler;
@@ -33,16 +33,16 @@ public class KiSyInitializer {
 
 		//@formatter:off
 		manager.addMessageHandlers(
-				new LoggingMessageHandler(),
-				new PingMessageHandler(),
-				new PongMessageHandler() {
+				new LoggingInboundMessageHandler(),
+				new PingInboundMessageHandler(),
+				new PongInboundMessageHandler() {
 
 					@Override
 					protected void handlePingTimeMessage(KiSyMessage message) {
 						log.info("Ping time message generated: {}", message);
 					}
 				},
-				new AckMessageHandler()
+				new AckInboundMessageHandler()
 				);
 		//@formatter:on
 	}

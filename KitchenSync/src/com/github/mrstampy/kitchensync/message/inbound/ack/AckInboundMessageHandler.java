@@ -1,11 +1,11 @@
-package com.github.mrstampy.kitchensync.message.handler.ack;
+package com.github.mrstampy.kitchensync.message.inbound.ack;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
-import com.github.mrstampy.kitchensync.message.handler.AbstractInboundKiSyMessageHandler;
+import com.github.mrstampy.kitchensync.message.inbound.AbstractInboundKiSyMessageHandler;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
-public class AckMessageHandler extends AbstractInboundKiSyMessageHandler<KiSyMessage> {
+public class AckInboundMessageHandler extends AbstractInboundKiSyMessageHandler<KiSyMessage> {
 
 	private static final long serialVersionUID = -4104267454467349973L;
 

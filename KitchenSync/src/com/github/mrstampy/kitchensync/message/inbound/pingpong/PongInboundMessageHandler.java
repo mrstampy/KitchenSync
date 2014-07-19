@@ -1,14 +1,14 @@
-package com.github.mrstampy.kitchensync.message.handler.pingpong;
+package com.github.mrstampy.kitchensync.message.inbound.pingpong;
 
 import java.net.InetSocketAddress;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
-import com.github.mrstampy.kitchensync.message.handler.AbstractInboundKiSyMessageHandler;
+import com.github.mrstampy.kitchensync.message.inbound.AbstractInboundKiSyMessageHandler;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
-public abstract class PongMessageHandler extends AbstractInboundKiSyMessageHandler<KiSyMessage> {
+public abstract class PongInboundMessageHandler extends AbstractInboundKiSyMessageHandler<KiSyMessage> {
 	private static final long serialVersionUID = -8836666741037023222L;
 
 	private PingPongMessageTimer timer = PingPongMessageTimer.TIMER;
