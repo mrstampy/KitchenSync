@@ -23,12 +23,11 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
+import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
 @SuppressWarnings("rawtypes")
 public class KiSyInboundMessageManager<MSG> {
-	private static final BigDecimal ONE_MILLION = new BigDecimal(1000000);
-
 	private static final Logger log = LoggerFactory.getLogger(KiSyInboundMessageManager.class);
 
 	public static final KiSyInboundMessageManager<KiSyMessage> INSTANCE = new KiSyInboundMessageManager<KiSyMessage>();
@@ -40,7 +39,7 @@ public class KiSyInboundMessageManager<MSG> {
 	private MessageLocker locker = new MessageLocker();
 
 	private Scheduler scheduler = Schedulers.computation();
-	
+
 	private Scheduler inboundScheduler = Schedulers.from(Executors.newCachedThreadPool());
 
 	public void addMessageHandlers(KiSyInboundMesssageHandler... handlers) {
@@ -121,7 +120,7 @@ public class KiSyInboundMessageManager<MSG> {
 			}
 
 			private String getTimeInMillis(long l) {
-				return new BigDecimal(l).divide(ONE_MILLION, 3, RoundingMode.HALF_UP).toPlainString();
+				return new BigDecimal(l).divide(KiSyMessageCreator.ONE_MILLION, 3, RoundingMode.HALF_UP).toPlainString();
 			}
 		});
 	}

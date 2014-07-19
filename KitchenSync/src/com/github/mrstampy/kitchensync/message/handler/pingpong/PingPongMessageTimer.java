@@ -55,7 +55,7 @@ public abstract class PingPongMessageTimer {
 		log.trace("Cancelling ping subscription from {}", origin);
 		sc.sub.unsubscribe();
 
-		return System.currentTimeMillis() - sc.start;
+		return System.nanoTime() - sc.start;
 	}
 
 	private void fireConnectionLostMessage(InetSocketAddress origin, InetSocketAddress destination) {
@@ -72,7 +72,7 @@ public abstract class PingPongMessageTimer {
 
 	private static class SubscriptionContainer {
 		private Subscription sub;
-		private long start = System.currentTimeMillis();
+		private long start = System.nanoTime();
 
 		public SubscriptionContainer(Subscription sub) {
 			this.sub = sub;
