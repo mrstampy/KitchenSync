@@ -1,7 +1,6 @@
 package com.github.mrstampy.kitchensync.netty.channel;
 
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.socket.DatagramChannel;
 
 import java.net.Inet6Address;
 import java.net.InetSocketAddress;
@@ -15,8 +14,7 @@ import java.net.UnknownHostException;
  * @author burton
  *
  */
-public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel<DatagramChannel> implements
-		KiSyMulticastChannel {
+public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel implements KiSyMulticastChannel {
 
 	private InetSocketAddress multicastAddress;
 	private NetworkInterface networkInterface;

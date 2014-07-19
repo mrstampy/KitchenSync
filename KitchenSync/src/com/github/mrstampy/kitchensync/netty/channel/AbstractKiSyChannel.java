@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.netty.Bootstrapper;
 
-public abstract class AbstractKiSyChannel<CHANNEL extends DatagramChannel> implements KiSyChannel<CHANNEL> {
+public abstract class AbstractKiSyChannel implements KiSyChannel<DatagramChannel> {
 	private static final Logger log = LoggerFactory.getLogger(AbstractKiSyChannel.class);
 
 	protected static GenericFutureListener<ChannelFuture> SEND_FUTURE = new GenericFutureListener<ChannelFuture>() {
@@ -68,13 +68,13 @@ public abstract class AbstractKiSyChannel<CHANNEL extends DatagramChannel> imple
 		}
 	};
 
-	private CHANNEL channel;
+	private DatagramChannel channel;
 
 	protected static final Bootstrapper bootstrapper = new Bootstrapper();
 
-	protected abstract ChannelInitializer<CHANNEL> initializer();
+	protected abstract ChannelInitializer<DatagramChannel> initializer();
 
-	protected abstract Class<? extends CHANNEL> getChannelClass();
+	protected abstract Class<? extends DatagramChannel> getChannelClass();
 
 	public AbstractKiSyChannel() {
 	}
@@ -88,15 +88,17 @@ public abstract class AbstractKiSyChannel<CHANNEL extends DatagramChannel> imple
 	public void bind() {
 		bindDefaultBootstrapInit();
 
-		CHANNEL channel = bootstrapper.bind();
+		DatagramChannel channel = bootstrapper.bind();
+		
 		setChannel(channel);
 	}
 
 	@Override
 	public void bind(int port) {
 		bindDefaultBootstrapInit();
-
-		CHANNEL channel = bootstrapper.bind(port);
+		
+		DatagramChannel channel = bootstrapper.bind(port);
+		
 		setChannel(channel);
 	}
 
@@ -139,7 +141,7 @@ public abstract class AbstractKiSyChannel<CHANNEL extends DatagramChannel> imple
 	}
 
 	@Override
-	public CHANNEL getChannel() {
+	public DatagramChannel getChannel() {
 		return channel;
 	}
 
@@ -147,7 +149,7 @@ public abstract class AbstractKiSyChannel<CHANNEL extends DatagramChannel> imple
 		return new InetSocketAddress(bootstrapper.DEFAULT_ADDRESS, getPort());
 	}
 
-	protected void setChannel(CHANNEL channel) {
+	protected void setChannel(DatagramChannel channel) {
 		this.channel = channel;
 	}
 

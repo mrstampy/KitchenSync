@@ -10,7 +10,7 @@ import java.net.InetSocketAddress;
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyChannel;
 
-public class DefaultKiSyChannel extends AbstractKiSyChannel<DatagramChannel> {
+public class DefaultKiSyChannel extends AbstractKiSyChannel {
 	protected KiSyMessageProcessor messageProcessor = new KiSyMessageProcessor();
 
 	protected KiSyOutboundMessageManager outboundManager = KiSyOutboundMessageManager.INSTANCE;

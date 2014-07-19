@@ -5,8 +5,7 @@ import io.netty.channel.socket.DatagramChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractPortSpecificKiSyChannel<CHANNEL extends DatagramChannel> extends
-		AbstractKiSyChannel<CHANNEL> {
+public abstract class AbstractPortSpecificKiSyChannel extends AbstractKiSyChannel {
 	private static final Logger log = LoggerFactory.getLogger(AbstractPortSpecificKiSyChannel.class);
 
 	private int port;
@@ -19,7 +18,7 @@ public abstract class AbstractPortSpecificKiSyChannel<CHANNEL extends DatagramCh
 	public void bind() {
 		bindBootstrapInit(getPort());
 
-		CHANNEL channel = bootstrapper.bind(getPort());
+		DatagramChannel channel = bootstrapper.bind(getPort());
 
 		setChannel(channel);
 	}

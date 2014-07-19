@@ -8,7 +8,7 @@ import java.net.InetSocketAddress;
 
 import com.github.mrstampy.kitchensync.netty.channel.AbstractPortSpecificKiSyChannel;
 
-public abstract class DefaultPortSpecificKiSyChannel extends AbstractPortSpecificKiSyChannel<DatagramChannel> {
+public abstract class DefaultPortSpecificKiSyChannel extends AbstractPortSpecificKiSyChannel {
 
 	protected KiSyMessageProcessor messageProcessor = new KiSyMessageProcessor();
 	protected DefaultChannelRegistry registry = DefaultChannelRegistry.INSTANCE;
