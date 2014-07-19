@@ -23,10 +23,6 @@ public class JsonMessageHandler extends SimpleChannelInboundHandler<DatagramPack
 	private KiSyInboundMessageManager<KiSyMessage> handlerManager = KiSyInboundMessageManager.INSTANCE;
 	private DefaultChannelRegistry registry = DefaultChannelRegistry.INSTANCE;
 
-	public JsonMessageHandler(KiSyInboundMessageManager<KiSyMessage> handlerManager) {
-		this.handlerManager = handlerManager;
-	}
-
 	@SuppressWarnings("rawtypes")
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket msg) throws Exception {
