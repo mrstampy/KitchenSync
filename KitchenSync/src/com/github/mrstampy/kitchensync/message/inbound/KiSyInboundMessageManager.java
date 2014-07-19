@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -36,11 +35,9 @@ public class KiSyInboundMessageManager<MSG> {
 
 	private HandlerComparator<MSG> handlerComparator = new HandlerComparator<MSG>();
 
-	private MessageLocker locker = new MessageLocker();
-
 	private Scheduler scheduler = Schedulers.computation();
-
-	private Scheduler inboundScheduler = Schedulers.from(Executors.newCachedThreadPool());
+	
+	private SingleThreadExecutorSchedulerProvider singleThreadProvider = new SingleThreadExecutorSchedulerProvider(10);
 
 	public void addMessageHandlers(KiSyInboundMesssageHandler... handlers) {
 		if (handlers == null || handlers.length == 0) return;
@@ -79,15 +76,13 @@ public class KiSyInboundMessageManager<MSG> {
 	}
 
 	private void processMessage(List<KiSyInboundMesssageHandler<MSG>> ordered, MSG message, KiSyChannel<?> channel,
-			final CountDownLatch cdl) {
-		final MSG msg = message;
-		final KiSyChannel<?> ch = channel;
-		Observable.from(ordered, inboundScheduler).subscribe(new Action1<KiSyInboundMesssageHandler<MSG>>() {
+			CountDownLatch cdl) {
+		Observable.from(ordered, singleThreadExecutor()).subscribe(new Action1<KiSyInboundMesssageHandler<MSG>>() {
 
 			@Override
 			public void call(KiSyInboundMesssageHandler<MSG> t1) {
 				try {
-					t1.messageReceived(msg, ch);
+					t1.messageReceived(message, channel);
 				} catch (Exception e) {
 					log.error("Could not process message {} with {}", message, t1, e);
 				} finally {
@@ -97,7 +92,11 @@ public class KiSyInboundMessageManager<MSG> {
 		});
 	}
 
-	private void scheduleCleanup(final MSG message, final CountDownLatch cdl, final long start) {
+	private Scheduler singleThreadExecutor() {
+		return singleThreadProvider.singleThreadScheduler();
+	}
+
+	private void scheduleCleanup(MSG message, CountDownLatch cdl, long start) {
 		scheduler.createWorker().schedule(new Action0() {
 
 			@Override
@@ -115,8 +114,6 @@ public class KiSyInboundMessageManager<MSG> {
 				} catch (InterruptedException e) {
 					log.error("Unexpected exception", e);
 				}
-
-				locker.removeLock(message);
 			}
 
 			private String getTimeInMillis(long l) {
