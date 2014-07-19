@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -39,6 +40,8 @@ public class KiSyInboundMessageManager<MSG> {
 	private MessageLocker locker = new MessageLocker();
 
 	private Scheduler scheduler = Schedulers.computation();
+	
+	private Scheduler inboundScheduler = Schedulers.from(Executors.newCachedThreadPool());
 
 	public void addMessageHandlers(KiSyInboundMesssageHandler... handlers) {
 		if (handlers == null || handlers.length == 0) return;
@@ -80,7 +83,7 @@ public class KiSyInboundMessageManager<MSG> {
 			final CountDownLatch cdl) {
 		final MSG msg = message;
 		final KiSyChannel<?> ch = channel;
-		Observable.from(ordered, scheduler).subscribe(new Action1<KiSyInboundMesssageHandler<MSG>>() {
+		Observable.from(ordered, inboundScheduler).subscribe(new Action1<KiSyInboundMesssageHandler<MSG>>() {
 
 			@Override
 			public void call(KiSyInboundMesssageHandler<MSG> t1) {

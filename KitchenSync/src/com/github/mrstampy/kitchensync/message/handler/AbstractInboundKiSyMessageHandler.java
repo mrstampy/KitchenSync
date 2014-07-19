@@ -4,9 +4,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import rx.Observable;
-import rx.functions.Action1;
-
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
 public abstract class AbstractInboundKiSyMessageHandler<MSG> implements KiSyInboundMesssageHandler<MSG> {
@@ -17,17 +14,11 @@ public abstract class AbstractInboundKiSyMessageHandler<MSG> implements KiSyInbo
 
 	@Override
 	public void messageReceived(MSG message, KiSyChannel<?> channel) {
-		Observable.just(message).subscribe(new Action1<MSG>() {
-
-			@Override
-			public void call(MSG t1) {
-				try {
-					onReceive(t1, channel);
-				} catch (Exception e) {
-					log.error("Unexpected exception processing message {}", t1, e);
-				}
-			}
-		});
+		try {
+			onReceive(message, channel);
+		} catch (Exception e) {
+			log.error("Unexpected exception processing message {}", message, e);
+		}
 	}
 
 	protected abstract void onReceive(MSG message, KiSyChannel<?> channel) throws Exception;
