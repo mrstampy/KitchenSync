@@ -23,8 +23,6 @@ public class KiSyMessageCreator {
 
 		KiSyMessage message = new KiSyMessage(originator, KiSyMessageType.PING_TIME);
 
-		message.addMessage("destination", destination.toString());
-		message.addMessage("originator", originator.toString());
 		message.addMessage("pingTime", pingTime.toString());
 
 		return message;
