@@ -1,5 +1,8 @@
 package com.github.mrstampy.kitchensync.test;
 
+import io.netty.channel.ChannelFuture;
+import io.netty.util.concurrent.GenericFutureListener;
+
 import java.net.UnknownHostException;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
@@ -26,15 +29,22 @@ public class BroadcastTester extends AbstractTester {
 		
 		michael.leaveGroup();
 		
-		michael.broadcast(message);
+		ChannelFuture cf = michael.broadcast(message);
 		
-		michael.joinGroup();
+		cf.addListener(new GenericFutureListener<ChannelFuture>() {
+
+			@Override
+			public void operationComplete(ChannelFuture future) throws Exception {
+				michael.joinGroup();
+			}
+		});
 	}
 	
 	protected DefaultKiSyMulticastChannel createMulticastChannel() throws UnknownHostException {
 		DefaultKiSyMulticastChannel channel = new DefaultKiSyMulticastChannel(MULTICAST_IP, MULTICAST_PORT);
 		
 		channel.multicastBind();
+		channel.joinGroup();
 		
 		return channel;
 	}
