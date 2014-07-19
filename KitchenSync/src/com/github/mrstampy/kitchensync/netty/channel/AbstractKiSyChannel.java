@@ -70,18 +70,13 @@ public abstract class AbstractKiSyChannel<CHANNEL extends DatagramChannel, MSG> 
 
 	private CHANNEL channel;
 
-	protected Bootstrapper bootstrapper;
+	protected static final Bootstrapper bootstrapper = new Bootstrapper();
 
 	protected abstract ChannelInitializer<CHANNEL> initializer();
 
 	protected abstract Class<? extends CHANNEL> getChannelClass();
 
 	public AbstractKiSyChannel() {
-		this(Bootstrapper.getInstance());
-	}
-
-	public AbstractKiSyChannel(Bootstrapper bootstrapper) {
-		this.bootstrapper = bootstrapper;
 	}
 
 	@Override
@@ -149,7 +144,7 @@ public abstract class AbstractKiSyChannel<CHANNEL extends DatagramChannel, MSG> 
 	}
 
 	public InetSocketAddress localAddress() {
-		return new InetSocketAddress(Bootstrapper.DEFAULT_ADDRESS, getPort());
+		return new InetSocketAddress(bootstrapper.DEFAULT_ADDRESS, getPort());
 	}
 
 	protected void setChannel(CHANNEL channel) {

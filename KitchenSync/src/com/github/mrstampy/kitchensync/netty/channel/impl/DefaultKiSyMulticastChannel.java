@@ -1,5 +1,6 @@
 package com.github.mrstampy.kitchensync.netty.channel.impl;
 
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.nio.NioDatagramChannel;
@@ -15,8 +16,9 @@ import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyMulticastChanne
 public class DefaultKiSyMulticastChannel extends AbstractKiSyMulticastChannel<KiSyMessage> {
 
 	protected KiSyMessageProcessor messageProcessor = new KiSyMessageProcessor();
-	
+
 	protected KiSyOutboundMessageManager outboundManager = KiSyOutboundMessageManager.INSTANCE;
+	protected DefaultChannelRegistry registry = DefaultChannelRegistry.INSTANCE;
 
 	public DefaultKiSyMulticastChannel(String multicastIPv6, int port) throws UnknownHostException {
 		super(multicastIPv6, port);
@@ -35,10 +37,31 @@ public class DefaultKiSyMulticastChannel extends AbstractKiSyMulticastChannel<Ki
 		super(multicastAddress, networkInterface);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void bind() {
+		super.bind();
+		registry.addChannel(this);
+	}
+
+	public void bind(int port) {
+		super.bind(port);
+		registry.addChannel(this);
+	}
+
+	public void multicastBind() {
+		super.multicastBind();
+		registry.addMulticastChannel(this);
+	}
+
+	public ChannelFuture close() {
+		registry.removeChannel(this);
+		registry.removeMulticastChannel(this);
+
+		return super.close();
+	}
+
 	@Override
 	protected ChannelInitializer<DatagramChannel> initializer() {
-		return new DefaultInitializer(this);
+		return new DefaultInitializer();
 	}
 
 	@Override

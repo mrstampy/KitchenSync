@@ -35,9 +35,13 @@ public class Bootstrapper {
 	private static final AttributeKey<NetworkInterface> NI_KEY = AttributeKey.valueOf("KitchenSync Network Interface");
 	private static final AttributeKey<InetSocketAddress> ISA_KEY = AttributeKey.valueOf("KitchenSync Multicast Address");
 
-	public static NetworkInterface DEFAULT_INTERFACE;
-	public static InetAddress DEFAULT_ADDRESS;
-	static {
+	public final NetworkInterface DEFAULT_INTERFACE;
+	public final InetAddress DEFAULT_ADDRESS;
+
+	private static Map<Integer, Bootstrap> channelBootstraps = new ConcurrentHashMap<Integer, Bootstrap>();
+	private static Map<String, Bootstrap> multicastBootstraps = new ConcurrentHashMap<String, Bootstrap>();
+
+	public Bootstrapper() {
 		try {
 			DEFAULT_ADDRESS = InetAddress.getLocalHost();
 			DEFAULT_INTERFACE = NetworkInterface.getByInetAddress(DEFAULT_ADDRESS);
@@ -45,19 +49,6 @@ public class Bootstrapper {
 			log.error("Could not determine network interface", e);
 			throw new RuntimeException(e);
 		}
-	}
-
-	private static final Bootstrapper INSTANCE = new Bootstrapper();
-
-	public static Bootstrapper getInstance() {
-		return INSTANCE;
-	}
-
-	private Map<Integer, Bootstrap> channelBootstraps = new ConcurrentHashMap<Integer, Bootstrap>();
-	private Map<String, Bootstrap> multicastBootstraps = new ConcurrentHashMap<String, Bootstrap>();
-
-	protected Bootstrapper() {
-		// singleton
 	}
 
 	public boolean hasDefaultBootstrap() {

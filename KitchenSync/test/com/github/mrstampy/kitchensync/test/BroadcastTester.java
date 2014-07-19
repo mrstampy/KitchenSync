@@ -21,7 +21,7 @@ public class BroadcastTester extends AbstractTester {
 	}
 	
 	public void execute() {
-		KiSyMessage message = new KiSyMessage(KiSyMessageType.INFO);
+		KiSyMessage message = new KiSyMessage(michael.getMulticastAddress(), KiSyMessageType.INFO);
 		message.addMessage("greeting", "A good day to you all!");
 		
 		michael.leaveGroup();

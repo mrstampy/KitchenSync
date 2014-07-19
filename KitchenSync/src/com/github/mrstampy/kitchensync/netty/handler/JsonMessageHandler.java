@@ -2,7 +2,6 @@ package com.github.mrstampy.kitchensync.netty.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.util.CharsetUtil;
 
@@ -12,20 +11,17 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.handler.KiSyInboundMessageManager;
-import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
+import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultChannelRegistry;
 
-public class JsonMessageHandler<CHANNEL extends KiSyChannel<DatagramChannel, KiSyMessage>> extends
-		SimpleChannelInboundHandler<DatagramPacket> {
+public class JsonMessageHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 	private static final Logger log = LoggerFactory.getLogger(JsonMessageHandler.class);
 
 	private ObjectMapper mapper = new ObjectMapper();
 	private KiSyInboundMessageManager<KiSyMessage> handlerManager = KiSyInboundMessageManager.INSTANCE;
+	private DefaultChannelRegistry registry = DefaultChannelRegistry.INSTANCE;
 
-	private CHANNEL channel;
-
-	public JsonMessageHandler(KiSyInboundMessageManager<KiSyMessage> handlerManager, CHANNEL channel) {
+	public JsonMessageHandler(KiSyInboundMessageManager<KiSyMessage> handlerManager) {
 		this.handlerManager = handlerManager;
-		this.channel = channel;
 	}
 
 	@Override
@@ -36,7 +32,7 @@ public class JsonMessageHandler<CHANNEL extends KiSyChannel<DatagramChannel, KiS
 		try {
 			KiSyMessage message = mapper.readValue(json, KiSyMessage.class);
 
-			handlerManager.processMessage(message, channel);
+			handlerManager.processMessage(message, registry.getChannel(msg.recipient().getPort()));
 		} catch (Exception e) {
 			log.error("Could not process {}", json, e);
 		}

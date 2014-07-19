@@ -8,8 +8,6 @@ import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 
-import com.github.mrstampy.kitchensync.netty.Bootstrapper;
-
 /**
  * private static final String MULTICAST_IP = "FF05:0:0548:c4e6:796c:0:de66:FC";
  * private static final int MULTICAST_PORT = 57962;
@@ -24,7 +22,7 @@ public abstract class AbstractKiSyMulticastChannel<MSG> extends AbstractKiSyChan
 	private NetworkInterface networkInterface;
 
 	public AbstractKiSyMulticastChannel(String multicastIPv6, int port) throws UnknownHostException {
-		this(multicastIPv6, port, Bootstrapper.DEFAULT_INTERFACE);
+		this(multicastIPv6, port, null);
 	}
 
 	public AbstractKiSyMulticastChannel(String multicastIPv6, int port, NetworkInterface networkInterface)
@@ -33,12 +31,13 @@ public abstract class AbstractKiSyMulticastChannel<MSG> extends AbstractKiSyChan
 	}
 
 	public AbstractKiSyMulticastChannel(InetSocketAddress multicastAddress) {
-		this(multicastAddress, Bootstrapper.DEFAULT_INTERFACE);
+		this(multicastAddress, null);
 	}
 
 	public AbstractKiSyMulticastChannel(InetSocketAddress multicastAddress, NetworkInterface networkInterface) {
+		super();
 		this.multicastAddress = multicastAddress;
-		this.networkInterface = networkInterface;
+		this.networkInterface = networkInterface == null ? bootstrapper.DEFAULT_INTERFACE : networkInterface;
 	}
 
 	@Override
@@ -82,15 +81,11 @@ public abstract class AbstractKiSyMulticastChannel<MSG> extends AbstractKiSyChan
 	public int getPort() {
 		return getMulticastAddress().getPort();
 	}
-	
-	public void setBootstrapper(Bootstrapper bootstrapper) {
-		this.bootstrapper = bootstrapper;
-	}
 
 	public String createMulticastKey() {
 		return createMulticastKey(getMulticastAddress());
 	}
-	
+
 	public static String createMulticastKey(InetSocketAddress address) {
 		return new String(address.getAddress().getAddress());
 	}

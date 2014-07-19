@@ -1,22 +1,20 @@
 package com.github.mrstampy.kitchensync.test;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
-import com.github.mrstampy.kitchensync.netty.Bootstrapper;
 import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyChannel;
 
 public class PointToPointTester extends AbstractTester {
 
 	private DefaultKiSyChannel channel;
+	private DefaultKiSyChannel channel2;
 
 	private void execute() {
 		channel = initChannel();
+		channel2 = initChannel();
 	}
 	
-	public void sendPing(InetAddress address, int port) {
-		channel.send(KiSyMessageCreator.createPing(address, channel.getPort()), new InetSocketAddress(address, port));
+	public void sendPing() {
+		channel.send(KiSyMessageCreator.createPing(channel), channel2.localAddress());
 	}
 
 	protected DefaultKiSyChannel initChannel() {
@@ -30,7 +28,7 @@ public class PointToPointTester extends AbstractTester {
 	public static void main(String[] args) {
 		PointToPointTester ptpt = new PointToPointTester();
 		ptpt.execute();
-		ptpt.sendPing(Bootstrapper.DEFAULT_ADDRESS, 55109);
+		ptpt.sendPing();
 	}
 
 }

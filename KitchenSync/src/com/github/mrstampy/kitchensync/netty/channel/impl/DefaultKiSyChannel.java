@@ -1,5 +1,6 @@
 package com.github.mrstampy.kitchensync.netty.channel.impl;
 
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.nio.NioDatagramChannel;
@@ -8,26 +9,36 @@ import java.net.InetSocketAddress;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
-import com.github.mrstampy.kitchensync.netty.Bootstrapper;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyChannel;
 
 public class DefaultKiSyChannel extends AbstractKiSyChannel<DatagramChannel, KiSyMessage> {
 	protected KiSyMessageProcessor messageProcessor = new KiSyMessageProcessor();
-	
+
 	protected KiSyOutboundMessageManager outboundManager = KiSyOutboundMessageManager.INSTANCE;
+	protected DefaultChannelRegistry registry = DefaultChannelRegistry.INSTANCE;
 
 	public DefaultKiSyChannel() {
 		super();
 	}
-	
-	public DefaultKiSyChannel(Bootstrapper bootstrapper) {
-		super(bootstrapper);
+
+	public void bind() {
+		super.bind();
+		registry.addChannel(this);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void bind(int port) {
+		super.bind(port);
+		registry.addChannel(this);
+	}
+
+	public ChannelFuture close() {
+		registry.removeChannel(this);
+		return super.close();
+	}
+
 	@Override
 	protected ChannelInitializer<DatagramChannel> initializer() {
-		return new DefaultInitializer(this);
+		return new DefaultInitializer();
 	}
 
 	@Override

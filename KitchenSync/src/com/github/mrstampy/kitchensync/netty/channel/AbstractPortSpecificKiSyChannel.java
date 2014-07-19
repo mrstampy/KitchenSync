@@ -5,8 +5,6 @@ import io.netty.channel.socket.DatagramChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.mrstampy.kitchensync.netty.Bootstrapper;
-
 public abstract class AbstractPortSpecificKiSyChannel<CHANNEL extends DatagramChannel, MSG> extends
 		AbstractKiSyChannel<CHANNEL, MSG> {
 	private static final Logger log = LoggerFactory.getLogger(AbstractPortSpecificKiSyChannel.class);
@@ -14,11 +12,7 @@ public abstract class AbstractPortSpecificKiSyChannel<CHANNEL extends DatagramCh
 	private int port;
 
 	public AbstractPortSpecificKiSyChannel(int port) {
-		this(port, Bootstrapper.getInstance());
-	}
-
-	public AbstractPortSpecificKiSyChannel(int port, Bootstrapper bootstrapper) {
-		super(bootstrapper);
+		super();
 		this.port = port;
 	}
 

@@ -19,7 +19,7 @@ public abstract class AbstractInboundKiSyMessageHandler<MSG, CHANNEL extends KiS
 	public static final int DEFAULT_EXECUTION_ORDER = 100;
 
 	@Override
-	public void messageReceived(final MSG message, final CHANNEL channel) {
+	public void messageReceived(MSG message, CHANNEL channel) {
 		Observable.just(message).subscribe(new Action1<MSG>() {
 
 			@Override

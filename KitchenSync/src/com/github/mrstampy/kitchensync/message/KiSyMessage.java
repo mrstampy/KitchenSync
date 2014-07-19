@@ -1,6 +1,8 @@
 package com.github.mrstampy.kitchensync.message;
 
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -17,15 +19,24 @@ public class KiSyMessage implements Serializable {
 
 	private KiSyMessageType[] types;
 	private long createTime;
+	private String originatingHost;
+	private int originatingPort;
 
 	private Map<String, String> messageParts = new HashMap<String, String>();
 
 	public KiSyMessage() {
 	}
 
-	public KiSyMessage(KiSyMessageType... types) {
+	public KiSyMessage(InetSocketAddress originator, KiSyMessageType... types) {
+		this(originator.getAddress(), originator.getPort(), types);
+	}
+	
+	public KiSyMessage(InetAddress address, int port, KiSyMessageType...types) {
 		setTypes(types);
 		setCreateTime(System.currentTimeMillis());
+		
+		setOriginatingHost(address.getHostAddress());
+		setOriginatingPort(port);
 	}
 
 	@JsonIgnore
@@ -95,6 +106,26 @@ public class KiSyMessage implements Serializable {
 
 	public void setMessageParts(Map<String, String> messageParts) {
 		this.messageParts = messageParts;
+	}
+
+	public String getOriginatingHost() {
+		return originatingHost;
+	}
+
+	public void setOriginatingHost(String originatingHost) {
+		this.originatingHost = originatingHost;
+	}
+
+	public int getOriginatingPort() {
+		return originatingPort;
+	}
+
+	public void setOriginatingPort(int originatingPort) {
+		this.originatingPort = originatingPort;
+	}
+	
+	public InetSocketAddress createReturnAddress() {
+		return new InetSocketAddress(getOriginatingHost(), getOriginatingPort());
 	}
 
 }

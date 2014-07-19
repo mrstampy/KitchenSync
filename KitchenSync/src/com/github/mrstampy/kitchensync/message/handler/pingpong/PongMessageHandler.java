@@ -7,7 +7,6 @@ import java.net.InetSocketAddress;
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
-import com.github.mrstampy.kitchensync.message.coretypes.DefaultReturnAddress;
 import com.github.mrstampy.kitchensync.message.handler.AbstractInboundKiSyMessageHandler;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
@@ -24,16 +23,13 @@ public abstract class PongMessageHandler<CHANNEL extends KiSyChannel<DatagramCha
 
 	@Override
 	protected void onReceive(KiSyMessage message, CHANNEL channel) {
-		DefaultReturnAddress dra = new DefaultReturnAddress(message);
-		
-		InetSocketAddress remoteAddress = dra.createFrom();
+		InetSocketAddress remoteAddress = message.createReturnAddress();
 
 		long time = timer.pongReceived(remoteAddress);
 
 		if (time < 0) return;
 
-		KiSyMessage pingTime = KiSyMessageCreator.createPingTime(channel.localAddress(), remoteAddress,
-				time);
+		KiSyMessage pingTime = KiSyMessageCreator.createPingTime(channel.localAddress(), remoteAddress, time);
 
 		handlePingTimeMessage(pingTime);
 	}

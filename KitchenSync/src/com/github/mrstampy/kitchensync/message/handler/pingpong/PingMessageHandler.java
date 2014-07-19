@@ -5,7 +5,6 @@ import io.netty.channel.socket.DatagramChannel;
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
-import com.github.mrstampy.kitchensync.message.coretypes.DefaultReturnAddress;
 import com.github.mrstampy.kitchensync.message.handler.AbstractInboundKiSyMessageHandler;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
@@ -20,11 +19,9 @@ public class PingMessageHandler<CHANNEL extends KiSyChannel<DatagramChannel, KiS
 
 	@Override
 	protected void onReceive(KiSyMessage message, CHANNEL channel) {
-		KiSyMessage pong = KiSyMessageCreator.createPong(channel.localAddress().getAddress(), channel.localAddress().getPort());
+		KiSyMessage pong = KiSyMessageCreator.createPong(channel);
 
-		DefaultReturnAddress returnAddress = new DefaultReturnAddress(message);
-
-		channel.send(pong, returnAddress.createFrom());
+		channel.send(pong, message.createReturnAddress());
 	}
 
 	@Override
