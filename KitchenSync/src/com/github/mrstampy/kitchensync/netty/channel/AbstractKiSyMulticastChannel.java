@@ -51,7 +51,7 @@ public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel i
 
 	@Override
 	public <MSG extends Object> ChannelFuture broadcast(MSG message) {
-		return sendImpl(createMessage(message, getMulticastAddress()), bootstrapper.getMulticastAddress(getChannel()));
+		return sendImpl(createMessage(message, getMulticastAddress()), getMulticastAddress());
 	}
 
 	@Override
