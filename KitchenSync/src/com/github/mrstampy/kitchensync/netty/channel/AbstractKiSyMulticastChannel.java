@@ -1,0 +1,98 @@
+package com.github.mrstampy.kitchensync.netty.channel;
+
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.socket.DatagramChannel;
+
+import java.net.Inet6Address;
+import java.net.InetSocketAddress;
+import java.net.NetworkInterface;
+import java.net.UnknownHostException;
+
+import com.github.mrstampy.kitchensync.netty.Bootstrapper;
+
+/**
+ * private static final String MULTICAST_IP = "FF05:0:0548:c4e6:796c:0:de66:FC";
+ * private static final int MULTICAST_PORT = 57962;
+ * 
+ * @author burton
+ *
+ */
+public abstract class AbstractKiSyMulticastChannel<MSG> extends AbstractKiSyChannel<DatagramChannel, MSG> implements
+		KiSyMulticastChannel<MSG> {
+
+	private InetSocketAddress multicastAddress;
+	private NetworkInterface networkInterface;
+
+	public AbstractKiSyMulticastChannel(String multicastIPv6, int port) throws UnknownHostException {
+		this(multicastIPv6, port, Bootstrapper.DEFAULT_INTERFACE);
+	}
+
+	public AbstractKiSyMulticastChannel(String multicastIPv6, int port, NetworkInterface networkInterface)
+			throws UnknownHostException {
+		this(new InetSocketAddress(Inet6Address.getByName(multicastIPv6), port), networkInterface);
+	}
+
+	public AbstractKiSyMulticastChannel(InetSocketAddress multicastAddress) {
+		this(multicastAddress, Bootstrapper.DEFAULT_INTERFACE);
+	}
+
+	public AbstractKiSyMulticastChannel(InetSocketAddress multicastAddress, NetworkInterface networkInterface) {
+		this.multicastAddress = multicastAddress;
+		this.networkInterface = networkInterface;
+	}
+
+	@Override
+	public void multicastBind() {
+		if (isActive()) closeChannel();
+
+		if (!bootstrapper.containsMulticastBootstrap(getMulticastAddress())) {
+			bootstrapper.initMulticastBootstrap(initializer(), getMulticastAddress(), getNetworkInterface());
+		}
+
+		setChannel(bootstrapper.multicastBind(getMulticastAddress()));
+	}
+
+	@Override
+	public ChannelFuture broadcast(MSG message) {
+		return sendImpl(createMessage(message, getMulticastAddress()), bootstrapper.getMulticastAddress(getChannel()));
+	}
+
+	@Override
+	public boolean joinGroup() {
+		if (!isActive()) return false;
+
+		return bootstrapper.joinGroup(getChannel());
+	}
+
+	@Override
+	public boolean leaveGroup() {
+		if (!isActive()) return false;
+
+		return bootstrapper.leaveGroup(getChannel());
+	}
+
+	public InetSocketAddress getMulticastAddress() {
+		return multicastAddress;
+	}
+
+	public NetworkInterface getNetworkInterface() {
+		return networkInterface;
+	}
+
+	public int getPort() {
+		return getMulticastAddress().getPort();
+	}
+	
+	public void setBootstrapper(Bootstrapper bootstrapper) {
+		this.bootstrapper = bootstrapper;
+	}
+
+	public String createMulticastKey() {
+		return createMulticastKey(getMulticastAddress());
+	}
+	
+	public static String createMulticastKey(InetSocketAddress address) {
+		return new String(address.getAddress().getAddress());
+	}
+
+}
