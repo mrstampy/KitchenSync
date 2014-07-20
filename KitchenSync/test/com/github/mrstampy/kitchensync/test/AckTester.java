@@ -1,7 +1,6 @@
 package com.github.mrstampy.kitchensync.test;
 
 import io.netty.channel.ChannelFuture;
-import io.netty.util.concurrent.GenericFutureListener;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -38,22 +37,12 @@ public class AckTester extends AbstractTester {
 	public void disconnect() throws InterruptedException {
 		CountDownLatch cdl = new CountDownLatch(2);
 		ChannelFuture cf = channel.close();
-		addListener(cf, cdl);
+		addLatchListener(cf, cdl);
 		
 		ChannelFuture cf2 = channel2.close();
-		addListener(cf2, cdl);
+		addLatchListener(cf2, cdl);
 		
 		cdl.await();
-	}
-	
-	private void addListener(ChannelFuture cf, final CountDownLatch cdl) {
-		cf.addListener(new GenericFutureListener<ChannelFuture>() {
-
-			@Override
-			public void operationComplete(ChannelFuture future) throws Exception {
-				cdl.countDown();
-			}
-		});
 	}
 
 	public static void main(String[] args) throws Exception {

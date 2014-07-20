@@ -1,7 +1,6 @@
 package com.github.mrstampy.kitchensync.test;
 
 import io.netty.channel.ChannelFuture;
-import io.netty.util.concurrent.GenericFutureListener;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -29,26 +28,16 @@ public class PointToPointTester extends AbstractTester {
 
 		return channel;
 	}
-	
+
 	public void disconnect() throws InterruptedException {
 		CountDownLatch cdl = new CountDownLatch(2);
 		ChannelFuture cf = channel.close();
-		addListener(cf, cdl);
-		
-		ChannelFuture cf2 = channel2.close();
-		addListener(cf2, cdl);
-		
-		cdl.await();
-	}
-	
-	private void addListener(ChannelFuture cf, final CountDownLatch cdl) {
-		cf.addListener(new GenericFutureListener<ChannelFuture>() {
+		addLatchListener(cf, cdl);
 
-			@Override
-			public void operationComplete(ChannelFuture future) throws Exception {
-				cdl.countDown();
-			}
-		});
+		ChannelFuture cf2 = channel2.close();
+		addLatchListener(cf2, cdl);
+
+		cdl.await();
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -58,7 +47,7 @@ public class PointToPointTester extends AbstractTester {
 			ptpt.sendPing();
 			Thread.sleep(50);
 		}
-		
+
 		ptpt.disconnect();
 		System.exit(0);
 	}
