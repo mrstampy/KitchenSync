@@ -33,6 +33,10 @@ public class SingleThreadExecutorSchedulerProvider {
 			lock.unlock();
 		}
 	}
+	
+	public int size() {
+		return size;
+	}
 
 	private Scheduler getNext() {
 		int index = next.getAndIncrement();
