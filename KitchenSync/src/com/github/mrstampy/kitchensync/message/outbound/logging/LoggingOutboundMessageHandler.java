@@ -20,7 +20,7 @@ public class LoggingOutboundMessageHandler<MSG> implements KiSyOutboundMessageHa
 		if(!log.isDebugEnabled()) return;
 
 		String s = message.toString();
-		if (s.length() > 100) s = s.substring(0, 100);
+		if (s.length() > 500) s = s.substring(0, 500);
 
 		log.debug("Sending {} from {} to {}", s, originator, recipient);
 	}

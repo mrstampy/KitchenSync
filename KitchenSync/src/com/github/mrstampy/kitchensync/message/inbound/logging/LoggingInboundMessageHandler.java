@@ -20,7 +20,7 @@ public class LoggingInboundMessageHandler<MSG> extends AbstractInboundKiSyMessag
 		if (!log.isDebugEnabled()) return;
 
 		String s = message.toString();
-		if (s.length() > 100) s = s.substring(0, 100);
+		if (s.length() > 500) s = s.substring(0, 500);
 
 		log.debug("Received message {}", s);
 	}
