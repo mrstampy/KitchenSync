@@ -158,7 +158,8 @@ public class Bootstrapper {
 		return cf.isSuccess() ? (CHANNEL) cf.channel() : null;
 	}
 
-	public DatagramChannel multicastBind(InetSocketAddress multicast) {
+	@SuppressWarnings("unchecked")
+	public <CHANNEL extends DatagramChannel> CHANNEL multicastBind(InetSocketAddress multicast) {
 		String key = createMulticastKey(multicast);
 		if (!containsMulticastBootstrap(key)) {
 			log.error("Multicast bootstrap for {} not initialized", multicast);
@@ -174,7 +175,7 @@ public class Bootstrapper {
 
 		await(latch, "Multicast channel creation timed out");
 
-		return cf.isSuccess() ? (DatagramChannel) cf.channel() : null;
+		return cf.isSuccess() ? (CHANNEL) cf.channel() : null;
 	}
 
 	public boolean joinGroup(DatagramChannel channel) {
