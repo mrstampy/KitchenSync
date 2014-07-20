@@ -12,13 +12,11 @@ public class LoggingOutboundMessageHandler<MSG> implements KiSyOutboundMessageHa
 
 	@Override
 	public boolean isForMessage(MSG message, InetSocketAddress recipient) {
-		return true;
+		return log.isDebugEnabled();
 	}
 
 	@Override
 	public void presend(MSG message, InetSocketAddress originator, InetSocketAddress recipient) {
-		if (!log.isDebugEnabled()) return;
-
 		String s = message.toString();
 		if (s.length() > 500) s = s.substring(0, 500);
 

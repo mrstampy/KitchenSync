@@ -12,13 +12,11 @@ public class LoggingInboundMessageHandler<MSG> extends AbstractInboundKiSyMessag
 
 	@Override
 	public boolean canHandleMessage(MSG message) {
-		return true;
+		return log.isDebugEnabled();
 	}
 
 	@Override
 	protected void onReceive(MSG message, KiSyChannel<?> channel) throws Exception {
-		if (!log.isDebugEnabled()) return;
-
 		String s = message.toString();
 		if (s.length() > 500) s = s.substring(0, 500);
 
