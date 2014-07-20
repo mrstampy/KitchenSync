@@ -24,11 +24,7 @@ public class KiSyMessageProcessor {
 		
 		if(message instanceof byte[]) return new DatagramPacket(getBuf((byte[])message), recipient);
 		
-		if(message instanceof String) return new DatagramPacket(getBuf((String)message), recipient);
-		
-		log.error("Cannot send message of type {}", message.getClass());
-		
-		throw new IllegalArgumentException("Cannot send message of type " + message.getClass());
+		return new DatagramPacket(getBuf(message.toString()), recipient);
 	}
 
 	protected ByteBuf getBuf(String message) {
