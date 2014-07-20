@@ -44,6 +44,7 @@ public abstract class AbstractKiSyNettyHandler extends SimpleChannelInboundHandl
 	}
 
 	protected void processMessage(KiSyMessage message, DatagramPacket msg) {
+		message.setRemoteAddress(msg.sender());
 		handlerManager.processMessage(message, getChannel(msg));
 	}
 

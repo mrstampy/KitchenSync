@@ -23,7 +23,7 @@ public class AckInboundMessageHandler extends AbstractInboundKiSyMessageHandler<
 	protected void onReceive(KiSyMessage message, KiSyChannel<?> channel) throws Exception {
 		KiSyMessage ack = KiSyMessageCreator.createAck(message, channel);
 
-		channel.send(ack, message.createReturnAddress());
+		channel.send(ack, message.getReturnAddress());
 	}
 
 }

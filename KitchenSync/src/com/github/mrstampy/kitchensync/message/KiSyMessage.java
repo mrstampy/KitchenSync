@@ -22,6 +22,7 @@ public class KiSyMessage implements Serializable {
 	private String originatingHost;
 	private int originatingPort;
 	private boolean ackRequired;
+	private InetSocketAddress remoteAddress;
 
 	private Map<String, String> messageParts = new HashMap<String, String>();
 
@@ -135,6 +136,20 @@ public class KiSyMessage implements Serializable {
 
 	public void setAckRequired(boolean ackRequired) {
 		this.ackRequired = ackRequired;
+	}
+
+	@JsonIgnore
+	public InetSocketAddress getRemoteAddress() {
+		return remoteAddress;
+	}
+
+	public void setRemoteAddress(InetSocketAddress remoteAddress) {
+		this.remoteAddress = remoteAddress;
+	}
+	
+	@JsonIgnore
+	public InetSocketAddress getReturnAddress() {
+		return getRemoteAddress() == null ? createReturnAddress() : getRemoteAddress();
 	}
 
 }

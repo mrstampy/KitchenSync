@@ -18,7 +18,7 @@ public class PingInboundMessageHandler extends AbstractInboundKiSyMessageHandler
 	protected void onReceive(KiSyMessage message, KiSyChannel<?> channel) {
 		KiSyMessage pong = KiSyMessageCreator.createPong(channel);
 
-		channel.send(pong, message.createReturnAddress());
+		channel.send(pong, message.getReturnAddress());
 	}
 
 	@Override
