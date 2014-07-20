@@ -15,7 +15,7 @@ public class KiSyMessageCreator {
 	private static final String MESSAGE_ORDER = "order";
 	public static final BigDecimal ONE_MILLION = new BigDecimal(1000000);
 	private static final Logger log = LoggerFactory.getLogger(KiSyMessageCreator.class);
-	
+
 	private static final AtomicLong order = new AtomicLong(1);
 
 	public static KiSyMessage createPing(KiSyChannel<?> channel) {
@@ -36,22 +36,22 @@ public class KiSyMessageCreator {
 
 		return message;
 	}
-	
+
 	public static void requireAcknowledgement(KiSyMessage message) {
 		message.setAckRequired(true);
 		addMessageOrder(message);
 	}
-	
+
 	public static void addMessageOrder(KiSyMessage message) {
 		message.addMessage(MESSAGE_ORDER, Long.toString(order.getAndIncrement()));
 	}
-	
+
 	public static KiSyMessage createAck(KiSyMessage ackee, KiSyChannel<?> channel) {
 		KiSyMessage message = new KiSyMessage(channel.localAddress(), KiSyMessageType.ACK);
-		
+
 		String order = ackee.getMessagePart(MESSAGE_ORDER);
-		if(!StringUtils.isEmpty(order)) message.addMessage(MESSAGE_ORDER, order);
-		
+		if (!StringUtils.isEmpty(order)) message.addMessage(MESSAGE_ORDER, order);
+
 		return message;
 	}
 

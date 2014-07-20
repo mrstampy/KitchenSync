@@ -12,11 +12,11 @@ import java.util.concurrent.TimeoutException;
 public class KiSyFailedFuture implements ChannelFuture {
 
 	private Throwable cause;
-	
+
 	public KiSyFailedFuture() {
-		
+
 	}
-	
+
 	public KiSyFailedFuture(Throwable cause) {
 		this.cause = cause;
 	}

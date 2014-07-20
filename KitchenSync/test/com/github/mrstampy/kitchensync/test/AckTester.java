@@ -46,7 +46,7 @@ public class AckTester extends AbstractTester {
 		cdl.await();
 	}
 	
-	private void addListener(ChannelFuture cf, CountDownLatch cdl) {
+	private void addListener(ChannelFuture cf, final CountDownLatch cdl) {
 		cf.addListener(new GenericFutureListener<ChannelFuture>() {
 
 			@Override

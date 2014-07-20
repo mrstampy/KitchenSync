@@ -13,18 +13,18 @@ import rx.schedulers.Schedulers;
 public class SingleThreadExecutorSchedulerProvider {
 
 	private List<Scheduler> bufferedSchedulers = new ArrayList<>();
-	
+
 	private AtomicInteger next = new AtomicInteger(0);
-	
+
 	private int size;
-	
+
 	private Lock lock = new ReentrantLock();
-	
+
 	public SingleThreadExecutorSchedulerProvider(int size) {
 		this.size = size;
 		createSchedulers();
 	}
-	
+
 	public Scheduler singleThreadScheduler() {
 		lock.lock();
 		try {
@@ -33,20 +33,20 @@ public class SingleThreadExecutorSchedulerProvider {
 			lock.unlock();
 		}
 	}
-	
+
 	public int size() {
 		return size;
 	}
 
 	private Scheduler getNext() {
 		int index = next.getAndIncrement();
-		if(index == size - 1) next.set(0);
-		
+		if (index == size - 1) next.set(0);
+
 		return bufferedSchedulers.get(index);
 	}
 
 	private void createSchedulers() {
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			bufferedSchedulers.add(Schedulers.from(Executors.newSingleThreadExecutor()));
 		}
 	}

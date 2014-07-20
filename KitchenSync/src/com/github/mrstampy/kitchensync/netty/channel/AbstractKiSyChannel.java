@@ -89,16 +89,16 @@ public abstract class AbstractKiSyChannel implements KiSyChannel<DatagramChannel
 		bindDefaultBootstrapInit();
 
 		DatagramChannel channel = bootstrapper.bind();
-		
+
 		setChannel(channel);
 	}
 
 	@Override
 	public void bind(int port) {
 		bindDefaultBootstrapInit();
-		
+
 		DatagramChannel channel = bootstrapper.bind(port);
-		
+
 		setChannel(channel);
 	}
 
@@ -160,7 +160,7 @@ public abstract class AbstractKiSyChannel implements KiSyChannel<DatagramChannel
 
 	protected void closeChannel() {
 		ChannelFuture cf = close();
-		CountDownLatch latch = new CountDownLatch(1);
+		final CountDownLatch latch = new CountDownLatch(1);
 		cf.addListener(new GenericFutureListener<ChannelFuture>() {
 
 			@Override

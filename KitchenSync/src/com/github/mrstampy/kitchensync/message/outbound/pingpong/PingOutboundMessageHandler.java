@@ -10,7 +10,7 @@ import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageHandl
 public class PingOutboundMessageHandler implements KiSyOutboundMessageHandler<KiSyMessage> {
 
 	private PingPongMessageTimer timer = PingPongMessageTimer.TIMER;
-	
+
 	@Override
 	public boolean isForMessage(KiSyMessage message, InetSocketAddress recipient) {
 		return message.isType(KiSyMessageType.PING);

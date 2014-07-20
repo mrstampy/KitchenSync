@@ -36,7 +36,7 @@ public class KiSyInboundMessageManager<MSG> {
 	private HandlerComparator<MSG> handlerComparator = new HandlerComparator<MSG>();
 
 	private Scheduler scheduler = Schedulers.computation();
-	
+
 	private SingleThreadExecutorSchedulerProvider singleThreadProvider = new SingleThreadExecutorSchedulerProvider(10);
 
 	public void addMessageHandlers(KiSyInboundMesssageHandler... handlers) {
@@ -75,8 +75,8 @@ public class KiSyInboundMessageManager<MSG> {
 		processMessage(ordered, message, channel, cdl);
 	}
 
-	private void processMessage(List<KiSyInboundMesssageHandler<MSG>> ordered, MSG message, KiSyChannel<?> channel,
-			CountDownLatch cdl) {
+	private void processMessage(List<KiSyInboundMesssageHandler<MSG>> ordered, final MSG message,
+			final KiSyChannel<?> channel, final CountDownLatch cdl) {
 		Observable.from(ordered, singleThreadExecutor()).subscribe(new Action1<KiSyInboundMesssageHandler<MSG>>() {
 
 			@Override
@@ -96,7 +96,7 @@ public class KiSyInboundMessageManager<MSG> {
 		return singleThreadProvider.singleThreadScheduler();
 	}
 
-	private void scheduleCleanup(MSG message, CountDownLatch cdl, long start) {
+	private void scheduleCleanup(final MSG message, final CountDownLatch cdl, final long start) {
 		scheduler.createWorker().schedule(new Action0() {
 
 			@Override

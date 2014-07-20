@@ -27,7 +27,7 @@ public class KiSyOutboundMessageManager {
 	}
 
 	public void addOutboundHandlers(KiSyOutboundMessageHandler<?>... hndlrs) {
-		for(KiSyOutboundMessageHandler<?> handler : hndlrs) {
+		for (KiSyOutboundMessageHandler<?> handler : hndlrs) {
 			if (!handlers.contains(handler)) handlers.add(handler);
 		}
 	}
@@ -40,7 +40,7 @@ public class KiSyOutboundMessageManager {
 		handlers.clear();
 	}
 
-	public <MSG> void presend(MSG message, InetSocketAddress originator, InetSocketAddress recipient) {
+	public <MSG> void presend(final MSG message, final InetSocketAddress originator, final InetSocketAddress recipient) {
 		List<KiSyOutboundMessageHandler<MSG>> relevant = getHandlersForMessage(message, recipient);
 		if (relevant.isEmpty()) return;
 

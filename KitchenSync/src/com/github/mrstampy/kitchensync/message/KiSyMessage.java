@@ -32,11 +32,11 @@ public class KiSyMessage implements Serializable {
 	public KiSyMessage(InetSocketAddress originator, KiSyMessageType... types) {
 		this(originator.getAddress(), originator.getPort(), types);
 	}
-	
-	public KiSyMessage(InetAddress address, int port, KiSyMessageType...types) {
+
+	public KiSyMessage(InetAddress address, int port, KiSyMessageType... types) {
 		setTypes(types);
 		setCreateTime(System.currentTimeMillis());
-		
+
 		setOriginatingHost(address.getHostAddress());
 		setOriginatingPort(port);
 	}
@@ -125,7 +125,7 @@ public class KiSyMessage implements Serializable {
 	public void setOriginatingPort(int originatingPort) {
 		this.originatingPort = originatingPort;
 	}
-	
+
 	public InetSocketAddress createReturnAddress() {
 		return new InetSocketAddress(getOriginatingHost(), getOriginatingPort());
 	}
@@ -146,7 +146,7 @@ public class KiSyMessage implements Serializable {
 	public void setRemoteAddress(InetSocketAddress remoteAddress) {
 		this.remoteAddress = remoteAddress;
 	}
-	
+
 	@JsonIgnore
 	public InetSocketAddress getReturnAddress() {
 		return getRemoteAddress() == null ? createReturnAddress() : getRemoteAddress();

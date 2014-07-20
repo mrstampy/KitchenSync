@@ -5,7 +5,7 @@ import io.netty.channel.socket.DatagramChannel;
 
 import java.net.InetSocketAddress;
 
-public interface KiSyChannel<CHANNEL extends DatagramChannel>  {
+public interface KiSyChannel<CHANNEL extends DatagramChannel> {
 
 	boolean isActive();
 
@@ -18,8 +18,8 @@ public interface KiSyChannel<CHANNEL extends DatagramChannel>  {
 	ChannelFuture close();
 
 	CHANNEL getChannel();
-	
+
 	int getPort();
-	
+
 	InetSocketAddress localAddress();
 }
