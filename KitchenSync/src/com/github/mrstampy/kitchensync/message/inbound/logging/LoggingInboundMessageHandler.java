@@ -17,7 +17,12 @@ public class LoggingInboundMessageHandler<MSG> extends AbstractInboundKiSyMessag
 
 	@Override
 	protected void onReceive(MSG message, KiSyChannel<?> channel) throws Exception {
-		log.debug("Received message {}", message);
+		if (!log.isDebugEnabled()) return;
+
+		String s = message.toString();
+		if (s.length() > 100) s = s.substring(0, 100);
+
+		log.debug("Received message {}", s);
 	}
 
 	@Override

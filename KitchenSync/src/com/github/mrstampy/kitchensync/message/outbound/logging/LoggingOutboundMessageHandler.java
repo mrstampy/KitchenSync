@@ -17,7 +17,12 @@ public class LoggingOutboundMessageHandler<MSG> implements KiSyOutboundMessageHa
 
 	@Override
 	public void presend(MSG message, InetSocketAddress originator, InetSocketAddress recipient) {
-		log.debug("Sending {} from {} to {}", message, originator, recipient);
+		if(!log.isDebugEnabled()) return;
+
+		String s = message.toString();
+		if (s.length() > 100) s = s.substring(0, 100);
+
+		log.debug("Sending {} from {} to {}", s, originator, recipient);
 	}
 
 	@Override
