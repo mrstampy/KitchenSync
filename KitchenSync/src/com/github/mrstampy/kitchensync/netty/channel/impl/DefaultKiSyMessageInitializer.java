@@ -4,7 +4,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.DatagramChannel;
 
-import com.github.mrstampy.kitchensync.netty.handler.JsonMessageHandler;
+import com.github.mrstampy.kitchensync.netty.handler.KiSyMessageHandler;
 
 public class DefaultKiSyMessageInitializer extends ChannelInitializer<DatagramChannel> {
 
@@ -12,7 +12,7 @@ public class DefaultKiSyMessageInitializer extends ChannelInitializer<DatagramCh
 	protected void initChannel(DatagramChannel ch) throws Exception {
 		ChannelPipeline pipeline = ch.pipeline();
 
-		pipeline.addLast(new JsonMessageHandler());
+		pipeline.addLast(new KiSyMessageHandler());
 	}
 
 }

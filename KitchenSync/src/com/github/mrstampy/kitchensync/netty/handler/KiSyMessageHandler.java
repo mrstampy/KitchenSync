@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 
-public class JsonMessageHandler extends AbstractKiSyNettyHandler {
-	private static final Logger log = LoggerFactory.getLogger(JsonMessageHandler.class);
+public class KiSyMessageHandler extends AbstractKiSyNettyHandler {
+	private static final Logger log = LoggerFactory.getLogger(KiSyMessageHandler.class);
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	public JsonMessageHandler() {
+	public KiSyMessageHandler() {
 		super(HandlerType.KISY_MESSAGE);
 	}
 
