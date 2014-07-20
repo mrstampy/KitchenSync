@@ -9,8 +9,8 @@ import java.util.concurrent.CountDownLatch;
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
-import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyMessageInitializer;
 import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyChannel;
+import com.github.mrstampy.kitchensync.netty.channel.initializer.KiSyMessageInitializer;
 
 public class AckTester extends AbstractTester {
 
@@ -34,7 +34,7 @@ public class AckTester extends AbstractTester {
 
 			@Override
 			protected ChannelInitializer<DatagramChannel> initializer() {
-				return new DefaultKiSyMessageInitializer();
+				return new KiSyMessageInitializer();
 			}
 			
 		};

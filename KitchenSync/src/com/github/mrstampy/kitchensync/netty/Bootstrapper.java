@@ -349,7 +349,7 @@ public class Bootstrapper {
 		if ("NioDatagramChannel".equals(clazz.getSimpleName())) return new NioEventLoopGroup();
 
 		if ("OioDatagramChannel".equals(clazz.getSimpleName())) return new OioEventLoopGroup();
-		
+
 		throw new UnsupportedOperationException("No default event loop group defined for " + clazz.getName());
 	}
 

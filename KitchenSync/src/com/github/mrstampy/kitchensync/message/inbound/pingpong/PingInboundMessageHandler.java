@@ -11,19 +11,19 @@ public class PingInboundMessageHandler<MSG> extends AbstractInboundKiSyMessageHa
 
 	@Override
 	public boolean canHandleMessage(MSG message) {
-		if(!(message instanceof KiSyMessage)) return false;
-		
-		KiSyMessage msg = (KiSyMessage)message;
-		
+		if (!(message instanceof KiSyMessage)) return false;
+
+		KiSyMessage msg = (KiSyMessage) message;
+
 		return msg.isType(KiSyMessageType.PING);
 	}
 
 	@Override
 	protected void onReceive(MSG message, KiSyChannel<?> channel) {
-		if(!(message instanceof KiSyMessage)) return;
-		
-		KiSyMessage msg = (KiSyMessage)message;
-		
+		if (!(message instanceof KiSyMessage)) return;
+
+		KiSyMessage msg = (KiSyMessage) message;
+
 		KiSyMessage pong = KiSyMessageCreator.createPong(channel);
 
 		channel.send(pong, msg.getReturnAddress());

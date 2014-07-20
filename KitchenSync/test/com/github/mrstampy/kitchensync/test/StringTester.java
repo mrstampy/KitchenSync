@@ -7,7 +7,7 @@ import io.netty.channel.socket.DatagramChannel;
 import java.util.concurrent.CountDownLatch;
 
 import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyChannel;
-import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultStringMessageInitializer;
+import com.github.mrstampy.kitchensync.netty.channel.initializer.StringMessageInitializer;
 
 public class StringTester extends AbstractTester {
 
@@ -28,7 +28,7 @@ public class StringTester extends AbstractTester {
 
 			@Override
 			protected ChannelInitializer<DatagramChannel> initializer() {
-				return new DefaultStringMessageInitializer();
+				return new StringMessageInitializer();
 			}
 
 		};

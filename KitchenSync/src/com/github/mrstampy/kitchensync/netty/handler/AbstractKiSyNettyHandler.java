@@ -13,12 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
+import com.github.mrstampy.kitchensync.message.inbound.ByteArrayInboundMessageManager;
 import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMessageManager;
+import com.github.mrstampy.kitchensync.message.inbound.KiSyMessageInboundMessageManager;
+import com.github.mrstampy.kitchensync.message.inbound.StringInboundMessageManager;
+import com.github.mrstampy.kitchensync.netty.channel.DefaultChannelRegistry;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
-import com.github.mrstampy.kitchensync.netty.channel.impl.ByteArrayInboundMessageManager;
-import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultChannelRegistry;
-import com.github.mrstampy.kitchensync.netty.channel.impl.KiSyMessageInboundMessageManager;
-import com.github.mrstampy.kitchensync.netty.channel.impl.StringInboundMessageManager;
 
 public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInboundHandler<DatagramPacket> {
 	private static final Logger log = LoggerFactory.getLogger(AbstractKiSyNettyHandler.class);

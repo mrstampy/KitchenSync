@@ -11,10 +11,10 @@ public class AckInboundMessageHandler<MSG> extends AbstractInboundKiSyMessageHan
 
 	@Override
 	public boolean canHandleMessage(MSG message) {
-		if(!(message instanceof KiSyMessage)) return false;
-		
-		KiSyMessage msg = (KiSyMessage)message;
-		
+		if (!(message instanceof KiSyMessage)) return false;
+
+		KiSyMessage msg = (KiSyMessage) message;
+
 		return msg.isAckRequired();
 	}
 
@@ -25,10 +25,10 @@ public class AckInboundMessageHandler<MSG> extends AbstractInboundKiSyMessageHan
 
 	@Override
 	protected void onReceive(MSG message, KiSyChannel<?> channel) throws Exception {
-		if(!(message instanceof KiSyMessage)) return;
-		
-		KiSyMessage msg = (KiSyMessage)message;
-		
+		if (!(message instanceof KiSyMessage)) return;
+
+		KiSyMessage msg = (KiSyMessage) message;
+
 		KiSyMessage ack = KiSyMessageCreator.createAck(msg, channel);
 
 		channel.send(ack, msg.getReturnAddress());

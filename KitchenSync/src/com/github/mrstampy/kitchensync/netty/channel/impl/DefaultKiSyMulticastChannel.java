@@ -10,10 +10,11 @@ import java.net.UnknownHostException;
 
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyMulticastChannel;
+import com.github.mrstampy.kitchensync.netty.channel.DefaultChannelRegistry;
 
 public abstract class DefaultKiSyMulticastChannel extends AbstractKiSyMulticastChannel {
 
-	protected KiSyMessageProcessor messageProcessor = new KiSyMessageProcessor();
+	protected PacketCreator messageProcessor = new PacketCreator();
 
 	protected KiSyOutboundMessageManager outboundManager = KiSyOutboundMessageManager.INSTANCE;
 	protected DefaultChannelRegistry registry = DefaultChannelRegistry.INSTANCE;

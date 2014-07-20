@@ -8,10 +8,11 @@ import java.net.InetSocketAddress;
 
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractPortSpecificKiSyChannel;
+import com.github.mrstampy.kitchensync.netty.channel.DefaultChannelRegistry;
 
 public abstract class DefaultPortSpecificKiSyChannel extends AbstractPortSpecificKiSyChannel {
 
-	protected KiSyMessageProcessor messageProcessor = new KiSyMessageProcessor();
+	protected PacketCreator messageProcessor = new PacketCreator();
 	protected DefaultChannelRegistry registry = DefaultChannelRegistry.INSTANCE;
 	protected KiSyOutboundMessageManager outboundManager = KiSyOutboundMessageManager.INSTANCE;
 

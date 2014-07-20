@@ -14,16 +14,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 
-public class KiSyMessageProcessor {
-	private static final Logger log = LoggerFactory.getLogger(KiSyMessageProcessor.class);
+public class PacketCreator {
+	private static final Logger log = LoggerFactory.getLogger(PacketCreator.class);
 
 	private ObjectMapper jsonMapper = new ObjectMapper();
 
 	public <MSG extends Object> Object createPacket(MSG message, InetSocketAddress recipient) {
-		if(message instanceof KiSyMessage) return new DatagramPacket(getBuf((KiSyMessage) message), recipient);
-		
-		if(message instanceof byte[]) return new DatagramPacket(getBuf((byte[])message), recipient);
-		
+		if (message instanceof KiSyMessage) return new DatagramPacket(getBuf((KiSyMessage) message), recipient);
+
+		if (message instanceof byte[]) return new DatagramPacket(getBuf((byte[]) message), recipient);
+
 		return new DatagramPacket(getBuf(message.toString()), recipient);
 	}
 

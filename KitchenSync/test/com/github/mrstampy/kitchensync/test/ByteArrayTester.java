@@ -6,8 +6,8 @@ import io.netty.channel.socket.DatagramChannel;
 
 import java.util.concurrent.CountDownLatch;
 
-import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultByteArrayMessageInitializer;
 import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyChannel;
+import com.github.mrstampy.kitchensync.netty.channel.initializer.ByteArrayMessageInitializer;
 
 public class ByteArrayTester extends AbstractTester {
 
@@ -28,7 +28,7 @@ public class ByteArrayTester extends AbstractTester {
 
 			@Override
 			protected ChannelInitializer<DatagramChannel> initializer() {
-				return new DefaultByteArrayMessageInitializer();
+				return new ByteArrayMessageInitializer();
 			}
 
 		};

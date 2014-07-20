@@ -7,8 +7,8 @@ import io.netty.channel.socket.DatagramChannel;
 import java.util.concurrent.CountDownLatch;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
-import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyMessageInitializer;
 import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultPortSpecificKiSyChannel;
+import com.github.mrstampy.kitchensync.netty.channel.initializer.KiSyMessageInitializer;
 
 public class PingPongTester extends AbstractTester {
 
@@ -29,7 +29,7 @@ public class PingPongTester extends AbstractTester {
 
 			@Override
 			protected ChannelInitializer<DatagramChannel> initializer() {
-				return new DefaultKiSyMessageInitializer();
+				return new KiSyMessageInitializer();
 			}
 			
 		};

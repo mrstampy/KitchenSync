@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
+import com.github.mrstampy.kitchensync.message.inbound.ByteArrayInboundMessageManager;
+import com.github.mrstampy.kitchensync.message.inbound.KiSyMessageInboundMessageManager;
+import com.github.mrstampy.kitchensync.message.inbound.StringInboundMessageManager;
 import com.github.mrstampy.kitchensync.message.inbound.ack.AckInboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.inbound.logging.LoggingInboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.inbound.pingpong.PingInboundMessageHandler;
@@ -11,9 +14,6 @@ import com.github.mrstampy.kitchensync.message.inbound.pingpong.PongInboundMessa
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.message.outbound.logging.LoggingOutboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.outbound.pingpong.PingOutboundMessageHandler;
-import com.github.mrstampy.kitchensync.netty.channel.impl.ByteArrayInboundMessageManager;
-import com.github.mrstampy.kitchensync.netty.channel.impl.KiSyMessageInboundMessageManager;
-import com.github.mrstampy.kitchensync.netty.channel.impl.StringInboundMessageManager;
 
 @SuppressWarnings("rawtypes")
 public class KiSyInitializer {

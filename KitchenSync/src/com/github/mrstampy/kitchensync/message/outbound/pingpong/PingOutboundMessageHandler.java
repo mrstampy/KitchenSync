@@ -13,9 +13,9 @@ public class PingOutboundMessageHandler<MSG> implements KiSyOutboundMessageHandl
 
 	@Override
 	public boolean isForMessage(MSG message, InetSocketAddress recipient) {
-		if(!(message instanceof KiSyMessage)) return false;
-		
-		KiSyMessage msg = (KiSyMessage)message;
+		if (!(message instanceof KiSyMessage)) return false;
+
+		KiSyMessage msg = (KiSyMessage) message;
 
 		return msg.isType(KiSyMessageType.PING);
 	}

@@ -1,11 +1,11 @@
-package com.github.mrstampy.kitchensync.netty.channel.impl;
+package com.github.mrstampy.kitchensync.netty.channel;
 
 import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyChannel;
+import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyMulticastChannel;
 
 public class DefaultChannelRegistry {
 

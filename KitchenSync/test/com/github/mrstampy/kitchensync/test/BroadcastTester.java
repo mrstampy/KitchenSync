@@ -9,8 +9,8 @@ import java.net.UnknownHostException;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
-import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyMessageInitializer;
 import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyMulticastChannel;
+import com.github.mrstampy.kitchensync.netty.channel.initializer.KiSyMessageInitializer;
 
 public class BroadcastTester extends AbstractTester {
 	 private static final String MULTICAST_IP = "FF05:0:0548:c4e6:796c:0:de66:FC";
@@ -48,7 +48,7 @@ public class BroadcastTester extends AbstractTester {
 
 			@Override
 			protected ChannelInitializer<DatagramChannel> initializer() {
-				return new DefaultKiSyMessageInitializer();
+				return new KiSyMessageInitializer();
 			}
 			
 		};
