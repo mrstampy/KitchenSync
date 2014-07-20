@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.DatagramPacket;
+import io.netty.util.CharsetUtil;
 
 import java.net.InetSocketAddress;
 
@@ -44,5 +45,9 @@ public abstract class AbstractKiSyNettyHandler extends SimpleChannelInboundHandl
 
 	protected void processMessage(KiSyMessage message, DatagramPacket msg) {
 		handlerManager.processMessage(message, getChannel(msg));
+	}
+
+	protected String content(DatagramPacket msg) {
+		return msg.content().toString(CharsetUtil.UTF_8);
 	}
 }

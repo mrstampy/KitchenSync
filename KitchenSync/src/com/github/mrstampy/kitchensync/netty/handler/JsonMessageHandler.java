@@ -2,7 +2,6 @@ package com.github.mrstampy.kitchensync.netty.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
-import io.netty.util.CharsetUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +24,6 @@ public class JsonMessageHandler extends AbstractKiSyNettyHandler {
 		} catch (Exception e) {
 			log.error("Could not process {}", json, e);
 		}
-	}
-
-	protected String content(DatagramPacket msg) {
-		return msg.content().toString(CharsetUtil.UTF_8);
 	}
 
 }
