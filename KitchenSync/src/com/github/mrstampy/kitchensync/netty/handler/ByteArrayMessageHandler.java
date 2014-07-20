@@ -6,7 +6,7 @@ import io.netty.channel.socket.DatagramPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ByteArrayMessageHandler extends AbstractKiSyNettyHandler {
+public class ByteArrayMessageHandler extends AbstractKiSyNettyHandler<byte[]> {
 	private static final Logger log = LoggerFactory.getLogger(ByteArrayMessageHandler.class);
 
 	public ByteArrayMessageHandler() {

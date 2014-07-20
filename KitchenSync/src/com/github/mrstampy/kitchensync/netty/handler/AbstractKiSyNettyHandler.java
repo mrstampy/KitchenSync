@@ -13,18 +13,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
+import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 import com.github.mrstampy.kitchensync.netty.channel.impl.ByteArrayInboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultChannelRegistry;
 import com.github.mrstampy.kitchensync.netty.channel.impl.KiSyMessageInboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.channel.impl.StringInboundMessageManager;
 
-public abstract class AbstractKiSyNettyHandler extends SimpleChannelInboundHandler<DatagramPacket> {
+public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInboundHandler<DatagramPacket> {
 	private static final Logger log = LoggerFactory.getLogger(AbstractKiSyNettyHandler.class);
 
 	private KiSyMessageInboundMessageManager kiSyMessageHandler = KiSyMessageInboundMessageManager.INSTANCE;
 	private ByteArrayInboundMessageManager byteArrayMessageHandler = ByteArrayInboundMessageManager.INSTANCE;
 	private StringInboundMessageManager stringMessageHandler = StringInboundMessageManager.INSTANCE;
+	private KiSyInboundMessageManager<MSG> customHandler;
 
 	private DefaultChannelRegistry registry = DefaultChannelRegistry.INSTANCE;
 
@@ -55,18 +57,19 @@ public abstract class AbstractKiSyNettyHandler extends SimpleChannelInboundHandl
 		return registry.getChannel(port);
 	}
 
-	protected <MSG> void processMessage(MSG message, DatagramPacket msg) {
+	protected void processMessage(MSG message, DatagramPacket msg) {
 		switch (type) {
 		case BYTE_ARRAY:
-			byteArrayMessageHandler.processMessage((byte[]) message, getChannel(msg));
+			processBytes((byte[]) message, msg);
 			break;
 		case KISY_MESSAGE:
-			KiSyMessage ksm = (KiSyMessage) message;
-			ksm.setRemoteAddress(msg.sender());
-			kiSyMessageHandler.processMessage(ksm, getChannel(msg));
+			processKiSyMessage((KiSyMessage) message, msg);
 			break;
 		case STRING:
-			stringMessageHandler.processMessage((String) message, getChannel(msg));
+			processString((String) message, msg);
+			break;
+		case CUSTOM:
+			processCustom(message, msg);
 			break;
 		default:
 			log.error("Cannot process message of type {}", message.getClass());
@@ -74,18 +77,49 @@ public abstract class AbstractKiSyNettyHandler extends SimpleChannelInboundHandl
 		}
 	}
 
+	protected void processCustom(MSG message, DatagramPacket msg) {
+		if (getCustomHandler() == null) {
+			log.error("No custom handler set");
+			return;
+		}
+
+		customHandler.processMessage(message, getChannel(msg));
+	}
+
+	protected void processString(String message, DatagramPacket msg) {
+		stringMessageHandler.processMessage(message, getChannel(msg));
+	}
+
+	protected void processKiSyMessage(KiSyMessage message, DatagramPacket msg) {
+		KiSyMessage ksm = (KiSyMessage) message;
+		ksm.setRemoteAddress(msg.sender());
+		kiSyMessageHandler.processMessage(ksm, getChannel(msg));
+	}
+
+	protected void processBytes(byte[] message, DatagramPacket msg) {
+		byteArrayMessageHandler.processMessage(message, getChannel(msg));
+	}
+
 	protected String content(DatagramPacket msg) {
 		return msg.content().toString(CharsetUtil.UTF_8);
 	}
-	
+
 	protected byte[] bytes(DatagramPacket msg) {
 		ByteBuf content = msg.content();
-		
+
 		int num = content.readableBytes();
 		byte[] message = new byte[num];
 		content.readBytes(message);
-		
+
 		return message;
+	}
+
+	public KiSyInboundMessageManager<MSG> getCustomHandler() {
+		return customHandler;
+	}
+
+	public void setCustomHandler(KiSyInboundMessageManager<MSG> customHandler) {
+		this.customHandler = customHandler;
 	}
 
 }
