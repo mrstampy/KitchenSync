@@ -1,12 +1,15 @@
 package com.github.mrstampy.kitchensync.test;
 
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.socket.DatagramChannel;
 
 import java.util.concurrent.CountDownLatch;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
+import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyMessageInitializer;
 import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyChannel;
 
 public class AckTester extends AbstractTester {
@@ -27,7 +30,14 @@ public class AckTester extends AbstractTester {
 	}
 
 	protected DefaultKiSyChannel initChannel() {
-		DefaultKiSyChannel channel = new DefaultKiSyChannel();
+		DefaultKiSyChannel channel = new DefaultKiSyChannel() {
+
+			@Override
+			protected ChannelInitializer<DatagramChannel> initializer() {
+				return new DefaultKiSyMessageInitializer();
+			}
+			
+		};
 
 		channel.bind();
 

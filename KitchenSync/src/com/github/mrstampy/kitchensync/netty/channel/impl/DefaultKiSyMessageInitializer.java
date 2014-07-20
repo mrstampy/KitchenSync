@@ -6,7 +6,7 @@ import io.netty.channel.socket.DatagramChannel;
 
 import com.github.mrstampy.kitchensync.netty.handler.JsonMessageHandler;
 
-public class DefaultInitializer extends ChannelInitializer<DatagramChannel> {
+public class DefaultKiSyMessageInitializer extends ChannelInitializer<DatagramChannel> {
 
 	@Override
 	protected void initChannel(DatagramChannel ch) throws Exception {

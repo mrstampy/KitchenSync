@@ -8,19 +8,27 @@ import com.github.mrstampy.kitchensync.message.KiSyMessageType;
 import com.github.mrstampy.kitchensync.message.inbound.AbstractInboundKiSyMessageHandler;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
-public abstract class PongInboundMessageHandler extends AbstractInboundKiSyMessageHandler<KiSyMessage> {
+public abstract class PongInboundMessageHandler<MSG> extends AbstractInboundKiSyMessageHandler<MSG> {
 	private static final long serialVersionUID = -8836666741037023222L;
 
 	private PingPongMessageTimer timer = PingPongMessageTimer.TIMER;
 
 	@Override
-	public boolean canHandleMessage(KiSyMessage message) {
-		return message.isType(KiSyMessageType.PONG);
+	public boolean canHandleMessage(MSG message) {
+		if (!(message instanceof KiSyMessage)) return false;
+
+		KiSyMessage msg = (KiSyMessage) message;
+
+		return msg.isType(KiSyMessageType.PONG);
 	}
 
 	@Override
-	protected void onReceive(KiSyMessage message, KiSyChannel<?> channel) {
-		InetSocketAddress remoteAddress = message.createReturnAddress();
+	protected void onReceive(MSG message, KiSyChannel<?> channel) {
+		if (!(message instanceof KiSyMessage)) return;
+
+		KiSyMessage msg = (KiSyMessage) message;
+
+		InetSocketAddress remoteAddress = msg.createReturnAddress();
 
 		long time = timer.pongReceived(remoteAddress);
 

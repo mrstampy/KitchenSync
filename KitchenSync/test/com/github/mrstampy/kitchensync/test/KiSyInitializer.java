@@ -12,6 +12,7 @@ import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManag
 import com.github.mrstampy.kitchensync.message.outbound.logging.LoggingOutboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.outbound.pingpong.PingOutboundMessageHandler;
 import com.github.mrstampy.kitchensync.netty.channel.impl.KiSyMessageInboundMessageManager;
+import com.github.mrstampy.kitchensync.netty.channel.impl.StringInboundMessageHandler;
 
 public class KiSyInitializer {
 	private static final Logger log = LoggerFactory.getLogger(KiSyInitializer.class);

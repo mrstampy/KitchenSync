@@ -1,12 +1,15 @@
 package com.github.mrstampy.kitchensync.test;
 
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.socket.DatagramChannel;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import java.net.UnknownHostException;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
+import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyMessageInitializer;
 import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyMulticastChannel;
 
 public class BroadcastTester extends AbstractTester {
@@ -41,7 +44,14 @@ public class BroadcastTester extends AbstractTester {
 	}
 	
 	protected DefaultKiSyMulticastChannel createMulticastChannel() throws UnknownHostException {
-		DefaultKiSyMulticastChannel channel = new DefaultKiSyMulticastChannel(MULTICAST_IP, MULTICAST_PORT);
+		DefaultKiSyMulticastChannel channel = new DefaultKiSyMulticastChannel(MULTICAST_IP, MULTICAST_PORT) {
+
+			@Override
+			protected ChannelInitializer<DatagramChannel> initializer() {
+				return new DefaultKiSyMessageInitializer();
+			}
+			
+		};
 		
 		channel.multicastBind();
 		channel.joinGroup();

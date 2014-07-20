@@ -1,10 +1,13 @@
 package com.github.mrstampy.kitchensync.test;
 
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.socket.DatagramChannel;
 
 import java.util.concurrent.CountDownLatch;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
+import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultKiSyMessageInitializer;
 import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultPortSpecificKiSyChannel;
 
 public class PingPongTester extends AbstractTester {
@@ -22,7 +25,14 @@ public class PingPongTester extends AbstractTester {
 	}
 
 	protected DefaultPortSpecificKiSyChannel initChannel(int port) {
-		DefaultPortSpecificKiSyChannel channel = new DefaultPortSpecificKiSyChannel(port);
+		DefaultPortSpecificKiSyChannel channel = new DefaultPortSpecificKiSyChannel(port) {
+
+			@Override
+			protected ChannelInitializer<DatagramChannel> initializer() {
+				return new DefaultKiSyMessageInitializer();
+			}
+			
+		};
 
 		channel.bind();
 

@@ -14,6 +14,10 @@ public class JsonMessageHandler extends AbstractKiSyNettyHandler {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
+	public JsonMessageHandler() {
+		super(HandlerType.KISY_MESSAGE);
+	}
+
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket msg) throws Exception {
 		String json = content(msg);

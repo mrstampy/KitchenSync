@@ -1,7 +1,6 @@
 package com.github.mrstampy.kitchensync.netty.channel.impl;
 
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 
@@ -12,7 +11,7 @@ import java.net.UnknownHostException;
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyMulticastChannel;
 
-public class DefaultKiSyMulticastChannel extends AbstractKiSyMulticastChannel {
+public abstract class DefaultKiSyMulticastChannel extends AbstractKiSyMulticastChannel {
 
 	protected KiSyMessageProcessor messageProcessor = new KiSyMessageProcessor();
 
@@ -56,11 +55,6 @@ public class DefaultKiSyMulticastChannel extends AbstractKiSyMulticastChannel {
 		registry.removeMulticastChannel(this);
 
 		return super.close();
-	}
-
-	@Override
-	protected ChannelInitializer<DatagramChannel> initializer() {
-		return new DefaultInitializer();
 	}
 
 	@Override

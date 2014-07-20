@@ -1,7 +1,6 @@
 package com.github.mrstampy.kitchensync.netty.channel.impl;
 
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 
@@ -10,7 +9,7 @@ import java.net.InetSocketAddress;
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyChannel;
 
-public class DefaultKiSyChannel extends AbstractKiSyChannel {
+public abstract class DefaultKiSyChannel extends AbstractKiSyChannel {
 	protected KiSyMessageProcessor messageProcessor = new KiSyMessageProcessor();
 
 	protected KiSyOutboundMessageManager outboundManager = KiSyOutboundMessageManager.INSTANCE;
@@ -33,11 +32,6 @@ public class DefaultKiSyChannel extends AbstractKiSyChannel {
 	public ChannelFuture close() {
 		registry.removeChannel(this);
 		return super.close();
-	}
-
-	@Override
-	protected ChannelInitializer<DatagramChannel> initializer() {
-		return new DefaultInitializer();
 	}
 
 	@Override

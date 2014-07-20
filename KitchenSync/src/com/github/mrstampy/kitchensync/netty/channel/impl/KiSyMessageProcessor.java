@@ -20,11 +20,27 @@ public class KiSyMessageProcessor {
 	private ObjectMapper jsonMapper = new ObjectMapper();
 
 	public <MSG extends Object> Object createPacket(MSG message, InetSocketAddress recipient) {
-		return new DatagramPacket(getBuf((KiSyMessage) message), recipient);
+		if(message instanceof KiSyMessage) return new DatagramPacket(getBuf((KiSyMessage) message), recipient);
+		
+		if(message instanceof byte[]) return new DatagramPacket(getBuf((byte[])message), recipient);
+		
+		if(message instanceof String) return new DatagramPacket(getBuf((String)message), recipient);
+		
+		log.error("Cannot send message of type {}", message.getClass());
+		
+		throw new IllegalArgumentException("Cannot send message of type " + message.getClass());
+	}
+
+	protected ByteBuf getBuf(String message) {
+		return Unpooled.copiedBuffer(message, CharsetUtil.UTF_8);
+	}
+
+	protected ByteBuf getBuf(byte[] message) {
+		return Unpooled.copiedBuffer(message);
 	}
 
 	protected ByteBuf getBuf(KiSyMessage message) {
-		return Unpooled.copiedBuffer(toJson(message), CharsetUtil.UTF_8);
+		return getBuf(toJson(message));
 	}
 
 	protected String toJson(KiSyMessage message) {
