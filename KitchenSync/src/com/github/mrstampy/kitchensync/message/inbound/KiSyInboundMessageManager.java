@@ -1,7 +1,5 @@
 package com.github.mrstampy.kitchensync.message.inbound;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -105,8 +103,8 @@ public class KiSyInboundMessageManager<MSG> {
 					boolean done = cdl.await(10, TimeUnit.SECONDS);
 					if (done) {
 						if (log.isTraceEnabled()) {
-							long end = System.nanoTime();
-							log.trace("Message {} fully processed in {} ms", message, getTimeInMillis(end - start));
+							String millis = KiSyMessageCreator.toMillis(System.nanoTime() - start);
+							log.trace("Message {} fully processed in {} ms", message, millis);
 						}
 					} else {
 						log.warn("Message processing > 10 seconds: {}", message);
@@ -114,10 +112,6 @@ public class KiSyInboundMessageManager<MSG> {
 				} catch (InterruptedException e) {
 					log.error("Unexpected exception", e);
 				}
-			}
-
-			private String getTimeInMillis(long l) {
-				return new BigDecimal(l).divide(KiSyMessageCreator.ONE_MILLION, 3, RoundingMode.HALF_UP).toPlainString();
 			}
 		});
 	}

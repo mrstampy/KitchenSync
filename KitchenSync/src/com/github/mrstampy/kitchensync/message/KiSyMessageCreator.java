@@ -55,7 +55,7 @@ public class KiSyMessageCreator {
 		return message;
 	}
 
-	private static String toMillis(Long nanos) {
+	public static String toMillis(Long nanos) {
 		return new BigDecimal(nanos).divide(ONE_MILLION, 3, RoundingMode.HALF_UP).toPlainString();
 	}
 }
