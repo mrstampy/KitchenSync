@@ -48,8 +48,8 @@ public class KiSyInitializer {
 				new AckInboundMessageHandler()
 				);
 		
-		StringInboundMessageManager.INSTANCE.addMessageHandlers(new LoggingInboundMessageHandler<>());
-		ByteArrayInboundMessageManager.INSTANCE.addMessageHandlers(new LoggingInboundMessageHandler<>());
+		StringInboundMessageManager.INSTANCE.addMessageHandlers(new LoggingInboundMessageHandler());
+		ByteArrayInboundMessageManager.INSTANCE.addMessageHandlers(new LoggingInboundMessageHandler());
 		//@formatter:on
 	}
 }

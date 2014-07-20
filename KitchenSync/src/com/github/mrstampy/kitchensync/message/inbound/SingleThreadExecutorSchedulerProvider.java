@@ -12,7 +12,7 @@ import rx.schedulers.Schedulers;
 
 public class SingleThreadExecutorSchedulerProvider {
 
-	private List<Scheduler> bufferedSchedulers = new ArrayList<>();
+	private List<Scheduler> bufferedSchedulers = new ArrayList<Scheduler>();
 
 	private AtomicInteger next = new AtomicInteger(0);
 

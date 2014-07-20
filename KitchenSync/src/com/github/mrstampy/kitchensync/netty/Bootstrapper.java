@@ -346,14 +346,11 @@ public class Bootstrapper {
 	}
 
 	protected <CHANNEL extends DatagramChannel> EventLoopGroup getEventLoopGroup(Class<? extends CHANNEL> clazz) {
-		switch (clazz.getSimpleName()) {
-		case "NioDatagramChannel":
-			return new NioEventLoopGroup();
-		case "OioDatagramChannel":
-			return new OioEventLoopGroup();
-		default:
-			throw new UnsupportedOperationException("No default event loop group defined for " + clazz.getName());
-		}
+		if ("NioDatagramChannel".equals(clazz.getSimpleName())) return new NioEventLoopGroup();
+
+		if ("OioDatagramChannel".equals(clazz.getSimpleName())) return new OioEventLoopGroup();
+		
+		throw new UnsupportedOperationException("No default event loop group defined for " + clazz.getName());
 	}
 
 	protected void setDefaultBootstrapOptions(AbstractBootstrap<?, ?> b, ChannelInitializer<?> initializer) {
