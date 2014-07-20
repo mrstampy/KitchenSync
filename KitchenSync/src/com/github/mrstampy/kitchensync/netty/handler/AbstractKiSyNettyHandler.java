@@ -1,5 +1,6 @@
 package com.github.mrstampy.kitchensync.netty.handler;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramChannel;
@@ -13,17 +14,17 @@ import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
-import com.github.mrstampy.kitchensync.netty.channel.impl.ByteArrayInboundMessageHandler;
+import com.github.mrstampy.kitchensync.netty.channel.impl.ByteArrayInboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.channel.impl.DefaultChannelRegistry;
 import com.github.mrstampy.kitchensync.netty.channel.impl.KiSyMessageInboundMessageManager;
-import com.github.mrstampy.kitchensync.netty.channel.impl.StringInboundMessageHandler;
+import com.github.mrstampy.kitchensync.netty.channel.impl.StringInboundMessageManager;
 
 public abstract class AbstractKiSyNettyHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 	private static final Logger log = LoggerFactory.getLogger(AbstractKiSyNettyHandler.class);
 
 	private KiSyMessageInboundMessageManager kiSyMessageHandler = KiSyMessageInboundMessageManager.INSTANCE;
-	private ByteArrayInboundMessageHandler byteArrayMessageHandler = ByteArrayInboundMessageHandler.INSTANCE;
-	private StringInboundMessageHandler stringMessageHandler = StringInboundMessageHandler.INSTANCE;
+	private ByteArrayInboundMessageManager byteArrayMessageHandler = ByteArrayInboundMessageManager.INSTANCE;
+	private StringInboundMessageManager stringMessageHandler = StringInboundMessageManager.INSTANCE;
 
 	private DefaultChannelRegistry registry = DefaultChannelRegistry.INSTANCE;
 
@@ -75,6 +76,16 @@ public abstract class AbstractKiSyNettyHandler extends SimpleChannelInboundHandl
 
 	protected String content(DatagramPacket msg) {
 		return msg.content().toString(CharsetUtil.UTF_8);
+	}
+	
+	protected byte[] bytes(DatagramPacket msg) {
+		ByteBuf content = msg.content();
+		
+		int num = content.readableBytes();
+		byte[] message = new byte[num];
+		content.readBytes(message);
+		
+		return message;
 	}
 
 }

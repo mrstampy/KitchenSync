@@ -11,9 +11,11 @@ import com.github.mrstampy.kitchensync.message.inbound.pingpong.PongInboundMessa
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.message.outbound.logging.LoggingOutboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.outbound.pingpong.PingOutboundMessageHandler;
+import com.github.mrstampy.kitchensync.netty.channel.impl.ByteArrayInboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.channel.impl.KiSyMessageInboundMessageManager;
-import com.github.mrstampy.kitchensync.netty.channel.impl.StringInboundMessageHandler;
+import com.github.mrstampy.kitchensync.netty.channel.impl.StringInboundMessageManager;
 
+@SuppressWarnings("rawtypes")
 public class KiSyInitializer {
 	private static final Logger log = LoggerFactory.getLogger(KiSyInitializer.class);
 
@@ -45,6 +47,9 @@ public class KiSyInitializer {
 				},
 				new AckInboundMessageHandler()
 				);
+		
+		StringInboundMessageManager.INSTANCE.addMessageHandlers(new LoggingInboundMessageHandler<>());
+		ByteArrayInboundMessageManager.INSTANCE.addMessageHandlers(new LoggingInboundMessageHandler<>());
 		//@formatter:on
 	}
 }

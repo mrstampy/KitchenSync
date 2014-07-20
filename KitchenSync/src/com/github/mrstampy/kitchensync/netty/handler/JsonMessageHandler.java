@@ -21,7 +21,6 @@ public class JsonMessageHandler extends AbstractKiSyNettyHandler {
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket msg) throws Exception {
 		String json = content(msg);
-		log.debug("Received {} from {}", json, msg.sender());
 
 		try {
 			processMessage(mapper.readValue(json, KiSyMessage.class), msg);
