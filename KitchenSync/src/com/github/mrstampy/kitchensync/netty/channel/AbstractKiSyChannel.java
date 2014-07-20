@@ -160,7 +160,7 @@ public abstract class AbstractKiSyChannel implements KiSyChannel<DatagramChannel
 
 	protected void closeChannel() {
 		ChannelFuture cf = close();
-		final CountDownLatch latch = new CountDownLatch(1);
+		CountDownLatch latch = new CountDownLatch(1);
 		cf.addListener(new GenericFutureListener<ChannelFuture>() {
 
 			@Override

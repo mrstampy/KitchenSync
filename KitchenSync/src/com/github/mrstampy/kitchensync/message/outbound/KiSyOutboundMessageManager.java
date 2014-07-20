@@ -44,14 +44,11 @@ public class KiSyOutboundMessageManager {
 		List<KiSyOutboundMessageHandler<MSG>> relevant = getHandlersForMessage(message, recipient);
 		if (relevant.isEmpty()) return;
 
-		final MSG msg = message;
-		final InetSocketAddress org = originator;
-		final InetSocketAddress isa = recipient;
 		Observable.from(relevant).subscribe(new Action1<KiSyOutboundMessageHandler<MSG>>() {
 
 			@Override
 			public void call(KiSyOutboundMessageHandler<MSG> t1) {
-				t1.presend(msg, org, isa);
+				t1.presend(message, originator, recipient);
 			}
 		});
 	}
