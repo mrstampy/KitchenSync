@@ -228,7 +228,7 @@ public class Bootstrapper {
 		return getMulticastAddress(channel) != null && getNetworkInterface(channel) != null;
 	}
 
-	private GenericFutureListener<ChannelFuture> getBindListener(final int port, final CountDownLatch latch) {
+	private GenericFutureListener<ChannelFuture> getBindListener(int port, CountDownLatch latch) {
 		return new GenericFutureListener<ChannelFuture>() {
 
 			@Override
@@ -251,8 +251,8 @@ public class Bootstrapper {
 		};
 	}
 
-	private GenericFutureListener<ChannelFuture> getMulticastBindListener(final InetSocketAddress multicast,
-			final CountDownLatch latch) {
+	private GenericFutureListener<ChannelFuture> getMulticastBindListener(InetSocketAddress multicast,
+			CountDownLatch latch) {
 		return new GenericFutureListener<ChannelFuture>() {
 
 			@Override
@@ -275,8 +275,8 @@ public class Bootstrapper {
 		};
 	}
 
-	private GenericFutureListener<ChannelFuture> getJoinGroupListener(final InetSocketAddress multicast,
-			final CountDownLatch latch) {
+	private GenericFutureListener<ChannelFuture> getJoinGroupListener(InetSocketAddress multicast,
+			CountDownLatch latch) {
 		return new GenericFutureListener<ChannelFuture>() {
 
 			@Override
@@ -299,8 +299,8 @@ public class Bootstrapper {
 		};
 	}
 
-	private GenericFutureListener<ChannelFuture> getLeaveGroupListener(final InetSocketAddress multicast,
-			final CountDownLatch latch) {
+	private GenericFutureListener<ChannelFuture> getLeaveGroupListener(InetSocketAddress multicast,
+			CountDownLatch latch) {
 		return new GenericFutureListener<ChannelFuture>() {
 
 			@Override

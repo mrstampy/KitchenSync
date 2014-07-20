@@ -41,7 +41,7 @@ public class PingPongTester extends AbstractTester {
 		cdl.await();
 	}
 
-	private void addListener(ChannelFuture cf, final CountDownLatch cdl) {
+	private void addListener(ChannelFuture cf, CountDownLatch cdl) {
 		cf.addListener(new GenericFutureListener<ChannelFuture>() {
 
 			@Override

@@ -7,13 +7,6 @@ import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 
-/**
- * private static final String MULTICAST_IP = "FF05:0:0548:c4e6:796c:0:de66:FC";
- * private static final int MULTICAST_PORT = 57962;
- * 
- * @author burton
- *
- */
 public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel implements KiSyMulticastChannel {
 
 	private InetSocketAddress multicastAddress;

@@ -30,7 +30,7 @@ public abstract class PingPongMessageTimer {
 	private Map<InetSocketAddress, SubscriptionContainer> pingtasks = new ConcurrentHashMap<InetSocketAddress, SubscriptionContainer>();
 	private Scheduler scheduler = Schedulers.computation();
 
-	public void pingSent(final InetSocketAddress origin, final InetSocketAddress destination) {
+	public void pingSent(InetSocketAddress origin, InetSocketAddress destination) {
 		log.trace("Ping sent to {}", destination);
 
 		Subscription sub = scheduler.createWorker().schedule(new Action0() {
