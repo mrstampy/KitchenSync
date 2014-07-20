@@ -19,15 +19,12 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
 @SuppressWarnings("rawtypes")
 public class KiSyInboundMessageManager<MSG> {
 	private static final Logger log = LoggerFactory.getLogger(KiSyInboundMessageManager.class);
-
-	public static final KiSyInboundMessageManager<KiSyMessage> INSTANCE = new KiSyInboundMessageManager<KiSyMessage>();
 
 	private List<KiSyInboundMesssageHandler> messageHandlers = new ArrayList<KiSyInboundMesssageHandler>();
 

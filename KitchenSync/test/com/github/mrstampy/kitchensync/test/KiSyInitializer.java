@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
-import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMessageManager;
 import com.github.mrstampy.kitchensync.message.inbound.ack.AckInboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.inbound.logging.LoggingInboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.inbound.pingpong.PingInboundMessageHandler;
@@ -12,6 +11,7 @@ import com.github.mrstampy.kitchensync.message.inbound.pingpong.PongInboundMessa
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.message.outbound.logging.LoggingOutboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.outbound.pingpong.PingOutboundMessageHandler;
+import com.github.mrstampy.kitchensync.netty.channel.impl.KiSyMessageInboundMessageManager;
 
 public class KiSyInitializer {
 	private static final Logger log = LoggerFactory.getLogger(KiSyInitializer.class);
@@ -29,7 +29,7 @@ public class KiSyInitializer {
 
 	@SuppressWarnings({ "serial" })
 	public void initInboundHandlers() {
-		KiSyInboundMessageManager<KiSyMessage> manager = KiSyInboundMessageManager.INSTANCE;
+		KiSyMessageInboundMessageManager manager = KiSyMessageInboundMessageManager.INSTANCE;
 
 		//@formatter:off
 		manager.addMessageHandlers(
