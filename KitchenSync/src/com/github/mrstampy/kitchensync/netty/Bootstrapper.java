@@ -25,9 +25,13 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.epoll.EpollDatagramChannel;
+import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.oio.OioEventLoopGroup;
 import io.netty.channel.socket.DatagramChannel;
+import io.netty.channel.socket.nio.NioDatagramChannel;
+import io.netty.channel.socket.oio.OioDatagramChannel;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -669,8 +673,13 @@ public class Bootstrapper {
 
 	/**
 	 * Gets the event loop group based upon the class name. If the class is
-	 * neither an NioDatagramChannel or OioDatagramChannel then an exception is
-	 * thrown.
+	 * neither an <a href=
+	 * "http://netty.io/4.0/api/io/netty/channel/socket/nio/NioDatagramChannel.html"
+	 * >NioDatagramChannel</a> nor <a href=
+	 * "http://netty.io/4.0/api/io/netty/channel/socket/oio/OioDatagramChannel.html"
+	 * >OioDatagramChannel</a> (or on Linux, <a href=
+	 * "http://netty.io/4.0/api/io/netty/channel/epoll/EpollDatagramChannel.html"
+	 * >EpollDatagramChannel</a>) then an exception is thrown.
 	 *
 	 * @param <CHANNEL>
 	 *          the generic type
@@ -679,9 +688,12 @@ public class Bootstrapper {
 	 * @return the event loop group
 	 */
 	protected <CHANNEL extends DatagramChannel> EventLoopGroup getEventLoopGroup(Class<? extends CHANNEL> clazz) {
-		if ("NioDatagramChannel".equals(clazz.getSimpleName())) return new NioEventLoopGroup();
+		if (NioDatagramChannel.class.equals(clazz)) return new NioEventLoopGroup();
 
-		if ("OioDatagramChannel".equals(clazz.getSimpleName())) return new OioEventLoopGroup();
+		if (OioDatagramChannel.class.equals(clazz)) return new OioEventLoopGroup();
+
+		// Linux only
+		if (EpollDatagramChannel.class.equals(clazz)) return new EpollEventLoopGroup();
 
 		throw new UnsupportedOperationException("No default event loop group defined for " + clazz.getName());
 	}
