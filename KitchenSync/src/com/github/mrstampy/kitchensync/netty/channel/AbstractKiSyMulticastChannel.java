@@ -61,6 +61,8 @@ import com.github.mrstampy.kitchensync.netty.Bootstrapper;
  *	}
  * }
  * </pre>
+ * 
+ * A Bootstrap is created for each instance of AbstractKiSyMulticastChannel.
  */
 //@formatter:on
 public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel implements KiSyMulticastChannel {

@@ -63,6 +63,10 @@ import com.github.mrstampy.kitchensync.netty.Bootstrapper;
  *	}
  * }
  * </pre>
+ * 
+ * Note that the first AbstractKiSyChannel instantiated determines the channel initializer for the default bootstrap.
+ * To set it explicitly call {@link Bootstrapper#initDefaultBootstrap(ChannelInitializer, Class)} prior to
+ * instantiating instances of this class.
  */
 //@formatter:on
 public abstract class AbstractKiSyChannel implements KiSyChannel {
