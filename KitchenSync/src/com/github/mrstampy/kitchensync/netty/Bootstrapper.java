@@ -35,6 +35,8 @@ public class Bootstrapper {
 	private static final AttributeKey<NetworkInterface> NI_KEY = AttributeKey.valueOf("KitchenSync Network Interface");
 	private static final AttributeKey<InetSocketAddress> ISA_KEY = AttributeKey.valueOf("KitchenSync Multicast Address");
 
+	public static final Bootstrapper INSTANCE = new Bootstrapper();
+
 	public final NetworkInterface DEFAULT_INTERFACE;
 	public final InetAddress DEFAULT_ADDRESS;
 

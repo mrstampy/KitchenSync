@@ -70,13 +70,14 @@ public abstract class AbstractKiSyChannel implements KiSyChannel<DatagramChannel
 
 	private DatagramChannel channel;
 
-	protected static final Bootstrapper bootstrapper = new Bootstrapper();
+	protected Bootstrapper bootstrapper;
 
 	protected abstract ChannelInitializer<DatagramChannel> initializer();
 
 	protected abstract Class<? extends DatagramChannel> getChannelClass();
 
 	public AbstractKiSyChannel() {
+		setBootstrapper(Bootstrapper.INSTANCE);
 	}
 
 	@Override
@@ -179,6 +180,14 @@ public abstract class AbstractKiSyChannel implements KiSyChannel<DatagramChannel
 		} catch (InterruptedException e) {
 			log.error("Unexpected interruption for {}", error, e);
 		}
+	}
+
+	public Bootstrapper getBootstrapper() {
+		return bootstrapper;
+	}
+
+	public void setBootstrapper(Bootstrapper bootstrapper) {
+		this.bootstrapper = bootstrapper;
 	}
 
 }
