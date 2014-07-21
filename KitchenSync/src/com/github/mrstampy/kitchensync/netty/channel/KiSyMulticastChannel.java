@@ -27,7 +27,14 @@ import java.net.NetworkInterface;
  * {@link KiSyChannel} implementations interface the <a
  * href="http://netty.io">Netty</a> specifics, allowing ease of socket creation
  * and use. Multicast channel implementations provide additional methods which
- * are specific to multicast channels.
+ * are specific to multicast channels.<br>
+ * <br>
+ * 
+ * KitchenSync multicast channels use <a
+ * href="http://en.wikipedia.org/wiki/Multicast_address">IPv6 addresses</a>.
+ * Ranges and uses can be found
+ * http://www.iana.org/assignments/ipv6-multicast-addresses
+ * /ipv6-multicast-addresses.xhtml
  */
 public interface KiSyMulticastChannel extends KiSyChannel {
 
