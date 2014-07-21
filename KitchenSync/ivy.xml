@@ -18,9 +18,17 @@
    under the License.    
 -->
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+       xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd"
+	   xmlns:m="http://ant.apache.org/ivy/maven">
        
-    <info organisation="KitchenSync" module="KitchenSync" status="integration"/>
+    <info organisation="com.github.mrstampy" module="KitchenSync" status="integration" revision="1.0-SNAPSHOT"/>
+		    
+    <publications>
+        <artifact name="KitchenSync"/>
+        <artifact name="KitchenSync" type="pom" ext="pom" />
+        <artifact name="KitchenSync" type="javadoc" m:classifier="javadoc" ext="jar" />
+        <artifact name="KitchenSync" type="sources" m:classifier="sources" ext="jar" />
+    </publications>
 	
 	<dependencies>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7"/>
