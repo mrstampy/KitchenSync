@@ -28,12 +28,41 @@ import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 
+import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMessageManager;
+import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.Bootstrapper;
 
+//@formatter:off
 /**
  * Abstract superclass for {@link KiSyMulticastChannel}s. IPv6 addresses must be
- * used.
+ * used. After initializing the {@link KiSyInboundMessageManager} and
+ * {@link KiSyOutboundMessageManager} with appropriate handlers the use of this
+ * class is as so:<p>
+ * 
+ * <pre>
+ * {@code
+ * 	protected KiSyMulticastChannel createMulticastChannel() throws UnknownHostException {
+ *		AbstractKiSyMulticastChannel channel = new AbstractKiSyMulticastChannel(MULTICAST_IP, MULTICAST_PORT) {
+ *
+ *			protected ChannelInitializer<DatagramChannel> initializer() {
+ *				return new MyOwnChannelInitializer();
+ *			}
+ *
+ *			protected Class<? extends DatagramChannel> getChannelClass() {
+ *				return NioDatagramChannel.class;
+ *			}
+ *
+ *		};
+ *
+ *		channel.bind();
+ *		channel.joinGroup();
+ *
+ *		return channel;
+ *	}
+ * }
+ * </pre>
  */
+//@formatter:on
 public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel implements KiSyMulticastChannel {
 
 	private InetSocketAddress multicastAddress;

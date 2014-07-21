@@ -31,12 +31,40 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMessageManager;
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.Bootstrapper;
 
+//@formatter:off
 /**
- * Abstract superclass for {@link KiSyChannel} implementations.
+ * Abstract superclass for {@link KiSyChannel} implementations. After
+ * initializing the {@link KiSyInboundMessageManager} and
+ * {@link KiSyOutboundMessageManager} with appropriate handlers the use of this
+ * class is as so:<p>
+ * 
+ * <pre>
+ * {@code
+ * 	protected KiSyChannel initChannel() {
+ *		AbstractKiSyChannel channel = new AbstractKiSyChannel() {
+ *
+ *			protected ChannelInitializer<DatagramChannel> initializer() {
+ *				return new MyOwnChannelInitializer();
+ *			}
+ *
+ *			protected Class<? extends DatagramChannel> getChannelClass() {
+ *				return NioDatagramChannel.class;
+ *			}
+ *
+ *		};
+ *
+ *		channel.bind(); // to the next available port using the default bootstrap
+ *
+ *		return channel;
+ *	}
+ * }
+ * </pre>
  */
+//@formatter:on
 public abstract class AbstractKiSyChannel implements KiSyChannel {
 	private static final Logger log = LoggerFactory.getLogger(AbstractKiSyChannel.class);
 

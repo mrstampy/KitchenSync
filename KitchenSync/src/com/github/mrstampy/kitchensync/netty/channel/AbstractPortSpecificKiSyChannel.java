@@ -18,10 +18,38 @@
  */
 package com.github.mrstampy.kitchensync.netty.channel;
 
+import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMessageManager;
+import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
+
 import io.netty.channel.socket.DatagramChannel;
 
 /**
- * Superclass for port-specific channels with their own Bootstrap.
+ * Superclass for port-specific channels with their own Bootstrap. After
+ * initializing the {@link KiSyInboundMessageManager} and
+ * {@link KiSyOutboundMessageManager} with appropriate handlers the use of this
+ * class is as so:<p>
+ * 
+ * <pre>
+ * {@code
+ *	protected KiSyChannel initChannel(int port) {
+ *		AbstractPortSpecificKiSyChannel channel = new AbstractPortSpecificKiSyChannel(port) {
+ *
+ *			protected ChannelInitializer<DatagramChannel> initializer() {
+ *				return new MyOwnChannelInitializer();
+ *			}
+ *
+ *			protected Class<? extends DatagramChannel> getChannelClass() {
+ *				return NioDatagramChannel.class;
+ *			}
+ *
+ *		};
+ *
+ *		channel.bind();
+ *
+ *		return channel;
+ *	}
+ * }
+ * </pre>
  */
 public abstract class AbstractPortSpecificKiSyChannel extends AbstractKiSyChannel {
 
