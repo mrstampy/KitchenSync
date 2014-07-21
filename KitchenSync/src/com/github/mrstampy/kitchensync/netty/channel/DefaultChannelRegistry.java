@@ -24,7 +24,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The Class AbstractChannelRegistry provides the ability to look up active
+ * The Class DefaultChannelRegistry provides the ability to look up active
  * channels.
  */
 public class DefaultChannelRegistry {
