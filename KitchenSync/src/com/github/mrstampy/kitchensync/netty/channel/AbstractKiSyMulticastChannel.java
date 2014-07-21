@@ -120,8 +120,8 @@ public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel i
 	}
 
 	/**
-	 * The address parameter is ignored; messages are sent to the
-	 * {@link #getMulticastAddress()}.
+	 * The address parameter is ignored; messages are sent via
+	 * {@link #broadcast(Object)}.
 	 */
 	@Override
 	public <MSG extends Object> ChannelFuture send(MSG message, InetSocketAddress address) {
@@ -146,16 +146,15 @@ public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel i
 		});
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.github.mrstampy.kitchensync.netty.channel.KiSyMulticastChannel#broadcast
-	 * (java.lang.Object)
+	/**
+	 * Note that broadcasting bypasses the outbound message handlers. If required
+	 * this method can be overridden to invoke
+	 * {@link #presend(Object, InetSocketAddress)} prior to
+	 * {@link #sendImpl(Object, InetSocketAddress)}.
 	 */
 	@Override
 	public <MSG extends Object> ChannelFuture broadcast(MSG message) {
-		return super.send(message, getMulticastAddress());
+		return sendImpl(createMessage(message, getMulticastAddress()), getMulticastAddress());
 	}
 
 	/*
