@@ -24,9 +24,9 @@ import io.netty.channel.socket.DatagramPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ByteArrayMessageHandler.
+ * This handler obtains the byte array from the message and sends it for
+ * processing.
  */
 public class ByteArrayMessageHandler extends AbstractKiSyNettyHandler<byte[]> {
 	private static final Logger log = LoggerFactory.getLogger(ByteArrayMessageHandler.class);
@@ -38,8 +38,12 @@ public class ByteArrayMessageHandler extends AbstractKiSyNettyHandler<byte[]> {
 		super(HandlerType.BYTE_ARRAY);
 	}
 
-	/* (non-Javadoc)
-	 * @see io.netty.channel.SimpleChannelInboundHandler#channelRead0(io.netty.channel.ChannelHandlerContext, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * io.netty.channel.SimpleChannelInboundHandler#channelRead0(io.netty.channel
+	 * .ChannelHandlerContext, java.lang.Object)
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket msg) throws Exception {

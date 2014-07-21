@@ -32,9 +32,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class PacketCreator.
+ * The Class PacketCreator converts a message into a DatagramPacket.
  */
 public class PacketCreator {
 	private static final Logger log = LoggerFactory.getLogger(PacketCreator.class);
@@ -44,9 +43,12 @@ public class PacketCreator {
 	/**
 	 * Creates the packet.
 	 *
-	 * @param <MSG> the generic type
-	 * @param message the message
-	 * @param recipient the recipient
+	 * @param <MSG>
+	 *          the generic type
+	 * @param message
+	 *          the message
+	 * @param recipient
+	 *          the recipient
 	 * @return the object
 	 */
 	public <MSG extends Object> Object createPacket(MSG message, InetSocketAddress recipient) {
@@ -60,7 +62,8 @@ public class PacketCreator {
 	/**
 	 * Gets the buf.
 	 *
-	 * @param message the message
+	 * @param message
+	 *          the message
 	 * @return the buf
 	 */
 	protected ByteBuf getBuf(String message) {
@@ -70,7 +73,8 @@ public class PacketCreator {
 	/**
 	 * Gets the buf.
 	 *
-	 * @param message the message
+	 * @param message
+	 *          the message
 	 * @return the buf
 	 */
 	protected ByteBuf getBuf(byte[] message) {
@@ -80,7 +84,8 @@ public class PacketCreator {
 	/**
 	 * Gets the buf.
 	 *
-	 * @param message the message
+	 * @param message
+	 *          the message
 	 * @return the buf
 	 */
 	protected ByteBuf getBuf(KiSyMessage message) {
@@ -90,7 +95,8 @@ public class PacketCreator {
 	/**
 	 * To json.
 	 *
-	 * @param message the message
+	 * @param message
+	 *          the message
 	 * @return the string
 	 */
 	protected String toJson(KiSyMessage message) {

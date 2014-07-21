@@ -22,16 +22,22 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.DatagramChannel;
 
+import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.netty.handler.KiSyMessageHandler;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class KiSyMessageInitializer.
+ * A sample initializer which uses a {@link KiSyMessageHandler} to process
+ * incoming messages, assumed to be {@link KiSyMessage}'s serialized to Json
+ * strings. For quick prototyping purposes and implementations requiring no
+ * security or validation in the Netty pipeline.
  */
 public class KiSyMessageInitializer extends ChannelInitializer<DatagramChannel> {
 
-	/* (non-Javadoc)
-	 * @see io.netty.channel.ChannelInitializer#initChannel(io.netty.channel.Channel)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * io.netty.channel.ChannelInitializer#initChannel(io.netty.channel.Channel)
 	 */
 	@Override
 	protected void initChannel(DatagramChannel ch) throws Exception {

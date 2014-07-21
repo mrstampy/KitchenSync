@@ -24,30 +24,36 @@ import io.netty.channel.socket.DatagramChannel;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Interface KiSyMulticastChannel.
+ * {@link KiSyChannel} implementations interface the <a
+ * href="http://netty.io">Netty</a> specifics, allowing ease of socket creation
+ * and use. Multicast channel implementations provide additional methods which
+ * are specific to multicast channels.
  */
 public interface KiSyMulticastChannel extends KiSyChannel<DatagramChannel> {
 
 	/**
-	 * Broadcast.
+	 * Broadcast a message to the multicast channel. If {@link #joinGroup()} has
+	 * been called the message will appear on this channel.
 	 *
-	 * @param <MSG> the generic type
-	 * @param message the message
+	 * @param <MSG>
+	 *          the generic type
+	 * @param message
+	 *          the message
 	 * @return the channel future
 	 */
 	<MSG> ChannelFuture broadcast(MSG message);
 
 	/**
-	 * Join group.
+	 * Join the multicast group to receive broadcast messages sent to this
+	 * address.
 	 *
 	 * @return true, if join group
 	 */
 	boolean joinGroup();
 
 	/**
-	 * Leave group.
+	 * Leave group to stop receiving broadcast messages..
 	 *
 	 * @return true, if leave group
 	 */

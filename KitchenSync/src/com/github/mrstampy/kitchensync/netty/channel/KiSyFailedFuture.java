@@ -27,9 +27,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class KiSyFailedFuture.
+ * Internal class to use if no future available from Netty for failed socket
+ * operations. {@link #isSuccess()} always returns false.
  */
 public class KiSyFailedFuture implements ChannelFuture {
 
@@ -45,13 +45,16 @@ public class KiSyFailedFuture implements ChannelFuture {
 	/**
 	 * The Constructor.
 	 *
-	 * @param cause the cause
+	 * @param cause
+	 *          the cause
 	 */
 	public KiSyFailedFuture(Throwable cause) {
 		this.cause = cause;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see io.netty.util.concurrent.Future#isSuccess()
 	 */
 	@Override
@@ -59,7 +62,9 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see io.netty.util.concurrent.Future#isCancellable()
 	 */
 	@Override
@@ -67,7 +72,9 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see io.netty.util.concurrent.Future#cause()
 	 */
 	@Override
@@ -75,15 +82,20 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return cause;
 	}
 
-	/* (non-Javadoc)
-	 * @see io.netty.util.concurrent.Future#await(long, java.util.concurrent.TimeUnit)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see io.netty.util.concurrent.Future#await(long,
+	 * java.util.concurrent.TimeUnit)
 	 */
 	@Override
 	public boolean await(long timeout, TimeUnit unit) throws InterruptedException {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see io.netty.util.concurrent.Future#await(long)
 	 */
 	@Override
@@ -91,15 +103,20 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see io.netty.util.concurrent.Future#awaitUninterruptibly(long, java.util.concurrent.TimeUnit)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see io.netty.util.concurrent.Future#awaitUninterruptibly(long,
+	 * java.util.concurrent.TimeUnit)
 	 */
 	@Override
 	public boolean awaitUninterruptibly(long timeout, TimeUnit unit) {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see io.netty.util.concurrent.Future#awaitUninterruptibly(long)
 	 */
 	@Override
@@ -107,7 +124,9 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see io.netty.util.concurrent.Future#getNow()
 	 */
 	@Override
@@ -115,7 +134,9 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see io.netty.util.concurrent.Future#cancel(boolean)
 	 */
 	@Override
@@ -123,7 +144,9 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.util.concurrent.Future#get()
 	 */
 	@Override
@@ -131,7 +154,9 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.util.concurrent.Future#get(long, java.util.concurrent.TimeUnit)
 	 */
 	@Override
@@ -139,7 +164,9 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.util.concurrent.Future#isCancelled()
 	 */
 	@Override
@@ -147,7 +174,9 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.util.concurrent.Future#isDone()
 	 */
 	@Override
@@ -155,7 +184,9 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see io.netty.channel.ChannelFuture#channel()
 	 */
 	@Override
@@ -163,39 +194,55 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see io.netty.channel.ChannelFuture#addListener(io.netty.util.concurrent.GenericFutureListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see io.netty.channel.ChannelFuture#addListener(io.netty.util.concurrent.
+	 * GenericFutureListener)
 	 */
 	@Override
 	public ChannelFuture addListener(GenericFutureListener<? extends Future<? super Void>> listener) {
 		return this;
 	}
 
-	/* (non-Javadoc)
-	 * @see io.netty.channel.ChannelFuture#addListeners(io.netty.util.concurrent.GenericFutureListener[])
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see io.netty.channel.ChannelFuture#addListeners(io.netty.util.concurrent.
+	 * GenericFutureListener[])
 	 */
 	@Override
 	public ChannelFuture addListeners(GenericFutureListener<? extends Future<? super Void>>... listeners) {
 		return this;
 	}
 
-	/* (non-Javadoc)
-	 * @see io.netty.channel.ChannelFuture#removeListener(io.netty.util.concurrent.GenericFutureListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * io.netty.channel.ChannelFuture#removeListener(io.netty.util.concurrent.
+	 * GenericFutureListener)
 	 */
 	@Override
 	public ChannelFuture removeListener(GenericFutureListener<? extends Future<? super Void>> listener) {
 		return this;
 	}
 
-	/* (non-Javadoc)
-	 * @see io.netty.channel.ChannelFuture#removeListeners(io.netty.util.concurrent.GenericFutureListener[])
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * io.netty.channel.ChannelFuture#removeListeners(io.netty.util.concurrent
+	 * .GenericFutureListener[])
 	 */
 	@Override
 	public ChannelFuture removeListeners(GenericFutureListener<? extends Future<? super Void>>... listeners) {
 		return this;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see io.netty.channel.ChannelFuture#sync()
 	 */
 	@Override
@@ -203,7 +250,9 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return this;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see io.netty.channel.ChannelFuture#syncUninterruptibly()
 	 */
 	@Override
@@ -211,7 +260,9 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return this;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see io.netty.channel.ChannelFuture#await()
 	 */
 	@Override
@@ -219,7 +270,9 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return this;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see io.netty.channel.ChannelFuture#awaitUninterruptibly()
 	 */
 	@Override

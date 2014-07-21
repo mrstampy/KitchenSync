@@ -27,9 +27,9 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class KiSyMessageHandler.
+ * This class marshals the Json string in the message to a {@link KiSyMessage}
+ * and sends it off for processing.
  */
 public class KiSyMessageHandler extends AbstractKiSyNettyHandler<KiSyMessage> {
 	private static final Logger log = LoggerFactory.getLogger(KiSyMessageHandler.class);
@@ -43,8 +43,12 @@ public class KiSyMessageHandler extends AbstractKiSyNettyHandler<KiSyMessage> {
 		super(HandlerType.KISY_MESSAGE);
 	}
 
-	/* (non-Javadoc)
-	 * @see io.netty.channel.SimpleChannelInboundHandler#channelRead0(io.netty.channel.ChannelHandlerContext, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * io.netty.channel.SimpleChannelInboundHandler#channelRead0(io.netty.channel
+	 * .ChannelHandlerContext, java.lang.Object)
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket msg) throws Exception {

@@ -24,14 +24,18 @@ import io.netty.channel.socket.DatagramChannel;
 
 import com.github.mrstampy.kitchensync.netty.handler.StringMessageHandler;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class StringMessageInitializer.
+ * A sample initializer which uses a {@link StringMessageHandler} to process
+ * incoming messages, assumed to be strings. For quick prototyping purposes and
+ * implementations requiring no security or validation in the Netty pipeline.
  */
 public class StringMessageInitializer extends ChannelInitializer<DatagramChannel> {
 
-	/* (non-Javadoc)
-	 * @see io.netty.channel.ChannelInitializer#initChannel(io.netty.channel.Channel)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * io.netty.channel.ChannelInitializer#initChannel(io.netty.channel.Channel)
 	 */
 	@Override
 	protected void initChannel(DatagramChannel ch) throws Exception {

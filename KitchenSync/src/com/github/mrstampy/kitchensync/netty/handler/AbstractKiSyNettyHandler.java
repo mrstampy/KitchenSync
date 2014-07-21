@@ -38,11 +38,13 @@ import com.github.mrstampy.kitchensync.message.inbound.StringInboundMessageManag
 import com.github.mrstampy.kitchensync.netty.channel.DefaultChannelRegistry;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class AbstractKiSyNettyHandler.
+ * Abstract superclass providing the ability to handle string, byte array and
+ * {@link KiSyMessage}s and providing the ability to specify a custom
+ * {@link KiSyInboundMessageManager}.
  *
- * @param <MSG> the generic type
+ * @param <MSG>
+ *          the generic type
  */
 public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInboundHandler<DatagramPacket> {
 	private static final Logger log = LoggerFactory.getLogger(AbstractKiSyNettyHandler.class);
@@ -57,16 +59,32 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	private HandlerType type;
 
 	/**
-	 * The Constructor.
+	 * The Constructor. Should the type be {@link HandlerType#CUSTOM} then the
+	 * {@link #setCustomHandler(KiSyInboundMessageManager)} must also be invoked.
 	 *
-	 * @param type the type
+	 * @param type
+	 *          the type
 	 */
 	protected AbstractKiSyNettyHandler(HandlerType type) {
 		this.type = type;
 	}
 
-	/* (non-Javadoc)
-	 * @see io.netty.channel.ChannelInboundHandlerAdapter#exceptionCaught(io.netty.channel.ChannelHandlerContext, java.lang.Throwable)
+	/**
+	 * Specify a custom inbound message manager for this handler
+	 * 
+	 * @param custom
+	 */
+	protected AbstractKiSyNettyHandler(KiSyInboundMessageManager<MSG> custom) {
+		this(HandlerType.CUSTOM);
+		setCustomHandler(custom);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * io.netty.channel.ChannelInboundHandlerAdapter#exceptionCaught(io.netty.
+	 * channel.ChannelHandlerContext, java.lang.Throwable)
 	 */
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		log.error("Unexpected exception", cause);
@@ -75,7 +93,8 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	/**
 	 * Gets the channel.
 	 *
-	 * @param packet the packet
+	 * @param packet
+	 *          the packet
 	 * @return the channel
 	 */
 	protected KiSyChannel<DatagramChannel> getChannel(DatagramPacket packet) {
@@ -86,7 +105,8 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	/**
 	 * Checks if is multicast channel.
 	 *
-	 * @param local the local
+	 * @param local
+	 *          the local
 	 * @return true, if checks if is multicast channel
 	 */
 	protected boolean isMulticastChannel(InetSocketAddress local) {
@@ -96,7 +116,8 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	/**
 	 * Gets the multicast channel.
 	 *
-	 * @param local the local
+	 * @param local
+	 *          the local
 	 * @return the multicast channel
 	 */
 	protected KiSyChannel<DatagramChannel> getMulticastChannel(InetSocketAddress local) {
@@ -106,7 +127,8 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	/**
 	 * Gets the channel.
 	 *
-	 * @param port the port
+	 * @param port
+	 *          the port
 	 * @return the channel
 	 */
 	protected KiSyChannel<DatagramChannel> getChannel(int port) {
@@ -116,8 +138,10 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	/**
 	 * Process message.
 	 *
-	 * @param message the message
-	 * @param msg the msg
+	 * @param message
+	 *          the message
+	 * @param msg
+	 *          the msg
 	 */
 	protected void processMessage(MSG message, DatagramPacket msg) {
 		switch (type) {
@@ -142,8 +166,10 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	/**
 	 * Process custom.
 	 *
-	 * @param message the message
-	 * @param msg the msg
+	 * @param message
+	 *          the message
+	 * @param msg
+	 *          the msg
 	 */
 	protected void processCustom(MSG message, DatagramPacket msg) {
 		if (getCustomHandler() == null) {
@@ -157,8 +183,10 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	/**
 	 * Process string.
 	 *
-	 * @param message the message
-	 * @param msg the msg
+	 * @param message
+	 *          the message
+	 * @param msg
+	 *          the msg
 	 */
 	protected void processString(String message, DatagramPacket msg) {
 		stringMessageHandler.processMessage(message, getChannel(msg));
@@ -167,8 +195,10 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	/**
 	 * Process ki sy message.
 	 *
-	 * @param message the message
-	 * @param msg the msg
+	 * @param message
+	 *          the message
+	 * @param msg
+	 *          the msg
 	 */
 	protected void processKiSyMessage(KiSyMessage message, DatagramPacket msg) {
 		KiSyMessage ksm = (KiSyMessage) message;
@@ -179,8 +209,10 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	/**
 	 * Process bytes.
 	 *
-	 * @param message the message
-	 * @param msg the msg
+	 * @param message
+	 *          the message
+	 * @param msg
+	 *          the msg
 	 */
 	protected void processBytes(byte[] message, DatagramPacket msg) {
 		byteArrayMessageHandler.processMessage(message, getChannel(msg));
@@ -189,7 +221,8 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	/**
 	 * Content.
 	 *
-	 * @param msg the msg
+	 * @param msg
+	 *          the msg
 	 * @return the string
 	 */
 	protected String content(DatagramPacket msg) {
@@ -199,7 +232,8 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	/**
 	 * Bytes.
 	 *
-	 * @param msg the msg
+	 * @param msg
+	 *          the msg
 	 * @return the byte[]
 	 */
 	protected byte[] bytes(DatagramPacket msg) {
@@ -221,12 +255,13 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 		return customHandler;
 	}
 
-	/**
+	/*
 	 * Sets the custom handler.
 	 *
-	 * @param customHandler the custom handler
+	 * @param customHandler
+	 *          the custom handler
 	 */
-	public void setCustomHandler(KiSyInboundMessageManager<MSG> customHandler) {
+	private void setCustomHandler(KiSyInboundMessageManager<MSG> customHandler) {
 		this.customHandler = customHandler;
 	}
 

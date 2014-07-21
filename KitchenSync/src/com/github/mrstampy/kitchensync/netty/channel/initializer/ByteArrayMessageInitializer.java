@@ -24,14 +24,19 @@ import io.netty.channel.socket.DatagramChannel;
 
 import com.github.mrstampy.kitchensync.netty.handler.ByteArrayMessageHandler;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ByteArrayMessageInitializer.
+ * A sample channel initializer which uses a {@link ByteArrayMessageHandler} to
+ * process incoming messages, assumed to be byte arrays. For quick prototyping
+ * purposes and implementations requiring no security or validation in the Netty
+ * pipeline.
  */
 public class ByteArrayMessageInitializer extends ChannelInitializer<DatagramChannel> {
 
-	/* (non-Javadoc)
-	 * @see io.netty.channel.ChannelInitializer#initChannel(io.netty.channel.Channel)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * io.netty.channel.ChannelInitializer#initChannel(io.netty.channel.Channel)
 	 */
 	@Override
 	protected void initChannel(DatagramChannel ch) throws Exception {

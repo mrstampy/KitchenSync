@@ -18,18 +18,20 @@
  */
 package com.github.mrstampy.kitchensync.netty.handler;
 
-// TODO: Auto-generated Javadoc
+import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMessageManager;
+
 /**
- * The Enum HandlerType.
+ * The incoming message types supported. Custom messages will require their own
+ * {@link KiSyInboundMessageManager}.
  */
 public enum HandlerType {
-	
+
 	/** The kisy message. */
-	KISY_MESSAGE, 
- /** The string. */
- STRING, 
- /** The byte array. */
- BYTE_ARRAY, 
- /** The custom. */
- CUSTOM;
+	KISY_MESSAGE,
+	/** The string. */
+	STRING,
+	/** The byte array. */
+	BYTE_ARRAY,
+	/** The custom. */
+	CUSTOM;
 }
