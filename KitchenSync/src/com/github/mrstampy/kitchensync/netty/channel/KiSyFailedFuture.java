@@ -96,7 +96,6 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return this;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ChannelFuture addListeners(GenericFutureListener<? extends Future<? super Void>>... listeners) {
 		return this;
@@ -107,7 +106,6 @@ public class KiSyFailedFuture implements ChannelFuture {
 		return this;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ChannelFuture removeListeners(GenericFutureListener<? extends Future<? super Void>>... listeners) {
 		return this;
