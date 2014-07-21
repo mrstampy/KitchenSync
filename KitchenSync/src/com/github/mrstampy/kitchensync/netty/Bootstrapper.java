@@ -1,3 +1,21 @@
+/*
+ * KitchenSync Java Library Copyright (C) 2014 Burton Alexander
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * 
+ */
 package com.github.mrstampy.kitchensync.netty;
 
 import io.netty.bootstrap.AbstractBootstrap;
@@ -28,6 +46,23 @@ import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyMulticastChannel;
 
+/**
+ * The Class Bootstrapper is the KitchenSync/<a href="http://netty.io">Netty</a>
+ * core class. It instantiates and keeps track of all Netty {@link Bootstrap}s
+ * created and provides the ability to customize options on a per-bootstrap
+ * basis. This allows for easy creation of channels for separate tasks (ie. one
+ * for autonomous program state, one for sending and receiving broadcast
+ * messages, one for receiving broadcasted video etc.). The defaults chosen
+ * should be fine for small to medium numbers of channels with low to medium
+ * traffic. An understanding of Netty and Java Sockets is necessary to optimize
+ * the parameters for specific tasks.<br>
+ * <br>
+ * 
+ * Bootstraps are either bound to a port (next available or specified) on the
+ * host machine or are bound to multicast addresses, both using the UDP protocol
+ * for communication. On startup the default InetAddress and default network
+ * interface are determined.
+ */
 public class Bootstrapper {
 	private static final Logger log = LoggerFactory.getLogger(Bootstrapper.class);
 
@@ -35,14 +70,21 @@ public class Bootstrapper {
 	private static final AttributeKey<NetworkInterface> NI_KEY = AttributeKey.valueOf("KitchenSync Network Interface");
 	private static final AttributeKey<InetSocketAddress> ISA_KEY = AttributeKey.valueOf("KitchenSync Multicast Address");
 
+	/** The Constant INSTANCE. */
 	public static final Bootstrapper INSTANCE = new Bootstrapper();
 
+	/** The default interface. */
 	public final NetworkInterface DEFAULT_INTERFACE;
+
+	/** The default address. */
 	public final InetAddress DEFAULT_ADDRESS;
 
 	private static Map<Integer, Bootstrap> channelBootstraps = new ConcurrentHashMap<Integer, Bootstrap>();
 	private static Map<String, Bootstrap> multicastBootstraps = new ConcurrentHashMap<String, Bootstrap>();
 
+	/**
+	 * The Constructor, use if subclassing, otherwise {@link #INSTANCE}.
+	 */
 	public Bootstrapper() {
 		try {
 			DEFAULT_ADDRESS = InetAddress.getLocalHost();
@@ -53,25 +95,81 @@ public class Bootstrapper {
 		}
 	}
 
+	/**
+	 * Checks for default bootstrap.
+	 *
+	 * @return true, if checks for default bootstrap
+	 */
 	public boolean hasDefaultBootstrap() {
 		return containsBootstrap(DEFAULT_BOOTSTRAP_KEY);
 	}
 
+	/**
+	 * Returns true if a bootstrap for the specified port is available.
+	 *
+	 * @param port
+	 *          the port
+	 * @return true, if contains bootstrap
+	 */
 	public boolean containsBootstrap(int port) {
 		return channelBootstraps.containsKey(port);
 	}
 
+	/**
+	 * Returns true if the bootstrap exists for the specified multicast address.
+	 *
+	 * @param multicast
+	 *          the multicast
+	 * @return true, if contains multicast bootstrap
+	 */
 	public boolean containsMulticastBootstrap(InetSocketAddress multicast) {
 		String key = createMulticastKey(multicast);
 
 		return containsMulticastBootstrap(key);
 	}
 
+	/**
+	 * Inits the default bootstrap. This bootstrap is used should no port-specific
+	 * bootstrap exist when the {@link #bind()} or {@link #bind(int)} methods are
+	 * called.<br>
+	 * <br>
+	 * 
+	 * The channel initializer allows the many Netty handlers to be specified as
+	 * required for the bootstrap ie. one for SSL communication, one for message
+	 * encryption/decryption etc etc. Refer to the <a
+	 * href="http://netty.io">Netty</a> documentation for more information.
+	 *
+	 * @param <CHANNEL>
+	 *          the generic type
+	 * @param initializer
+	 *          the initializer
+	 * @param clazz
+	 *          the clazz
+	 */
 	public <CHANNEL extends DatagramChannel> void initDefaultBootstrap(ChannelInitializer<CHANNEL> initializer,
 			Class<? extends CHANNEL> clazz) {
 		initBootstrap(initializer, DEFAULT_BOOTSTRAP_KEY, clazz);
 	}
 
+	/**
+	 * Inits the bootstrap for a specified port. This allows different bootstraps
+	 * for different channels, all configured differently.<br>
+	 * <br>
+	 * 
+	 * The channel initializer allows the many Netty handlers to be specified as
+	 * required for the bootstrap ie. one for SSL communication, one for message
+	 * encryption/decryption etc etc. Refer to the <a
+	 * href="http://netty.io">Netty</a> documentation for more information.
+	 *
+	 * @param <CHANNEL>
+	 *          the generic type
+	 * @param initializer
+	 *          the initializer
+	 * @param port
+	 *          the port
+	 * @param clazz
+	 *          the clazz
+	 */
 	public <CHANNEL extends DatagramChannel> void initBootstrap(ChannelInitializer<CHANNEL> initializer, int port,
 			Class<? extends CHANNEL> clazz) {
 		if (containsBootstrap(port)) {
@@ -85,11 +183,49 @@ public class Bootstrapper {
 		channelBootstraps.put(port, b);
 	}
 
+	/**
+	 * Inits the multicast bootstrap for the specified address.<br>
+	 * <br>
+	 * 
+	 * The channel initializer allows the many Netty handlers to be specified as
+	 * required for the bootstrap ie. one for SSL communication, one for message
+	 * encryption/decryption etc etc. Refer to the <a
+	 * href="http://netty.io">Netty</a> documentation for more information.
+	 *
+	 * @param <CHANNEL>
+	 *          the generic type
+	 * @param initializer
+	 *          the initializer
+	 * @param multicast
+	 *          the multicast
+	 * @param clazz
+	 *          the clazz
+	 */
 	public <CHANNEL extends DatagramChannel> void initMulticastBootstrap(ChannelInitializer<DatagramChannel> initializer,
 			InetSocketAddress multicast, Class<? extends CHANNEL> clazz) {
 		initMulticastBootstrap(initializer, multicast, DEFAULT_INTERFACE, clazz);
 	}
 
+	/**
+	 * Inits the multicast bootstrap for the specified address.<br>
+	 * <br>
+	 * 
+	 * The channel initializer allows the many Netty handlers to be specified as
+	 * required for the bootstrap ie. one for SSL communication, one for message
+	 * encryption/decryption etc etc. Refer to the <a
+	 * href="http://netty.io">Netty</a> documentation for more information.
+	 *
+	 * @param <CHANNEL>
+	 *          the generic type
+	 * @param initializer
+	 *          the initializer
+	 * @param multicast
+	 *          the multicast
+	 * @param networkInterface
+	 *          the network interface
+	 * @param clazz
+	 *          the clazz
+	 */
 	public <CHANNEL extends DatagramChannel> void initMulticastBootstrap(ChannelInitializer<DatagramChannel> initializer,
 			InetSocketAddress multicast, NetworkInterface networkInterface, Class<? extends CHANNEL> clazz) {
 		String key = createMulticastKey(multicast);
@@ -109,64 +245,155 @@ public class Bootstrapper {
 		return AbstractKiSyMulticastChannel.createMulticastKey(multicast);
 	}
 
+	/**
+	 * Removes the bootstrap.
+	 *
+	 * @param port
+	 *          the port
+	 * @return the bootstrap
+	 */
 	public Bootstrap removeBootstrap(int port) {
 		return channelBootstraps.remove(port);
 	}
 
+	/**
+	 * Removes the multicast bootstrap.
+	 *
+	 * @param address
+	 *          the address
+	 * @return the bootstrap
+	 */
 	public Bootstrap removeMulticastBootstrap(InetSocketAddress address) {
 		return removeMulticastBootstrap(createMulticastKey(address));
 	}
 
+	/**
+	 * Removes the multicast bootstrap.
+	 *
+	 * @param key
+	 *          the key
+	 * @return the bootstrap
+	 */
 	public Bootstrap removeMulticastBootstrap(String key) {
 		return multicastBootstraps.remove(key);
 	}
 
+	/**
+	 * Gets the bootstrap keys.
+	 *
+	 * @return the bootstrap keys
+	 */
 	public Set<Integer> getBootstrapKeys() {
 		return channelBootstraps.keySet();
 	}
 
+	/**
+	 * Gets the bootstraps.
+	 *
+	 * @return the bootstraps
+	 */
 	public Collection<Bootstrap> getBootstraps() {
 		return channelBootstraps.values();
 	}
 
+	/**
+	 * Gets the multicast bootstrap keys.
+	 *
+	 * @return the multicast bootstrap keys
+	 */
 	public Set<String> getMulticastBootstrapKeys() {
 		return multicastBootstraps.keySet();
 	}
 
+	/**
+	 * Gets the multicast bootstraps.
+	 *
+	 * @return the multicast bootstraps
+	 */
 	public Collection<Bootstrap> getMulticastBootstraps() {
 		return multicastBootstraps.values();
 	}
 
+	/**
+	 * Gets the default bootstrap.
+	 *
+	 * @return the default bootstrap
+	 */
 	public Bootstrap getDefaultBootstrap() {
 		return getBootstrap(DEFAULT_BOOTSTRAP_KEY);
 	}
 
+	/**
+	 * Gets the bootstrap.
+	 *
+	 * @param key
+	 *          the key
+	 * @return the bootstrap
+	 */
 	public Bootstrap getBootstrap(int key) {
 		return channelBootstraps.get(key);
 	}
 
+	/**
+	 * Gets the multicast bootstrap.
+	 *
+	 * @param address
+	 *          the address
+	 * @return the multicast bootstrap
+	 */
 	public Bootstrap getMulticastBootstrap(InetSocketAddress address) {
 		String key = createMulticastKey(address);
 
 		return getMulticastBootstrap(key);
 	}
 
+	/**
+	 * Gets the multicast bootstrap.
+	 *
+	 * @param key
+	 *          the key
+	 * @return the multicast bootstrap
+	 */
 	public Bootstrap getMulticastBootstrap(String key) {
 		return multicastBootstraps.get(key);
 	}
 
+	/**
+	 * Clear bootstraps.
+	 */
 	public void clearBootstraps() {
 		channelBootstraps.clear();
 	}
 
+	/**
+	 * Clear multicast bootstraps.
+	 */
 	public void clearMulticastBootstraps() {
 		multicastBootstraps.clear();
 	}
 
+	/**
+	 * Bind to the next available port on the host machine using the default
+	 * bootstrap.
+	 *
+	 * @param <CHANNEL>
+	 *          the generic type
+	 * @return the channel
+	 */
 	public <CHANNEL extends DatagramChannel> CHANNEL bind() {
 		return bind(0);
 	}
 
+	/**
+	 * Returns a channel using the bootstrap for the specified port. Should none
+	 * exist then the default bootstrap is used.
+	 *
+	 * @param <CHANNEL>
+	 *          the generic type
+	 * @param port
+	 *          the port
+	 * @return the channel
+	 */
 	@SuppressWarnings("unchecked")
 	public <CHANNEL extends DatagramChannel> CHANNEL bind(int port) {
 		boolean contains = containsBootstrap(port);
@@ -187,6 +414,15 @@ public class Bootstrapper {
 		return cf.isSuccess() ? (CHANNEL) cf.channel() : null;
 	}
 
+	/**
+	 * Bind to the specified multicast address.
+	 *
+	 * @param <CHANNEL>
+	 *          the generic type
+	 * @param multicast
+	 *          the multicast
+	 * @return the channel
+	 */
 	@SuppressWarnings("unchecked")
 	public <CHANNEL extends DatagramChannel> CHANNEL multicastBind(InetSocketAddress multicast) {
 		String key = createMulticastKey(multicast);
@@ -207,6 +443,16 @@ public class Bootstrapper {
 		return cf.isSuccess() ? (CHANNEL) cf.channel() : null;
 	}
 
+	/**
+	 * Messages can only be received when a multicast channel has been joined.
+	 * Messages can be sent to a multicast address whether or not the channel is
+	 * joined. Invoke when messages are to be received on the specified channel.
+	 *
+	 * @param channel
+	 *          the channel
+	 * @return true, if join group
+	 * @see #leaveGroup(DatagramChannel)
+	 */
 	public boolean joinGroup(DatagramChannel channel) {
 		if (!isMulticastChannel(channel)) {
 			log.error("Not a multicast channel, cannot join group");
@@ -226,6 +472,15 @@ public class Bootstrapper {
 		return cf.isSuccess();
 	}
 
+	/**
+	 * Invoke when messages are not to be received on the specified multicast
+	 * channel.
+	 *
+	 * @param channel
+	 *          the channel
+	 * @return true, if leave group
+	 * @see #joinGroup(DatagramChannel)
+	 */
 	public boolean leaveGroup(DatagramChannel channel) {
 		if (!isMulticastChannel(channel)) {
 			log.error("Not a multicast channel, cannot leave group");
@@ -245,14 +500,35 @@ public class Bootstrapper {
 		return cf.isSuccess();
 	}
 
+	/**
+	 * Gets the multicast address, null if not a multicast channel.
+	 *
+	 * @param channel
+	 *          the channel
+	 * @return the multicast address
+	 */
 	public InetSocketAddress getMulticastAddress(Channel channel) {
 		return channel == null ? null : channel.attr(ISA_KEY).get();
 	}
 
+	/**
+	 * Gets the network interface, null if not a multicast channel.
+	 *
+	 * @param channel
+	 *          the channel
+	 * @return the network interface
+	 */
 	public NetworkInterface getNetworkInterface(Channel channel) {
 		return channel == null ? null : channel.attr(NI_KEY).get();
 	}
 
+	/**
+	 * Checks if is multicast channel.
+	 *
+	 * @param channel
+	 *          the channel
+	 * @return true, if checks if is multicast channel
+	 */
 	public boolean isMulticastChannel(Channel channel) {
 		return getMulticastAddress(channel) != null && getNetworkInterface(channel) != null;
 	}
@@ -361,6 +637,21 @@ public class Bootstrapper {
 		}
 	}
 
+	/**
+	 * Creates bootstrap for all purposes. Sets default options, event loop group
+	 * and channel class. If the port > 0 (and it should be > 1024) then it is set
+	 * in the bootstrap (localAddress).
+	 *
+	 * @param <CHANNEL>
+	 *          the generic type
+	 * @param initializer
+	 *          the initializer
+	 * @param port
+	 *          the port
+	 * @param clazz
+	 *          the clazz
+	 * @return the bootstrap
+	 */
 	protected <CHANNEL extends DatagramChannel> Bootstrap bootstrap(ChannelInitializer<CHANNEL> initializer, int port,
 			Class<? extends CHANNEL> clazz) {
 		Bootstrap b = new Bootstrap();
@@ -374,6 +665,17 @@ public class Bootstrapper {
 		return b;
 	}
 
+	/**
+	 * Gets the event loop group based upon the class name. If the class is
+	 * neither an NioDatagramChannel or OioDatagramChannel then an exception is
+	 * thrown.
+	 *
+	 * @param <CHANNEL>
+	 *          the generic type
+	 * @param clazz
+	 *          the clazz
+	 * @return the event loop group
+	 */
 	protected <CHANNEL extends DatagramChannel> EventLoopGroup getEventLoopGroup(Class<? extends CHANNEL> clazz) {
 		if ("NioDatagramChannel".equals(clazz.getSimpleName())) return new NioEventLoopGroup();
 
@@ -382,17 +684,54 @@ public class Bootstrapper {
 		throw new UnsupportedOperationException("No default event loop group defined for " + clazz.getName());
 	}
 
+	/**
+	 * Sets the default bootstrap options (SO_BROADCAST=true, SO_REUSEADDR=true)
+	 * and the initializer as the channel handler.
+	 *
+	 * @param b
+	 *          the b
+	 * @param initializer
+	 *          the initializer
+	 */
 	protected void setDefaultBootstrapOptions(AbstractBootstrap<?, ?> b, ChannelInitializer<?> initializer) {
 		b.option(ChannelOption.SO_BROADCAST, true);
 		b.option(ChannelOption.SO_REUSEADDR, true);
 		b.handler(initializer);
 	}
 
+	/**
+	 * Multicast bootstrap using the default network interface.
+	 *
+	 * @param <CHANNEL>
+	 *          the generic type
+	 * @param initializer
+	 *          the initializer
+	 * @param multicast
+	 *          the multicast
+	 * @param clazz
+	 *          the clazz
+	 * @return the bootstrap
+	 */
 	protected <CHANNEL extends DatagramChannel> Bootstrap multicastBootstrap(
 			ChannelInitializer<DatagramChannel> initializer, InetSocketAddress multicast, Class<? extends CHANNEL> clazz) {
 		return multicastBootstrap(initializer, multicast, DEFAULT_INTERFACE, clazz);
 	}
 
+	/**
+	 * Multicast bootstrap, adding the IP_MULTICAST_IF=networkInterface option.
+	 *
+	 * @param <CHANNEL>
+	 *          the generic type
+	 * @param initializer
+	 *          the initializer
+	 * @param multicast
+	 *          the multicast
+	 * @param networkInterface
+	 *          the network interface
+	 * @param clazz
+	 *          the clazz
+	 * @return the bootstrap
+	 */
 	protected <CHANNEL extends DatagramChannel> Bootstrap multicastBootstrap(
 			ChannelInitializer<DatagramChannel> initializer, InetSocketAddress multicast, NetworkInterface networkInterface,
 			Class<? extends CHANNEL> clazz) {

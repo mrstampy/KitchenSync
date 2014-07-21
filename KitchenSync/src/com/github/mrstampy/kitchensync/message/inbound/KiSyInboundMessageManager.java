@@ -1,3 +1,21 @@
+/*
+ * KitchenSync Java Library Copyright (C) 2014 Burton Alexander
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * 
+ */
 package com.github.mrstampy.kitchensync.message.inbound;
 
 import java.util.ArrayList;
@@ -22,6 +40,16 @@ import rx.schedulers.Schedulers;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
+/**
+ * The Class KiSyInboundMessageManager processes inbound messages using the
+ * various {@link KiSyInboundMesssageHandler}s that have been added during
+ * program initialization via the
+ * {@link #addMessageHandlers(KiSyInboundMesssageHandler...)} or
+ * {@link #addAllMessageHandlers(Collection)} methods.
+ *
+ * @param <MSG>
+ *          the generic type
+ */
 @SuppressWarnings("rawtypes")
 public class KiSyInboundMessageManager<MSG> {
 	private static final Logger log = LoggerFactory.getLogger(KiSyInboundMessageManager.class);
@@ -34,24 +62,55 @@ public class KiSyInboundMessageManager<MSG> {
 
 	private SingleThreadExecutorSchedulerProvider singleThreadProvider = new SingleThreadExecutorSchedulerProvider(10);
 
+	/**
+	 * Adds the message handlers. Note that this must be explicitly wired up
+	 * during program instantiation.
+	 *
+	 * @param handlers
+	 *          the handlers
+	 */
 	public void addMessageHandlers(KiSyInboundMesssageHandler... handlers) {
 		if (handlers == null || handlers.length == 0) return;
 
 		addAllMessageHandlers(Arrays.asList(handlers));
 	}
 
+	/**
+	 * Adds the all message handlers. Note that this must be explicitly wired up
+	 * during program instantiation.
+	 *
+	 * @param handlers
+	 *          the handlers
+	 */
 	public void addAllMessageHandlers(Collection<KiSyInboundMesssageHandler> handlers) {
 		messageHandlers.addAll(handlers);
 	}
 
+	/**
+	 * Removes the specified message handler.
+	 *
+	 * @param handler
+	 *          the handler
+	 */
 	public void removeMessageHandler(KiSyInboundMesssageHandler handler) {
 		messageHandlers.remove(handler);
 	}
 
+	/**
+	 * Clear all message handlers.
+	 */
 	public void clearMessageHandlers() {
 		messageHandlers.clear();
 	}
 
+	/**
+	 * Process the given message.
+	 *
+	 * @param message
+	 *          the message
+	 * @param channel
+	 *          the channel on which the message was received
+	 */
 	public void processMessage(MSG message, KiSyChannel<?> channel) {
 		log.trace("Processing message {}", message);
 
