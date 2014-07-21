@@ -36,7 +36,8 @@ public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel i
 		if (isActive()) closeChannel();
 
 		if (!bootstrapper.containsMulticastBootstrap(getMulticastAddress())) {
-			bootstrapper.initMulticastBootstrap(initializer(), getMulticastAddress(), getNetworkInterface());
+			bootstrapper.initMulticastBootstrap(initializer(), getMulticastAddress(), getNetworkInterface(),
+					getChannelClass());
 		}
 
 		setChannel(bootstrapper.multicastBind(getMulticastAddress()));

@@ -10,13 +10,13 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.oio.OioEventLoopGroup;
 import io.netty.channel.socket.DatagramChannel;
-import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -83,12 +83,13 @@ public class Bootstrapper {
 		channelBootstraps.put(port, b);
 	}
 
-	public void initMulticastBootstrap(ChannelInitializer<DatagramChannel> initializer, InetSocketAddress multicast) {
-		initMulticastBootstrap(initializer, multicast, DEFAULT_INTERFACE);
+	public <CHANNEL extends DatagramChannel> void initMulticastBootstrap(ChannelInitializer<DatagramChannel> initializer,
+			InetSocketAddress multicast, Class<? extends CHANNEL> clazz) {
+		initMulticastBootstrap(initializer, multicast, DEFAULT_INTERFACE, clazz);
 	}
 
-	public void initMulticastBootstrap(ChannelInitializer<DatagramChannel> initializer, InetSocketAddress multicast,
-			NetworkInterface networkInterface) {
+	public <CHANNEL extends DatagramChannel> void initMulticastBootstrap(ChannelInitializer<DatagramChannel> initializer,
+			InetSocketAddress multicast, NetworkInterface networkInterface, Class<? extends CHANNEL> clazz) {
 		String key = createMulticastKey(multicast);
 		if (containsMulticastBootstrap(key)) {
 			log.warn("Multicast bootstrap for {} already initialized", multicast);
@@ -97,7 +98,7 @@ public class Bootstrapper {
 
 		log.debug("Initializing multicast bootstrap for {} using network interface {}", multicast, networkInterface);
 
-		Bootstrap b = multicastBootstrap(initializer, multicast, networkInterface);
+		Bootstrap b = multicastBootstrap(initializer, multicast, networkInterface, clazz);
 
 		multicastBootstraps.put(key, b);
 	}
@@ -122,8 +123,34 @@ public class Bootstrapper {
 		return channelBootstraps.keySet();
 	}
 
+	public Collection<Bootstrap> getBootstraps() {
+		return channelBootstraps.values();
+	}
+
 	public Set<String> getMulticastBootstrapKeys() {
 		return multicastBootstraps.keySet();
+	}
+
+	public Collection<Bootstrap> getMulticastBootstraps() {
+		return multicastBootstraps.values();
+	}
+
+	public Bootstrap getDefaultBootstrap() {
+		return getBootstrap(DEFAULT_BOOTSTRAP_KEY);
+	}
+
+	public Bootstrap getBootstrap(int key) {
+		return channelBootstraps.get(key);
+	}
+
+	public Bootstrap getMulticastBootstrap(InetSocketAddress address) {
+		String key = createMulticastKey(address);
+
+		return getMulticastBootstrap(key);
+	}
+
+	public Bootstrap getMulticastBootstrap(String key) {
+		return multicastBootstraps.get(key);
 	}
 
 	public void clearBootstraps() {
@@ -359,13 +386,15 @@ public class Bootstrapper {
 		b.handler(initializer);
 	}
 
-	protected Bootstrap multicastBootstrap(ChannelInitializer<DatagramChannel> initializer, InetSocketAddress multicast) {
-		return multicastBootstrap(initializer, multicast, DEFAULT_INTERFACE);
+	protected <CHANNEL extends DatagramChannel> Bootstrap multicastBootstrap(
+			ChannelInitializer<DatagramChannel> initializer, InetSocketAddress multicast, Class<? extends CHANNEL> clazz) {
+		return multicastBootstrap(initializer, multicast, DEFAULT_INTERFACE, clazz);
 	}
 
-	protected Bootstrap multicastBootstrap(ChannelInitializer<DatagramChannel> initializer, InetSocketAddress multicast,
-			NetworkInterface networkInterface) {
-		Bootstrap b = bootstrap(initializer, multicast.getPort(), NioDatagramChannel.class);
+	protected <CHANNEL extends DatagramChannel> Bootstrap multicastBootstrap(
+			ChannelInitializer<DatagramChannel> initializer, InetSocketAddress multicast, NetworkInterface networkInterface,
+			Class<? extends CHANNEL> clazz) {
+		Bootstrap b = bootstrap(initializer, multicast.getPort(), clazz);
 
 		b.option(ChannelOption.IP_MULTICAST_IF, networkInterface);
 
