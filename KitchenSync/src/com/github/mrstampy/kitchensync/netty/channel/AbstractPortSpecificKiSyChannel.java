@@ -20,14 +20,10 @@ package com.github.mrstampy.kitchensync.netty.channel;
 
 import io.netty.channel.socket.DatagramChannel;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Superclass for port-specific channels with their own Bootstrap.
  */
 public abstract class AbstractPortSpecificKiSyChannel extends AbstractKiSyChannel {
-	private static final Logger log = LoggerFactory.getLogger(AbstractPortSpecificKiSyChannel.class);
 
 	private int port;
 
@@ -51,7 +47,7 @@ public abstract class AbstractPortSpecificKiSyChannel extends AbstractKiSyChanne
 		DatagramChannel channel = bootstrapper.bind(getPort());
 
 		setChannel(channel);
-		
+
 		registry.addChannel(this);
 	}
 
@@ -61,7 +57,6 @@ public abstract class AbstractPortSpecificKiSyChannel extends AbstractKiSyChanne
 	 */
 	@Override
 	public void bind(int port) {
-		log.debug("Ignoring argument {}, using {} to bind", port, getPort());
 		bind();
 	}
 

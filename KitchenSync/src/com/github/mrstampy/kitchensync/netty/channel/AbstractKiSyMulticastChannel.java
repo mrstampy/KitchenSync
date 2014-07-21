@@ -19,6 +19,9 @@
 package com.github.mrstampy.kitchensync.netty.channel;
 
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.socket.DatagramChannel;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 
 import java.net.Inet6Address;
 import java.net.InetSocketAddress;
@@ -112,8 +115,35 @@ public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel i
 		}
 
 		setChannel(bootstrapper.multicastBind(getMulticastAddress()));
-		
-		registry.addChannel(this);
+
+		registry.addMulticastChannel(this);
+	}
+
+	/**
+	 * The address parameter is ignored; messages are sent to the
+	 * {@link #getMulticastAddress()}.
+	 */
+	@Override
+	public <MSG extends Object> ChannelFuture send(MSG message, InetSocketAddress address) {
+		return broadcast(message);
+	}
+
+	/**
+	 * Sets the channel.
+	 *
+	 * @param channel
+	 *          the channel
+	 */
+	protected void setChannel(DatagramChannel channel) {
+		super.setChannel(channel);
+
+		channel.closeFuture().addListener(new GenericFutureListener<Future<Void>>() {
+
+			@Override
+			public void operationComplete(Future<Void> future) throws Exception {
+				registry.removeMulticastChannel(AbstractKiSyMulticastChannel.this);
+			}
+		});
 	}
 
 	/*
@@ -125,7 +155,7 @@ public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel i
 	 */
 	@Override
 	public <MSG extends Object> ChannelFuture broadcast(MSG message) {
-		return sendImpl(createMessage(message, getMulticastAddress()), getMulticastAddress());
+		return super.send(message, getMulticastAddress());
 	}
 
 	/*
