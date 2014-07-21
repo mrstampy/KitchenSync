@@ -39,9 +39,9 @@ import com.github.mrstampy.kitchensync.netty.channel.initializer.KiSyMessageInit
  * <br>
  * 
  * <a href="http://en.wikipedia.org/wiki/Multicast_address">IPv6 addresses</a>
- * must be used. See
- * http://www.iana.org/assignments/ipv6-multicast-addresses/ipv6
- * -multicast-addresses.xhtml for more information.
+ * must be used. See the <a href=
+ * "http://www.iana.org/assignments/ipv6-multicast-addresses/ipv6-multicast-addresses.xhtml"
+ * >IPv6 Multicast Address Space Registry</a> for more information.
  */
 public class BroadcastTester extends AbstractTester {
 	private static final String MULTICAST_IP = "FF05:0:0548:c4e6:796c:0:de66:FC";

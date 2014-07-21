@@ -32,9 +32,9 @@ import java.net.NetworkInterface;
  * 
  * KitchenSync multicast channels use <a
  * href="http://en.wikipedia.org/wiki/Multicast_address">IPv6 addresses</a>.
- * Ranges and uses can be found
- * http://www.iana.org/assignments/ipv6-multicast-addresses
- * /ipv6-multicast-addresses.xhtml
+ * Ranges and uses can be found at the <a href=
+ * "http://www.iana.org/assignments/ipv6-multicast-addresses/ipv6-multicast-addresses.xhtml"
+ * >IPv6 Multicast Address Space Registry</a>
  */
 public interface KiSyMulticastChannel extends KiSyChannel {
 
