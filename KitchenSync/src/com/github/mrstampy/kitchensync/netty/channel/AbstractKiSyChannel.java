@@ -141,8 +141,20 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 	protected Bootstrapper bootstrapper;
 
 	/**
-	 * Implementations return the channel initializer required for this channel.
-	 *
+	 * Implementations return the <a
+	 * href="http://netty.io/4.0/api/io/netty/channel/ChannelInitializer.html"
+	 * >channel initializer</a> required for this channel. Netty <a
+	 * href="http://netty.io/4.0/api/io/netty/channel/ChannelHandler.html">Channel
+	 * handlers</a> should be added to the channel's pipeline to control its
+	 * behaviour ie. <a
+	 * href="http://netty.io/4.0/api/io/netty/handler/ssl/SslHandler.html"
+	 * >SslHandler<a> can be added for SSL encryption.
+	 * <p>
+	 * 
+	 * Note that the default bootstrap will use the ChannelInitializer from the
+	 * first instantiated {@link AbstractKiSyChannel}, unless it has been
+	 * explicitly initialized prior.
+	 * 
 	 * @return the channel initializer< datagram channel>
 	 */
 	protected abstract ChannelInitializer<DatagramChannel> initializer();

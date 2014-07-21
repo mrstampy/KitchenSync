@@ -48,14 +48,16 @@ import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyMulticastChanne
 
 /**
  * The Class Bootstrapper is the KitchenSync/<a href="http://netty.io">Netty</a>
- * core class. It instantiates and keeps track of all Netty {@link Bootstrap}s
- * created and provides the ability to customize options on a per-bootstrap
- * basis. This allows for easy creation of channels for separate tasks (ie. one
- * for autonomous program state, one for sending and receiving broadcast
- * messages, one for receiving broadcasted video etc.). The defaults chosen
- * should be fine for small to medium numbers of channels with low to medium
- * traffic. An understanding of Netty and Java Sockets is necessary to optimize
- * the parameters for specific tasks.<br>
+ * core class. It instantiates and keeps track of all Netty <a
+ * href="http://netty.io/4.0/api/io/netty/bootstrap/Bootstrap.html"
+ * >Bootstrap</a>s created and provides the ability to customize <a
+ * href="http://netty.io/4.0/api/io/netty/channel/ChannelOption.html"
+ * >options</a> on a per-bootstrap basis. This allows for easy creation of
+ * channels for separate tasks (ie. one for autonomous program state, one for
+ * sending and receiving broadcast messages, one for receiving broadcasted video
+ * etc.). The defaults chosen should be fine for small to medium numbers of
+ * channels with low to medium traffic. An understanding of Netty and Java
+ * Sockets is necessary to optimize the parameters for specific tasks.<br>
  * <br>
  * 
  * Bootstraps are either bound to a port (next available or specified) on the
