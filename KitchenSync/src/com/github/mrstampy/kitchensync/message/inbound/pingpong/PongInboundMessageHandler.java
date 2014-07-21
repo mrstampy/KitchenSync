@@ -62,7 +62,7 @@ public abstract class PongInboundMessageHandler<MSG> extends AbstractInboundKiSy
 	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel)
 	 */
 	@Override
-	protected void onReceive(MSG message, KiSyChannel<?> channel) {
+	protected void onReceive(MSG message, KiSyChannel channel) {
 		if (!(message instanceof KiSyMessage)) return;
 
 		KiSyMessage msg = (KiSyMessage) message;

@@ -39,7 +39,7 @@ import com.github.mrstampy.kitchensync.netty.handler.KiSyMessageHandler;
  * however it can be used as-is for messaging. It is serialized to and from Json
  * - see {@link KiSyMessageHandler} and {@link PacketCreator} for details. The
  * {@link #getTypes()} define the type of message and the
- * {@link #addMessage(String, String)} method allows an arbitrary number of
+ * {@link #addMessagePart(String, String)} method allows an arbitrary number of
  * key/value pairs to be included in the message.
  */
 public class KiSyMessage implements Serializable {
@@ -112,7 +112,7 @@ public class KiSyMessage implements Serializable {
 	 *          the message value
 	 */
 	@JsonIgnore
-	public void addMessage(String messageKey, String message) {
+	public void addMessagePart(String messageKey, String message) {
 		messageParts.put(messageKey, message);
 	}
 

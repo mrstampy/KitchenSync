@@ -28,17 +28,22 @@ import java.util.concurrent.CountDownLatch;
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
+import com.github.mrstampy.kitchensync.message.inbound.ack.AckInboundMessageHandler;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyChannel;
+import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 import com.github.mrstampy.kitchensync.netty.channel.initializer.KiSyMessageInitializer;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class AckTester.
+ * Tests {@link KiSyMessage} acknowledgment messages. Logging at debug
+ * level will show the message processing.
+ * 
+ * @see AckInboundMessageHandler
+ * @see KiSyMessageCreator#requireAcknowledgement(KiSyMessage)
  */
 public class AckTester extends AbstractTester {
 
-	private AbstractKiSyChannel channel;
-	private AbstractKiSyChannel channel2;
+	private KiSyChannel channel;
+	private KiSyChannel channel2;
 
 	private void execute() {
 		channel = initChannel();
@@ -60,7 +65,7 @@ public class AckTester extends AbstractTester {
 	 *
 	 * @return the default ki sy channel
 	 */
-	protected AbstractKiSyChannel initChannel() {
+	protected KiSyChannel initChannel() {
 		AbstractKiSyChannel channel = new AbstractKiSyChannel() {
 
 			@Override

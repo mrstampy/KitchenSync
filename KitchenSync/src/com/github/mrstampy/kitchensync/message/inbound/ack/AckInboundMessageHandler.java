@@ -70,7 +70,7 @@ public class AckInboundMessageHandler<MSG> extends AbstractInboundKiSyMessageHan
 	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel)
 	 */
 	@Override
-	protected void onReceive(MSG message, KiSyChannel<?> channel) throws Exception {
+	protected void onReceive(MSG message, KiSyChannel channel) throws Exception {
 		if (!(message instanceof KiSyMessage)) return;
 
 		KiSyMessage msg = (KiSyMessage) message;

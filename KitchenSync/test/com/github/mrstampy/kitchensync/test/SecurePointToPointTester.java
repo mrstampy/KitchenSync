@@ -25,17 +25,24 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 
 import java.util.concurrent.CountDownLatch;
 
+import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
+import com.github.mrstampy.kitchensync.message.KiSyMessageType;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyChannel;
+import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class SecurePointToPointTester.
+ * Creates secure channels and sends 100 {@link KiSyMessage} pings from the
+ * former to the later. Logging at info level will show the
+ * {@link KiSyMessageType#PING_TIME} messages generated and debug level will
+ * show the message processing.
+ * 
+ * @see SslInitializer
  */
 public class SecurePointToPointTester extends AbstractTester {
 
-	private AbstractKiSyChannel channel;
-	private AbstractKiSyChannel channel2;
+	private KiSyChannel channel;
+	private KiSyChannel channel2;
 
 	private void execute() {
 		channel = initChannel();
@@ -54,7 +61,7 @@ public class SecurePointToPointTester extends AbstractTester {
 	 *
 	 * @return the default ki sy channel
 	 */
-	protected AbstractKiSyChannel initChannel() {
+	protected KiSyChannel initChannel() {
 		AbstractKiSyChannel channel = new AbstractKiSyChannel() {
 
 			@Override

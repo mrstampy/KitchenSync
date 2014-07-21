@@ -30,7 +30,7 @@ import java.net.InetSocketAddress;
  * @param <CHANNEL>
  *          the generic type
  */
-public interface KiSyChannel<CHANNEL extends DatagramChannel> {
+public interface KiSyChannel {
 
 	/**
 	 * Checks if the underlying channel is active.
@@ -77,7 +77,7 @@ public interface KiSyChannel<CHANNEL extends DatagramChannel> {
 	 *
 	 * @return the channel
 	 */
-	CHANNEL getChannel();
+	DatagramChannel getChannel();
 
 	/**
 	 * Gets the port on which this channel is bound, -1 if unknown.

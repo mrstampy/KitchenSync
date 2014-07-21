@@ -46,7 +46,7 @@ public abstract class AbstractInboundKiSyMessageHandler<MSG> implements KiSyInbo
 	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel)
 	 */
 	@Override
-	public final void messageReceived(MSG message, KiSyChannel<?> channel) {
+	public final void messageReceived(MSG message, KiSyChannel channel) {
 		try {
 			onReceive(message, channel);
 		} catch (Exception e) {
@@ -64,7 +64,7 @@ public abstract class AbstractInboundKiSyMessageHandler<MSG> implements KiSyInbo
 	 * @throws Exception
 	 * 
 	 */
-	protected abstract void onReceive(MSG message, KiSyChannel<?> channel) throws Exception;
+	protected abstract void onReceive(MSG message, KiSyChannel channel) throws Exception;
 
 	/*
 	 * (non-Javadoc)

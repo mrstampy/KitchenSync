@@ -51,7 +51,7 @@ public interface KiSyInboundMesssageHandler<MSG> extends Serializable {
 	 * @throws Exception
 	 *           the exception
 	 */
-	void messageReceived(MSG message, KiSyChannel<?> channel) throws Exception;
+	void messageReceived(MSG message, KiSyChannel channel) throws Exception;
 
 	/**
 	 * Gets the execution order for defining the order of execution.

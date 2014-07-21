@@ -23,9 +23,20 @@ import io.netty.util.concurrent.GenericFutureListener;
 
 import java.util.concurrent.CountDownLatch;
 
-// TODO: Auto-generated Javadoc
+import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMessageManager;
+import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMesssageHandler;
+import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageHandler;
+import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
+
 /**
- * The Class AbstractTester.
+ * Abstract superclass for test classes. Ensures that the various inbound and
+ * outbound handlers are set up prior to channel creation.
+ * 
+ * @see KiSyInitializer
+ * @see KiSyInboundMesssageHandler
+ * @see KiSyOutboundMessageHandler
+ * @see KiSyInboundMessageManager
+ * @see KiSyOutboundMessageManager
  */
 public abstract class AbstractTester {
 
@@ -45,12 +56,14 @@ public abstract class AbstractTester {
 		initer.initInboundHandlers();
 		initer.initOutboundHandlers();
 	}
-	
+
 	/**
 	 * Adds the latch listener.
 	 *
-	 * @param cf the cf
-	 * @param cdl the cdl
+	 * @param cf
+	 *          the cf
+	 * @param cdl
+	 *          the cdl
 	 */
 	protected void addLatchListener(ChannelFuture cf, final CountDownLatch cdl) {
 		cf.addListener(new GenericFutureListener<ChannelFuture>() {

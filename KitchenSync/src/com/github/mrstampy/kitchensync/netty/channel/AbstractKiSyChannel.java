@@ -37,7 +37,7 @@ import com.github.mrstampy.kitchensync.netty.Bootstrapper;
 /**
  * Abstract superclass for {@link KiSyChannel} implementations.
  */
-public abstract class AbstractKiSyChannel implements KiSyChannel<DatagramChannel> {
+public abstract class AbstractKiSyChannel implements KiSyChannel {
 	private static final Logger log = LoggerFactory.getLogger(AbstractKiSyChannel.class);
 
 	/** The send future. */

@@ -19,7 +19,6 @@
 package com.github.mrstampy.kitchensync.netty.channel;
 
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.socket.DatagramChannel;
 
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
@@ -30,7 +29,7 @@ import java.net.NetworkInterface;
  * and use. Multicast channel implementations provide additional methods which
  * are specific to multicast channels.
  */
-public interface KiSyMulticastChannel extends KiSyChannel<DatagramChannel> {
+public interface KiSyMulticastChannel extends KiSyChannel {
 
 	/**
 	 * Broadcast a message to the multicast channel. If {@link #joinGroup()} has

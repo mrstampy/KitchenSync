@@ -34,9 +34,9 @@ import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.netty.channel.initializer.KiSyMessageInitializer;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class SslInitializer.
+ * SSL Initializer for test classes using a self signed certificate
+ * (KitchenSyncTesting.jks).
  */
 public class SslInitializer extends ChannelInitializer<DatagramChannel> {
 	private static final Logger log = LoggerFactory.getLogger(SslInitializer.class);
@@ -66,8 +66,11 @@ public class SslInitializer extends ChannelInitializer<DatagramChannel> {
 		context.init(kmf.getKeyManagers(), null, null);
 	}
 
-	/* (non-Javadoc)
-	 * @see io.netty.channel.ChannelInitializer#initChannel(io.netty.channel.Channel)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * io.netty.channel.ChannelInitializer#initChannel(io.netty.channel.Channel)
 	 */
 	@Override
 	protected void initChannel(DatagramChannel ch) throws Exception {

@@ -29,19 +29,24 @@ import java.net.UnknownHostException;
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyMulticastChannel;
+import com.github.mrstampy.kitchensync.netty.channel.KiSyMulticastChannel;
 import com.github.mrstampy.kitchensync.netty.channel.initializer.KiSyMessageInitializer;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class BroadcastTester.
+ * Tests multicast broadcasting by creating 3 channels and having one leave the
+ * group to send a message to the other two. This test will not run on a
+ * computer not connected to a network.<br>
+ * <br>
+ * 
+ * IPv6 addresses must be used. See ... for more information.
  */
 public class BroadcastTester extends AbstractTester {
 	private static final String MULTICAST_IP = "FF05:0:0548:c4e6:796c:0:de66:FC";
 	private static final int MULTICAST_PORT = 57962;
 
-	private AbstractKiSyMulticastChannel michael;
-	private AbstractKiSyMulticastChannel robert;
-	private AbstractKiSyMulticastChannel paul;
+	private KiSyMulticastChannel michael;
+	private KiSyMulticastChannel robert;
+	private KiSyMulticastChannel paul;
 
 	private void init() throws UnknownHostException {
 		michael = createMulticastChannel();
@@ -54,7 +59,7 @@ public class BroadcastTester extends AbstractTester {
 	 */
 	public void execute() {
 		KiSyMessage message = new KiSyMessage(michael.getMulticastAddress(), KiSyMessageType.INFO);
-		message.addMessage("greeting", "A good day to you all!");
+		message.addMessagePart("greeting", "A good day to you all!");
 
 		michael.leaveGroup();
 
@@ -76,7 +81,7 @@ public class BroadcastTester extends AbstractTester {
 	 * @throws UnknownHostException
 	 *           the unknown host exception
 	 */
-	protected AbstractKiSyMulticastChannel createMulticastChannel() throws UnknownHostException {
+	protected KiSyMulticastChannel createMulticastChannel() throws UnknownHostException {
 		AbstractKiSyMulticastChannel channel = new AbstractKiSyMulticastChannel(MULTICAST_IP, MULTICAST_PORT) {
 
 			@Override

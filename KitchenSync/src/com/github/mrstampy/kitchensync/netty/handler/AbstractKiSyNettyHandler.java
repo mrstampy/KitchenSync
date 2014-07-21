@@ -21,7 +21,6 @@ package com.github.mrstampy.kitchensync.netty.handler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.util.CharsetUtil;
 
@@ -97,7 +96,7 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	 *          the packet
 	 * @return the channel
 	 */
-	protected KiSyChannel<DatagramChannel> getChannel(DatagramPacket packet) {
+	protected KiSyChannel getChannel(DatagramPacket packet) {
 		InetSocketAddress recipient = packet.recipient();
 		return isMulticastChannel(recipient) ? getMulticastChannel(recipient) : getChannel(recipient.getPort());
 	}
@@ -120,7 +119,7 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	 *          the local
 	 * @return the multicast channel
 	 */
-	protected KiSyChannel<DatagramChannel> getMulticastChannel(InetSocketAddress local) {
+	protected KiSyChannel getMulticastChannel(InetSocketAddress local) {
 		return registry.getMulticastChannel(local);
 	}
 
@@ -131,7 +130,7 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 	 *          the port
 	 * @return the channel
 	 */
-	protected KiSyChannel<DatagramChannel> getChannel(int port) {
+	protected KiSyChannel getChannel(int port) {
 		return registry.getChannel(port);
 	}
 
@@ -257,9 +256,8 @@ public abstract class AbstractKiSyNettyHandler<MSG> extends SimpleChannelInbound
 
 	/*
 	 * Sets the custom handler.
-	 *
-	 * @param customHandler
-	 *          the custom handler
+	 * 
+	 * @param customHandler the custom handler
 	 */
 	private void setCustomHandler(KiSyInboundMessageManager<MSG> customHandler) {
 		this.customHandler = customHandler;

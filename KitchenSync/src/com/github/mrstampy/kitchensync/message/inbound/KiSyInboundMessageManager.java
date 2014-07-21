@@ -111,7 +111,7 @@ public class KiSyInboundMessageManager<MSG> {
 	 * @param channel
 	 *          the channel on which the message was received
 	 */
-	public void processMessage(MSG message, KiSyChannel<?> channel) {
+	public void processMessage(MSG message, KiSyChannel channel) {
 		log.trace("Processing message {}", message);
 
 		long start = System.nanoTime();
@@ -130,7 +130,7 @@ public class KiSyInboundMessageManager<MSG> {
 	}
 
 	private void processMessage(List<KiSyInboundMesssageHandler<MSG>> ordered, final MSG message,
-			final KiSyChannel<?> channel, final CountDownLatch cdl) {
+			final KiSyChannel channel, final CountDownLatch cdl) {
 		Observable.from(ordered, singleThreadExecutor()).subscribe(new Action1<KiSyInboundMesssageHandler<MSG>>() {
 
 			@Override

@@ -48,7 +48,7 @@ public class KiSyMessageCreator {
 	 *          the channel
 	 * @return the ki sy message
 	 */
-	public static KiSyMessage createPing(KiSyChannel<?> channel) {
+	public static KiSyMessage createPing(KiSyChannel channel) {
 		return new KiSyMessage(channel.localAddress(), KiSyMessageType.PING);
 	}
 
@@ -59,7 +59,7 @@ public class KiSyMessageCreator {
 	 *          the channel
 	 * @return the ki sy message
 	 */
-	public static KiSyMessage createPong(KiSyChannel<?> channel) {
+	public static KiSyMessage createPong(KiSyChannel channel) {
 		return new KiSyMessage(channel.localAddress(), KiSyMessageType.PONG);
 	}
 
@@ -79,8 +79,8 @@ public class KiSyMessageCreator {
 
 		KiSyMessage message = new KiSyMessage(originator, KiSyMessageType.PING_TIME);
 
-		message.addMessage("destination", destination.toString());
-		message.addMessage("pingTime", toMillis(pingTime));
+		message.addMessagePart("destination", destination.toString());
+		message.addMessagePart("pingTime", toMillis(pingTime));
 
 		return message;
 	}
@@ -104,7 +104,7 @@ public class KiSyMessageCreator {
 	 *          the message
 	 */
 	public static void addMessageOrder(KiSyMessage message) {
-		message.addMessage(MESSAGE_ORDER, Long.toString(order.getAndIncrement()));
+		message.addMessagePart(MESSAGE_ORDER, Long.toString(order.getAndIncrement()));
 	}
 
 	/**
@@ -116,11 +116,11 @@ public class KiSyMessageCreator {
 	 *          the channel
 	 * @return the ki sy message
 	 */
-	public static KiSyMessage createAck(KiSyMessage ackee, KiSyChannel<?> channel) {
+	public static KiSyMessage createAck(KiSyMessage ackee, KiSyChannel channel) {
 		KiSyMessage message = new KiSyMessage(channel.localAddress(), KiSyMessageType.ACK);
 
 		String order = ackee.getMessagePart(MESSAGE_ORDER);
-		if (!StringUtils.isEmpty(order)) message.addMessage(MESSAGE_ORDER, order);
+		if (!StringUtils.isEmpty(order)) message.addMessagePart(MESSAGE_ORDER, order);
 
 		return message;
 	}

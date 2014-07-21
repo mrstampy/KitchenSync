@@ -56,7 +56,7 @@ public class LoggingInboundMessageHandler<MSG> extends AbstractInboundKiSyMessag
 	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel)
 	 */
 	@Override
-	protected void onReceive(MSG message, KiSyChannel<?> channel) throws Exception {
+	protected void onReceive(MSG message, KiSyChannel channel) throws Exception {
 		String s = message.toString();
 		if (s.length() > 500) s = s.substring(0, 500);
 

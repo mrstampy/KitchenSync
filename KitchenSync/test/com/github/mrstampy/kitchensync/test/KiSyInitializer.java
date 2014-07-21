@@ -23,19 +23,33 @@ import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.inbound.ByteArrayInboundMessageManager;
+import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMessageManager;
+import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMesssageHandler;
 import com.github.mrstampy.kitchensync.message.inbound.KiSyMessageInboundMessageManager;
 import com.github.mrstampy.kitchensync.message.inbound.StringInboundMessageManager;
 import com.github.mrstampy.kitchensync.message.inbound.ack.AckInboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.inbound.logging.LoggingInboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.inbound.pingpong.PingInboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.inbound.pingpong.PongInboundMessageHandler;
+import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.message.outbound.logging.LoggingOutboundMessageHandler;
 import com.github.mrstampy.kitchensync.message.outbound.pingpong.PingOutboundMessageHandler;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class KiSyInitializer.
+ * The Class KiSyInitializer ensures that the inbound and outbound managers are
+ * initialized with the handlers necessary for testing.
+ * 
+ * @see KiSyInboundMesssageHandler
+ * @see KiSyOutboundMessageHandler
+ * @see KiSyInboundMessageManager
+ * @see KiSyOutboundMessageManager
+ * @see LoggingOutboundMessageHandler
+ * @see PingOutboundMessageHandler
+ * @see LoggingInboundMessageHandler
+ * @see PingInboundMessageHandler
+ * @see PongInboundMessageHandler
+ * @see AckInboundMessageHandler
  */
 @SuppressWarnings("rawtypes")
 public class KiSyInitializer {

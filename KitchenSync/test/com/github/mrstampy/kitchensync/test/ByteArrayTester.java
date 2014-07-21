@@ -26,16 +26,17 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 import java.util.concurrent.CountDownLatch;
 
 import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyChannel;
+import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 import com.github.mrstampy.kitchensync.netty.channel.initializer.ByteArrayMessageInitializer;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ByteArrayTester.
+ * Sends 100 byte array messages from one channel to another. Logging at debug
+ * level will show the message processing.
  */
 public class ByteArrayTester extends AbstractTester {
 
-	private AbstractKiSyChannel channel;
-	private AbstractKiSyChannel channel2;
+	private KiSyChannel channel;
+	private KiSyChannel channel2;
 
 	private void execute() {
 		channel = initChannel();
@@ -54,7 +55,7 @@ public class ByteArrayTester extends AbstractTester {
 	 *
 	 * @return the default ki sy channel
 	 */
-	protected AbstractKiSyChannel initChannel() {
+	protected KiSyChannel initChannel() {
 		AbstractKiSyChannel channel = new AbstractKiSyChannel() {
 
 			@Override

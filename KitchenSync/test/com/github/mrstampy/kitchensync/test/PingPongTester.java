@@ -25,18 +25,23 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 
 import java.util.concurrent.CountDownLatch;
 
+import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
+import com.github.mrstampy.kitchensync.message.KiSyMessageType;
 import com.github.mrstampy.kitchensync.netty.channel.AbstractPortSpecificKiSyChannel;
+import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 import com.github.mrstampy.kitchensync.netty.channel.initializer.KiSyMessageInitializer;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class PingPongTester.
+ * Creates port specific channels (56789, 56790) and sends 100
+ * {@link KiSyMessage} pings from the former to the later. Logging at info level
+ * will show the {@link KiSyMessageType#PING_TIME} messages generated and debug
+ * level will show the message processing.
  */
 public class PingPongTester extends AbstractTester {
 
-	private AbstractPortSpecificKiSyChannel channel;
-	private AbstractPortSpecificKiSyChannel channel2;
+	private KiSyChannel channel;
+	private KiSyChannel channel2;
 
 	private void execute() {
 		channel = initChannel(56789);
@@ -57,7 +62,7 @@ public class PingPongTester extends AbstractTester {
 	 *          the port
 	 * @return the default port specific ki sy channel
 	 */
-	protected AbstractPortSpecificKiSyChannel initChannel(int port) {
+	protected KiSyChannel initChannel(int port) {
 		AbstractPortSpecificKiSyChannel channel = new AbstractPortSpecificKiSyChannel(port) {
 
 			@Override
