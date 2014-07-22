@@ -26,6 +26,10 @@ You rise to leave when you hear your boss - "Ah ah ah - what do we say?"
 
 Special Agent Roedick, KitchenSync is just the thing for you!
 
+# Quickstart
+
+* [Example code](https://github.com/mrstampy/KitchenSync/tree/master/KitchenSync/test/com/github/mrstampy/kitchensync/test)
+
 # KitchenSync Architecture
 
 KitchenSync is a Java Library for non-centralized network communication between separate processes using the [UDP](http://en.wikipedia.org/wiki/User_Datagram_Protocol) protocol.  Channels can be created as multicast channels which allow broadcasting of messages to all connected channels, port-specific channels or next-port-available channels and are intended to be easily created and destroyed as required. It is built on top of [Netty](http://netty.io) and is designed to be simple to understand and use while providing the ability to customise individual channels.  
