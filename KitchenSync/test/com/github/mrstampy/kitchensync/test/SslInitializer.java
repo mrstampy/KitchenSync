@@ -32,7 +32,7 @@ import javax.net.ssl.SSLContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.mrstampy.kitchensync.netty.channel.initializer.KiSyMessageInitializer;
+import com.github.mrstampy.kitchensync.netty.handler.KiSyMessageHandler;
 
 /**
  * SSL Initializer for test classes using a self signed certificate
@@ -77,7 +77,7 @@ public class SslInitializer extends ChannelInitializer<DatagramChannel> {
 		ChannelPipeline pipeline = ch.pipeline();
 
 		pipeline.addLast(new SslHandler(context.createSSLEngine()));
-		pipeline.addLast(new KiSyMessageInitializer());
+		pipeline.addLast(new KiSyMessageHandler());
 	}
 
 }
