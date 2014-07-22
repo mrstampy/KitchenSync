@@ -20,6 +20,7 @@ package com.github.mrstampy.kitchensync.netty.channel;
 
 import io.netty.channel.ChannelFuture;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 
@@ -78,4 +79,12 @@ public interface KiSyMulticastChannel extends KiSyChannel {
 	 * @return the network interface
 	 */
 	NetworkInterface getNetworkInterface();
+
+	/**
+	 * Blocks messages from the specified source.
+	 * 
+	 * @param sourceToBlock
+	 * @return true if successful
+	 */
+	boolean block(InetAddress sourceToBlock);
 }

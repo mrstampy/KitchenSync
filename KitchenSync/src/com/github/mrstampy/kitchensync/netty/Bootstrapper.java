@@ -507,6 +507,38 @@ public class Bootstrapper {
 	}
 
 	/**
+	 * Block the given sourceToBlock address for the given multicastAddress
+	 * channel.
+	 * 
+	 * @param channel
+	 * @param sourceToBlock
+	 * @return true if blocked
+	 */
+	public boolean block(DatagramChannel channel, InetAddress sourceToBlock) {
+		if (sourceToBlock == null) {
+			log.error("source cannot be null");
+			return false;
+		}
+
+		if (!isMulticastChannel(channel)) {
+			log.error("Not a multicast channel, cannot block {}", sourceToBlock);
+			return false;
+		}
+
+		InetSocketAddress multicast = getMulticastAddress(channel);
+		NetworkInterface ni = getNetworkInterface(channel);
+
+		ChannelFuture cf = channel.block(multicast.getAddress(), ni, sourceToBlock);
+
+		CountDownLatch latch = new CountDownLatch(1);
+		cf.addListener(getBlockListener(multicast, latch, sourceToBlock));
+
+		await(latch, "Multicast block timed out");
+
+		return cf.isSuccess();
+	}
+
+	/**
 	 * Gets the multicast address, null if not a multicast channel.
 	 *
 	 * @param channel
@@ -625,6 +657,30 @@ public class Bootstrapper {
 							log.error("Could not leave multicast group for {}", multicast);
 						} else {
 							log.error("Could not leave multicast group for {}", multicast, cause);
+						}
+					}
+				} finally {
+					latch.countDown();
+				}
+			}
+		};
+	}
+
+	private GenericFutureListener<ChannelFuture> getBlockListener(final InetSocketAddress multicast,
+			final CountDownLatch latch, final InetAddress sourceToBlock) {
+		return new GenericFutureListener<ChannelFuture>() {
+
+			@Override
+			public void operationComplete(ChannelFuture future) throws Exception {
+				try {
+					if (future.isSuccess()) {
+						log.debug("Multicast channel {} now blocking {}", multicast, sourceToBlock);
+					} else {
+						Throwable cause = future.cause();
+						if (cause == null) {
+							log.error("Could not block {} from {}", sourceToBlock, multicast);
+						} else {
+							log.error("Could not block {} from {}", sourceToBlock, multicast, cause);
 						}
 					}
 				} finally {

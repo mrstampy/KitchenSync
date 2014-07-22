@@ -24,6 +24,7 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import java.net.Inet6Address;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
@@ -234,6 +235,16 @@ public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel i
 	 */
 	public NetworkInterface getNetworkInterface() {
 		return networkInterface;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.mrstampy.kitchensync.netty.channel.KiSyMulticastChannel#
+	 * block(InetAddress)
+	 */
+	public boolean block(InetAddress sourceToBlock) {
+		return bootstrapper.block(getChannel(), sourceToBlock);
 	}
 
 	/*
