@@ -63,7 +63,7 @@ The [ChannelInitializer](http://netty.io/4.0/api/io/netty/channel/ChannelInitial
 		ChannelPipeline pipeline = ch.pipeline();
 
 		pipeline.addLast(new SslHandler(context.createSSLEngine()));
-		pipeline.addLast(new KiSyMessageInitializer());
+		pipeline.addLast(new KiSyMessageHandler());
 	}
 
 KiSyChannels can send and receive one of three types of messages by default - [byte arrays](https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/initializer/ByteArrayMessageInitializer.java), [strings](https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/initializer/StringMessageInitializer.java) or [KiSyMessage](https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/initializer/KiSyMessageInitializer.java)s.
