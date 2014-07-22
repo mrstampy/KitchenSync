@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Kitchensync by mrstampy</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/mrstampy/KitchenSync">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/mrstampy/KitchenSync/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/mrstampy/KitchenSync/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Kitchensync</h1>
+          <p>Java Library for Distributed Communication</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/mrstampy">mrstampy</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
+<a name="a-java-library-for-distributed-communication" class="anchor" href="#a-java-library-for-distributed-communication"><span class="octicon octicon-link"></span></a>A Java Library for Distributed Communication</h1>
+
+<p>You are special agent Michael Roedick in charge of covert ops software development at the NSA.  Keith Alexander has just called you into his <a href="http://www.businessinsider.com.au/the-us-army-star-trek-command-center-2013-9">office</a> to discuss the requirements for software to support a covert programme.</p>
+
+<p>"Hi Michael, thanks for beaming in.  Good to see you.  Take a seat.  I trust you read the brief regarding <a href="http://www.urbandictionary.com/define.php?term=gang%20stalking">Operation FUBAR</a>?"</p>
+
+<p>"Yes I did.  So what kind of software do the operatives need?"</p>
+
+<p>"It has to allow communication between field operatives and allow broadcasting of messages to groups.  This includes text, images, videos…"</p>
+
+<p>"Ok, what is the use case for it?"</p>
+
+<p>"Right. The <a href="http://www.urbandictionary.com/define.php?term=targeted%20individual">TI</a> will be monitored by agents around the domicile.  The software needs to be able to send false data to other operatives on a regular basis to provide plausible deniability.  The operation data will be encrypted and the connections between operatives must be encrypted.   When the TI leaves the agents around the domicile will need to send messages to alert agents in the field of the TI's movements. It needs to happen in near-realtime in order to coordinate the various operations each group must undertake."</p>
+
+<p>"Ok, so the <a href="http://www.urbandictionary.com/define.php?term=street%20theater">street theatre</a> operatives and <a href="http://www.urbandictionary.com/define.php?term=Gaslighting">gaslighting</a> operatives can coordinate based on whether the TI is in the vicinity or not, right?"</p>
+
+<p>"Exactly.  And it needs to be able to send pictures and video to either individual operatives or groups.  The groups need to be easily created, communicated and destroyed on demand.  And you'll need to use some open source libraries to disguise the software.  You know, like what we did for Linux.  Say, you still in touch with Linus?"</p>
+
+<p>"I send him a fruit basket every Christmas.  I think I've got it, and I know where to start."</p>
+
+<p>You rise to leave when you hear your boss - "Ah ah ah - what do we say?"</p>
+
+<p>"Whoops...Permission to leave the bridge sir."</p>
+
+<p>"Permission granted."</p>
+
+<p>Special Agent Roedick, KitchenSync is just the thing for you!</p>
+
+<h1>
+<a name="quickstart" class="anchor" href="#quickstart"><span class="octicon octicon-link"></span></a>Quickstart</h1>
+
+<ul>
+<li>Ivy dependency - &lt;dependency org="com.github.mrstampy" name="KitchenSync" rev="1.0"/&gt;</li>
+<li><a href="https://github.com/mrstampy/KitchenSync/tree/master/KitchenSync/test/com/github/mrstampy/kitchensync/test">Example code</a></li>
+</ul><h1>
+<a name="kitchensync-architecture" class="anchor" href="#kitchensync-architecture"><span class="octicon octicon-link"></span></a>KitchenSync Architecture</h1>
+
+<p>KitchenSync is a Java Library for non-centralized network communication between separate processes using the <a href="http://en.wikipedia.org/wiki/User_Datagram_Protocol">UDP</a> protocol.  Channels can be created as multicast channels which allow broadcasting of messages to all connected channels, port-specific channels or next-port-available channels and are intended to be easily created and destroyed as required. It is built on top of <a href="http://netty.io">Netty</a> and is designed to be simple to understand and use while providing the ability to customise individual channels.  </p>
+
+<p>Two interfaces - <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/KiSyChannel.java">KiSyChannel</a> and <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/KiSyMulticastChannel.java">KiSyMulticastChannel</a> - provide the API for network communication.  Three abstract implementations - <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/AbstractKiSyChannel.java">AbstractKiSyChannel</a>, <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/AbstractPortSpecificKiSyChannel.java">AbstractPortSpecificKiSyChannel</a>, and <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/AbstractKiSyMulticastChannel.java">AbstractKiSyMulticastChannel</a> - exist for ease of channel creation:</p>
+
+<pre><code>protected KiSyChannel initChannel() {
+    AbstractKiSyChannel channel = new AbstractKiSyChannel() {
+
+        @Override
+        protected ChannelInitializer&lt;DatagramChannel&gt; initializer() {
+            return new SslInitializer();
+        }
+
+        @Override
+        protected Class&lt;? extends DatagramChannel&gt; getChannelClass() {
+            return NioDatagramChannel.class;
+        }
+
+    };
+
+    channel.bind();
+
+    return channel;
+}
+</code></pre>
+
+<p>The <a href="http://netty.io/4.0/api/io/netty/channel/ChannelInitializer.html">ChannelInitializer</a> is a Netty class which is used to initialise a <a href="http://netty.io/4.0/api/io/netty/bootstrap/Bootstrap.html">Bootstrap</a> object for the channel and is ignored if the Bootstrap <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/DefaultChannelRegistry.java">already exists</a>.  <a href="http://netty.io/4.0/api/io/netty/channel/ChannelHandler.html">Netty channel handlers</a> are added to the channel's pipeline in the implementation of the ChannelInitializer to control the channel's behaviour such as using SSL for connections:</p>
+
+<pre><code>@Override
+protected void initChannel(DatagramChannel ch) throws Exception {
+    ChannelPipeline pipeline = ch.pipeline();
+
+    pipeline.addLast(new SslHandler(context.createSSLEngine()));
+    pipeline.addLast(new KiSyMessageHandler());
+}
+</code></pre>
+
+<p>KiSyChannels can send and receive one of three types of messages by default - <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/initializer/ByteArrayMessageInitializer.java">byte arrays</a>, <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/initializer/StringMessageInitializer.java">strings</a> or <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/initializer/KiSyMessageInitializer.java">KiSyMessage</a>s.</p>
+
+<h2>
+<a name="inbound-and-outbound" class="anchor" href="#inbound-and-outbound"><span class="octicon octicon-link"></span></a>Inbound and Outbound</h2>
+
+<p>KitchenSync adds to the Netty architecture - which provides the ability to add custom handlers to interface with applications - by providing <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/message/inbound/KiSyInboundMessageManager.java">inbound</a> and <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/message/outbound/KiSyOutboundMessageManager.java">outbound</a> message managers which are initialised on application startup to apply <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/message/inbound/KiSyInboundMesssageHandler.java">inbound</a> and <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/message/outbound/KiSyOutboundMessageHandler.java">outbound</a> application specific KitchenSync handler implementations to messages.  This separates channel configuration (in the ChannelInitializer) from message processing such as logging of messages, persistence of messages, autonomous event triggering on message, etc.  The handlers' execution is ordered to allow sequential operations to take place.  Note that the handlers exist for preparation of messages for processing by the application and execution of any presend logic.  Any significant processing of the message should be done on a separate thread.  Strictly speaking only one implementation is necessary - inbound, to pull messages into the application.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
