@@ -28,6 +28,7 @@ Special Agent Roedick, KitchenSync is just the thing for you!
 
 # Quickstart
 
+* Ivy dependency - &lt;dependency org="com.github.mrstampy" name="KitchenSync" rev="1.0"/&gt;
 * [Example code](https://github.com/mrstampy/KitchenSync/tree/master/KitchenSync/test/com/github/mrstampy/kitchensync/test)
 
 # KitchenSync Architecture
