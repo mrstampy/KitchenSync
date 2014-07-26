@@ -20,7 +20,6 @@ package com.github.mrstampy.kitchensync.netty;
 
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -32,7 +31,6 @@ import io.netty.channel.oio.OioEventLoopGroup;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.channel.socket.oio.OioDatagramChannel;
-import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import java.net.InetAddress;
@@ -73,8 +71,6 @@ public class Bootstrapper {
 	private static final Logger log = LoggerFactory.getLogger(Bootstrapper.class);
 
 	private static final int DEFAULT_BOOTSTRAP_KEY = -1;
-	private static final AttributeKey<NetworkInterface> NI_KEY = AttributeKey.valueOf("KitchenSync Network Interface");
-	private static final AttributeKey<InetSocketAddress> ISA_KEY = AttributeKey.valueOf("KitchenSync Multicast Address");
 
 	/** The Constant INSTANCE. */
 	public static final Bootstrapper INSTANCE = new Bootstrapper();
@@ -449,39 +445,6 @@ public class Bootstrapper {
 		return cf.isSuccess() ? (CHANNEL) cf.channel() : null;
 	}
 
-	/**
-	 * Gets the multicast address, null if not a multicast channel.
-	 *
-	 * @param channel
-	 *          the channel
-	 * @return the multicast address
-	 */
-	public InetSocketAddress getMulticastAddress(Channel channel) {
-		return channel == null ? null : channel.attr(ISA_KEY).get();
-	}
-
-	/**
-	 * Gets the network interface, null if not a multicast channel.
-	 *
-	 * @param channel
-	 *          the channel
-	 * @return the network interface
-	 */
-	public NetworkInterface getNetworkInterface(Channel channel) {
-		return channel == null ? null : channel.attr(NI_KEY).get();
-	}
-
-	/**
-	 * Checks if is multicast channel.
-	 *
-	 * @param channel
-	 *          the channel
-	 * @return true, if checks if is multicast channel
-	 */
-	public boolean isMulticastChannel(Channel channel) {
-		return getMulticastAddress(channel) != null && getNetworkInterface(channel) != null;
-	}
-
 	private GenericFutureListener<ChannelFuture> getBindListener(final int port, final CountDownLatch latch) {
 		return new GenericFutureListener<ChannelFuture>() {
 
@@ -647,9 +610,6 @@ public class Bootstrapper {
 		Bootstrap b = bootstrap(initializer, multicast.getPort(), clazz);
 
 		b.option(ChannelOption.IP_MULTICAST_IF, networkInterface);
-
-		b.attr(NI_KEY, networkInterface);
-		b.attr(ISA_KEY, multicast);
 
 		return b;
 	}

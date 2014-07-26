@@ -38,6 +38,13 @@ public interface KiSyChannel {
 	 * @return true, if checks if is active
 	 */
 	boolean isActive();
+	
+	/**
+	 * Returns true if the implementation binds to a multicast address
+	 * 
+	 * @return
+	 */
+	boolean isMulticastChannel();
 
 	/**
 	 * Bind to the specified port.

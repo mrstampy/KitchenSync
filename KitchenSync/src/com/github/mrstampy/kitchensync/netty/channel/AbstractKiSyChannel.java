@@ -386,6 +386,17 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 			log.error("Unexpected interruption for {}", error, e);
 		}
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel#isMulticastChannel()
+	 */
+	@Override
+	public boolean isMulticastChannel() {
+		return false;
+	}
 
 	/**
 	 * Gets the bootstrapper.
