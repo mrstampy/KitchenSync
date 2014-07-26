@@ -26,9 +26,14 @@ You rise to leave when you hear your boss - "Ah ah ah - what do we say?"
 
 Special Agent Roedick, KitchenSync is just the thing for you!
 
+# Release 1.1
+
+* Added isMulticastChannel to KiSyChannel interface, implemented in abstract superclasses
+* Code reorganization
+
 # Quickstart
 
-* Ivy dependency - &lt;dependency org="com.github.mrstampy" name="KitchenSync" rev="1.0"/&gt;
+* Ivy dependency - &lt;dependency org="com.github.mrstampy" name="KitchenSync" rev="1.1"/&gt;
 * [Example code](https://github.com/mrstampy/KitchenSync/tree/master/KitchenSync/test/com/github/mrstampy/kitchensync/test)
 
 # KitchenSync Architecture
