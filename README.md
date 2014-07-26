@@ -26,7 +26,7 @@ You rise to leave when you hear your boss - "Ah ah ah - what do we say?"
 
 Special Agent Roedick, KitchenSync is just the thing for you!
 
-# Release 1.1
+# Release 1.1 - July 26, 2014
 
 * Added isMulticastChannel to KiSyChannel interface, implemented in abstract superclasses
 * Code reorganization
