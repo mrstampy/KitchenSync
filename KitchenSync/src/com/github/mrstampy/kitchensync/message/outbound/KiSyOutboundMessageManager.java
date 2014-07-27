@@ -119,7 +119,7 @@ public class KiSyOutboundMessageManager {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private <MSG> List<KiSyOutboundMessageHandler<MSG>> getHandlersForMessage(MSG message, InetSocketAddress recipient) {
 		List<KiSyOutboundMessageHandler<MSG>> relevant = new ArrayList<KiSyOutboundMessageHandler<MSG>>();
 
@@ -127,7 +127,7 @@ public class KiSyOutboundMessageManager {
 
 		while (it.hasNext()) {
 			try {
-				KiSyOutboundMessageHandler<MSG> handler = (KiSyOutboundMessageHandler<MSG>) it.next();
+				KiSyOutboundMessageHandler handler = it.next();
 				if (handler.isForMessage(message, recipient)) relevant.add(handler);
 			} catch (Exception e) {
 				log.debug("Handler not typed for {}", message, e);
