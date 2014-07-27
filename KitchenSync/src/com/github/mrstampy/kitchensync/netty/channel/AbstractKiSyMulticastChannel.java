@@ -244,6 +244,8 @@ public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel i
 	 */
 	@Override
 	public boolean block(InetAddress sourceToBlock) {
+		if (!isActive()) return false;
+
 		ChannelFuture cf = getChannel().block(getMulticastAddress().getAddress(), getNetworkInterface(), sourceToBlock);
 
 		CountDownLatch latch = new CountDownLatch(1);

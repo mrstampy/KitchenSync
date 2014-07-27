@@ -20,6 +20,8 @@ package com.github.mrstampy.kitchensync.message.outbound;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -60,9 +62,19 @@ public class KiSyOutboundMessageManager {
 	 *          the hndlrs
 	 */
 	public void addOutboundHandlers(KiSyOutboundMessageHandler<?>... hndlrs) {
+		if(hndlrs == null || hndlrs.length == 0) return;
+		
+		addAllOutboundHandlers(Arrays.asList(hndlrs));
+	}
+	
+	public void addAllOutboundHandlers(Collection<KiSyOutboundMessageHandler<?>> hndlrs) {
+		if(hndlrs == null || hndlrs.isEmpty()) return;
+		
 		for (KiSyOutboundMessageHandler<?> handler : hndlrs) {
 			if (!handlers.contains(handler)) handlers.add(handler);
 		}
+		
+		Collections.sort(handlers, comparator);
 	}
 
 	/**
@@ -121,8 +133,6 @@ public class KiSyOutboundMessageManager {
 				log.debug("Handler not typed for {}", message, e);
 			}
 		}
-
-		if (!relevant.isEmpty()) Collections.sort(relevant, comparator);
 
 		return relevant;
 	}

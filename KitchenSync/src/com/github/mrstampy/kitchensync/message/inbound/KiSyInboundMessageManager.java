@@ -50,13 +50,12 @@ import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
  * @param <MSG>
  *          the generic type
  */
-@SuppressWarnings("rawtypes")
 public class KiSyInboundMessageManager<MSG> {
 	private static final Logger log = LoggerFactory.getLogger(KiSyInboundMessageManager.class);
 
-	private List<KiSyInboundMesssageHandler> messageHandlers = new ArrayList<KiSyInboundMesssageHandler>();
+	private List<KiSyInboundMesssageHandler<?>> messageHandlers = new ArrayList<KiSyInboundMesssageHandler<?>>();
 
-	private HandlerComparator<MSG> handlerComparator = new HandlerComparator<MSG>();
+	private HandlerComparator handlerComparator = new HandlerComparator();
 
 	private Scheduler scheduler = Schedulers.computation();
 
@@ -69,7 +68,7 @@ public class KiSyInboundMessageManager<MSG> {
 	 * @param handlers
 	 *          the handlers
 	 */
-	public void addMessageHandlers(KiSyInboundMesssageHandler... handlers) {
+	public void addMessageHandlers(KiSyInboundMesssageHandler<?>... handlers) {
 		if (handlers == null || handlers.length == 0) return;
 
 		addAllMessageHandlers(Arrays.asList(handlers));
@@ -82,8 +81,11 @@ public class KiSyInboundMessageManager<MSG> {
 	 * @param handlers
 	 *          the handlers
 	 */
-	public void addAllMessageHandlers(Collection<KiSyInboundMesssageHandler> handlers) {
+	public void addAllMessageHandlers(Collection<KiSyInboundMesssageHandler<?>> handlers) {
+		if (handlers == null || handlers.isEmpty()) return;
+
 		messageHandlers.addAll(handlers);
+		Collections.sort(messageHandlers, handlerComparator);
 	}
 
 	/**
@@ -92,7 +94,9 @@ public class KiSyInboundMessageManager<MSG> {
 	 * @param handler
 	 *          the handler
 	 */
-	public void removeMessageHandler(KiSyInboundMesssageHandler handler) {
+	public void removeMessageHandler(KiSyInboundMesssageHandler<?> handler) {
+		if (handler == null) return;
+
 		messageHandlers.remove(handler);
 	}
 
@@ -172,29 +176,27 @@ public class KiSyInboundMessageManager<MSG> {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private List<KiSyInboundMesssageHandler<MSG>> getHandlersForMessage(MSG message) {
 		List<KiSyInboundMesssageHandler<MSG>> ordered = new ArrayList<KiSyInboundMesssageHandler<MSG>>();
 
-		ListIterator<KiSyInboundMesssageHandler> it = messageHandlers.listIterator();
+		ListIterator<KiSyInboundMesssageHandler<?>> it = messageHandlers.listIterator();
 		while (it.hasNext()) {
 			try {
-				KiSyInboundMesssageHandler<MSG> handler = it.next();
+				KiSyInboundMesssageHandler handler = it.next();
 				if (handler.canHandleMessage(message)) ordered.add((KiSyInboundMesssageHandler<MSG>) handler);
 			} catch (Exception e) {
 				log.debug("Handler not applicable for message {}", message, e);
 			}
 		}
 
-		if (!ordered.isEmpty()) Collections.sort(ordered, handlerComparator);
-
 		return ordered;
 	}
 
-	private static class HandlerComparator<MSG> implements Comparator<KiSyInboundMesssageHandler<MSG>> {
+	private static class HandlerComparator implements Comparator<KiSyInboundMesssageHandler<?>> {
 
 		@Override
-		public int compare(KiSyInboundMesssageHandler<MSG> kisy1, KiSyInboundMesssageHandler<MSG> kisy2) {
+		public int compare(KiSyInboundMesssageHandler<?> kisy1, KiSyInboundMesssageHandler<?> kisy2) {
 			return kisy1.getExecutionOrder() - kisy2.getExecutionOrder();
 		}
 
