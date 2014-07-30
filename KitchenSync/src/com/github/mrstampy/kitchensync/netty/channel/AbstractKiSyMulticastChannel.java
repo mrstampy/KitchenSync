@@ -296,6 +296,17 @@ public abstract class AbstractKiSyMulticastChannel extends AbstractKiSyChannel i
 	public boolean isMulticastChannel() {
 		return true;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel#isPortSpecificChannel()
+	 */
+	@Override
+	public boolean isPortSpecificChannel() {
+		return true;
+	}
 
 	/**
 	 * Creates the multicast key from {@link #getMulticastAddress()}.

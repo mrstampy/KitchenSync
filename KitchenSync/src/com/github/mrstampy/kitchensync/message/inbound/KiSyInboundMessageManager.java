@@ -39,6 +39,7 @@ import rx.schedulers.Schedulers;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
+import com.github.mrstampy.kitchensync.util.SingleThreadExecutorSchedulerProvider;
 
 /**
  * The Class KiSyInboundMessageManager processes inbound messages using the

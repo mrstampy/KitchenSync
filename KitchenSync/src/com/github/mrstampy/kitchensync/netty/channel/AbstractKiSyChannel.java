@@ -397,6 +397,17 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 	public boolean isMulticastChannel() {
 		return false;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel#isPortSpecificChannel()
+	 */
+	@Override
+	public boolean isPortSpecificChannel() {
+		return false;
+	}
 
 	/**
 	 * Gets the bootstrapper.

@@ -16,7 +16,7 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * 
  */
-package com.github.mrstampy.kitchensync.message.inbound;
+package com.github.mrstampy.kitchensync.util;
 
 import java.util.ArrayList;
 import java.util.List;

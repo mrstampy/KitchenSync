@@ -45,6 +45,13 @@ public interface KiSyChannel {
 	 * @return
 	 */
 	boolean isMulticastChannel();
+	
+	/**
+	 * Returns true if the implementation only binds to a specific port
+	 * 
+	 * @return
+	 */
+	boolean isPortSpecificChannel();
 
 	/**
 	 * Bind to the specified port.
