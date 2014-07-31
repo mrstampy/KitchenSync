@@ -22,7 +22,6 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.DatagramPacket;
-import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import java.net.InetSocketAddress;
@@ -386,10 +385,10 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 	protected void setChannel(DatagramChannel channel) {
 		this.channel = channel;
 
-		channel.closeFuture().addListener(new GenericFutureListener<Future<Void>>() {
+		channel.closeFuture().addListener(new GenericFutureListener<ChannelFuture>() {
 
 			@Override
-			public void operationComplete(Future<Void> future) throws Exception {
+			public void operationComplete(ChannelFuture future) throws Exception {
 				registry.removeChannel(AbstractKiSyChannel.this);
 				active.set(false);
 			}
