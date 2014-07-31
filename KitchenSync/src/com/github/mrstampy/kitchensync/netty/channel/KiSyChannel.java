@@ -113,7 +113,7 @@ public interface KiSyChannel {
 	InetSocketAddress localAddress();
 
 	/**
-	 * Returns true if the override byte buf creator has not been set.
+	 * Returns true if the override {@link ByteBufCreator} has not been set.
 	 * 
 	 * @return
 	 * @see ByteArrayByteBufCreator
