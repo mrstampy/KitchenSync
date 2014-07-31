@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -153,6 +154,8 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 	//@formatter:on
 
 	private ByteBufCreator byteBufCreator = null;
+	
+	private AtomicBoolean active = new AtomicBoolean(false);
 
 	/**
 	 * Implementations return the <a
@@ -194,7 +197,7 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 	 */
 	@Override
 	public boolean isActive() {
-		return getChannel() != null && getChannel().isActive();
+		return active.get();
 	}
 
 	/*
@@ -388,8 +391,11 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 			@Override
 			public void operationComplete(Future<Void> future) throws Exception {
 				registry.removeChannel(AbstractKiSyChannel.this);
+				active.set(false);
 			}
 		});
+		
+		active.set(true);
 	}
 
 	/**
