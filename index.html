@@ -68,6 +68,14 @@
 <p>Special Agent Roedick, KitchenSync is just the thing for you!</p>
 
 <h1>
+<a name="release-12---july-31-2014" class="anchor" href="#release-12---july-31-2014"><span class="octicon octicon-link"></span></a>Release 1.2 - July 31, 2014</h1>
+
+<ul>
+<li>Added isPortSpecificChannel to KiSyChannel interface, implemented in abstract superclasses</li>
+<li>More efficient sorting of inbound and outbound handlers</li>
+<li>Added <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/payload/ByteBufCreator.java">ByteBufCreator</a> interface to allow <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/KiSyChannel.java">KiSyChannels</a> to easily override the default message creation (strings, byte arrays and <a href="https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/message/KiSyMessage.java">KiSyMessages</a>.</li>
+<li>generics fix in inbound and outbound managers</li>
+</ul><h1>
 <a name="release-11---july-26-2014" class="anchor" href="#release-11---july-26-2014"><span class="octicon octicon-link"></span></a>Release 1.1 - July 26, 2014</h1>
 
 <ul>
