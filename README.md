@@ -26,6 +26,13 @@ You rise to leave when you hear your boss - "Ah ah ah - what do we say?"
 
 Special Agent Roedick, KitchenSync is just the thing for you!
 
+# Release 1.2 - July 31, 2014
+
+* Added isPortSpecificChannel to KiSyChannel interface, implemented in abstract superclasses
+* More efficient sorting of inbound and outbound handlers
+* Added [ByteBufCreator](https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/payload/ByteBufCreator.java) interface to allow [KiSyChannels](https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/netty/channel/KiSyChannel.java) to easily override the default message creation (strings, byte arrays and [KiSyMessages](https://github.com/mrstampy/KitchenSync/blob/master/KitchenSync/src/com/github/mrstampy/kitchensync/message/KiSyMessage.java).
+* generics fix in inbound and outbound managers
+
 # Release 1.1 - July 26, 2014
 
 * Added isMulticastChannel to KiSyChannel interface, implemented in abstract superclasses
