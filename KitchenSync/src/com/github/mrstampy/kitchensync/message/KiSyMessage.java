@@ -31,13 +31,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.mrstampy.kitchensync.message.inbound.ack.AckInboundMessageHandler;
-import com.github.mrstampy.kitchensync.netty.channel.PacketCreator;
+import com.github.mrstampy.kitchensync.netty.channel.payload.ByteBufCreator;
 import com.github.mrstampy.kitchensync.netty.handler.KiSyMessageHandler;
 
 /**
  * This class exists as a demonstration of what is possible with KitchenSync,
  * however it can be used as-is for messaging. It is serialized to and from Json
- * - see {@link KiSyMessageHandler} and {@link PacketCreator} for details. The
+ * - see {@link KiSyMessageHandler} and {@link ByteBufCreator} for details. The
  * {@link #getTypes()} define the type of message and the
  * {@link #addMessagePart(String, String)} method allows an arbitrary number of
  * key/value pairs to be included in the message.

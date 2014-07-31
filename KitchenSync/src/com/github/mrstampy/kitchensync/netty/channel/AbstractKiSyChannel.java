@@ -21,10 +21,14 @@ package com.github.mrstampy.kitchensync.netty.channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.DatagramChannel;
+import io.netty.channel.socket.DatagramPacket;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import java.net.InetSocketAddress;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +38,10 @@ import org.slf4j.LoggerFactory;
 import com.github.mrstampy.kitchensync.message.inbound.KiSyInboundMessageManager;
 import com.github.mrstampy.kitchensync.message.outbound.KiSyOutboundMessageManager;
 import com.github.mrstampy.kitchensync.netty.Bootstrapper;
+import com.github.mrstampy.kitchensync.netty.channel.payload.ByteArrayByteBufCreator;
+import com.github.mrstampy.kitchensync.netty.channel.payload.ByteBufCreator;
+import com.github.mrstampy.kitchensync.netty.channel.payload.KiSyMessageByteBufCreator;
+import com.github.mrstampy.kitchensync.netty.channel.payload.StringByteBufCreator;
 
 //@formatter:off
 /**
@@ -129,9 +137,6 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 	/** The registry. */
 	protected DefaultChannelRegistry registry = DefaultChannelRegistry.INSTANCE;
 
-	/** The message processor. */
-	protected PacketCreator messageProcessor = new PacketCreator();
-
 	/** The outbound manager. */
 	protected KiSyOutboundMessageManager outboundManager = KiSyOutboundMessageManager.INSTANCE;
 
@@ -139,6 +144,15 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 
 	/** The bootstrapper. */
 	protected Bootstrapper bootstrapper;
+
+	//@formatter:off
+	private static final List<ByteBufCreator> defaultCreators = Arrays.asList(
+			new ByteArrayByteBufCreator(),
+			new StringByteBufCreator(), 
+			new KiSyMessageByteBufCreator());
+	//@formatter:on
+
+	private ByteBufCreator byteBufCreator = null;
 
 	/**
 	 * Implementations return the <a
@@ -216,8 +230,8 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 	}
 
 	/**
-	 * Creates the message for sending down the socket from the specified message
-	 * ie. returns a DatagramPacket using the specified byte array.
+	 * Creates a DatagramPacket for sending down the socket from the specified
+	 * message.
 	 *
 	 * @param <MSG>
 	 *          the generic type
@@ -226,10 +240,38 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 	 * @param address
 	 *          the address
 	 * @return the object
-	 * @see PacketCreator
+	 * @see ByteBufCreator
+	 * @see #setByteBufCreator(ByteBufCreator)
+	 * @see #usesDefaultByteBufCreators()
 	 */
-	protected <MSG extends Object> Object createMessage(MSG message, InetSocketAddress address) {
-		return messageProcessor.createPacket(message, address);
+	protected <MSG extends Object> DatagramPacket createMessage(MSG message, InetSocketAddress address) {
+		ByteBufCreator creator = getCreator(message, address);
+
+		if (creator == null) {
+			log.error("Cannot determine ByteBufCreator for message {}, recipient {}", message, address);
+			return null;
+		}
+
+		return new DatagramPacket(creator.createByteBuf(message, address), address);
+	}
+
+	private <MSG extends Object> ByteBufCreator getCreator(MSG message, InetSocketAddress address) {
+		return usesDefaultByteBufCreators() ? getDefaultCreator(message, address) : getOverrideCreator(message, address);
+	}
+
+	private <MSG extends Object> ByteBufCreator getOverrideCreator(MSG message, InetSocketAddress address) {
+		return byteBufCreator.isForMessage(message, address) ? byteBufCreator : null;
+	}
+
+	private <MSG extends Object> ByteBufCreator getDefaultCreator(MSG message, InetSocketAddress address) {
+		ListIterator<ByteBufCreator> it = defaultCreators.listIterator();
+
+		while (it.hasNext()) {
+			ByteBufCreator creator = it.next();
+			if (creator.isForMessage(message, address)) return creator;
+		}
+
+		return null;
 	}
 
 	/*
@@ -242,7 +284,7 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 	@Override
 	public <MSG extends Object> ChannelFuture send(MSG message, InetSocketAddress address) {
 		presend(message, address);
-		Object msg = createMessage(message, address);
+		DatagramPacket msg = createMessage(message, address);
 		return sendImpl(msg, address);
 	}
 
@@ -270,9 +312,14 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 	 *          the address
 	 * @return the channel future
 	 */
-	protected ChannelFuture sendImpl(Object dp, InetSocketAddress address) {
+	protected ChannelFuture sendImpl(DatagramPacket dp, InetSocketAddress address) {
 		if (!isActive()) {
-			log.error("Channel is not active, cannot send {}", dp);
+			log.error("Channel is not active, cannot send {} to {}", dp, address);
+			return new KiSyFailedFuture();
+		}
+
+		if (dp == null) {
+			log.error("No message to send to {}", address);
 			return new KiSyFailedFuture();
 		}
 
@@ -386,23 +433,25 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 			log.error("Unexpected interruption for {}", error, e);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel#isMulticastChannel()
+	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel#isMulticastChannel
+	 * ()
 	 */
 	@Override
 	public boolean isMulticastChannel() {
 		return false;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel#isPortSpecificChannel()
+	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel#isPortSpecificChannel
+	 * ()
 	 */
 	@Override
 	public boolean isPortSpecificChannel() {
@@ -426,6 +475,22 @@ public abstract class AbstractKiSyChannel implements KiSyChannel {
 	 */
 	public void setBootstrapper(Bootstrapper bootstrapper) {
 		this.bootstrapper = bootstrapper;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public boolean usesDefaultByteBufCreators() {
+		return byteBufCreator == null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public void setByteBufCreator(ByteBufCreator byteBufCreator) {
+		this.byteBufCreator = byteBufCreator;
 	}
 
 }

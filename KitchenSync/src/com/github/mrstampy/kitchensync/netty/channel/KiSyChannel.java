@@ -23,6 +23,11 @@ import io.netty.channel.socket.DatagramChannel;
 
 import java.net.InetSocketAddress;
 
+import com.github.mrstampy.kitchensync.netty.channel.payload.ByteArrayByteBufCreator;
+import com.github.mrstampy.kitchensync.netty.channel.payload.ByteBufCreator;
+import com.github.mrstampy.kitchensync.netty.channel.payload.KiSyMessageByteBufCreator;
+import com.github.mrstampy.kitchensync.netty.channel.payload.StringByteBufCreator;
+
 /**
  * KiSyChannel implementations interface the <a href="http://netty.io">Netty</a>
  * specifics, allowing ease of socket creation and use.
@@ -38,14 +43,14 @@ public interface KiSyChannel {
 	 * @return true, if checks if is active
 	 */
 	boolean isActive();
-	
+
 	/**
 	 * Returns true if the implementation binds to a multicast address
 	 * 
 	 * @return
 	 */
 	boolean isMulticastChannel();
-	
+
 	/**
 	 * Returns true if the implementation only binds to a specific port
 	 * 
@@ -106,4 +111,26 @@ public interface KiSyChannel {
 	 * @return the inet socket address
 	 */
 	InetSocketAddress localAddress();
+
+	/**
+	 * Returns true if the override byte buf creator has not been set.
+	 * 
+	 * @return
+	 * @see ByteArrayByteBufCreator
+	 * @see StringByteBufCreator
+	 * @see KiSyMessageByteBufCreator
+	 */
+	boolean usesDefaultByteBufCreators();
+
+	/**
+	 * If set this {@link ByteBufCreator} will be used instead of the default
+	 * {@link ByteBufCreator}s.
+	 * 
+	 * @param byteBufCreator
+	 * @see ByteBufCreator
+	 * @see ByteArrayByteBufCreator
+	 * @see StringByteBufCreator
+	 * @see KiSyMessageByteBufCreator
+	 */
+	void setByteBufCreator(ByteBufCreator byteBufCreator);
 }
