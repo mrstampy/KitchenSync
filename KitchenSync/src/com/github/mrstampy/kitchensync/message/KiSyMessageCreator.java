@@ -18,8 +18,6 @@
  */
 package com.github.mrstampy.kitchensync.message;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.InetSocketAddress;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -28,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
+import com.github.mrstampy.kitchensync.util.KiSyUtils;
 
 /**
  * Provides convenience methods for {@link KiSyMessage} creation.
@@ -35,8 +34,6 @@ import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 public class KiSyMessageCreator {
 	private static final String MESSAGE_ORDER = "order";
 
-	/** The Constant ONE_MILLION. */
-	public static final BigDecimal ONE_MILLION = new BigDecimal(1000000);
 	private static final Logger log = LoggerFactory.getLogger(KiSyMessageCreator.class);
 
 	private static final AtomicLong order = new AtomicLong(1);
@@ -80,7 +77,7 @@ public class KiSyMessageCreator {
 		KiSyMessage message = new KiSyMessage(originator, KiSyMessageType.PING_TIME);
 
 		message.addMessagePart("destination", destination.toString());
-		message.addMessagePart("pingTime", toMillis(pingTime));
+		message.addMessagePart("pingTime", KiSyUtils.toMillis(pingTime));
 
 		return message;
 	}
@@ -123,17 +120,5 @@ public class KiSyMessageCreator {
 		if (!StringUtils.isEmpty(order)) message.addMessagePart(MESSAGE_ORDER, order);
 
 		return message;
-	}
-
-	/**
-	 * Converts the specified time in nanoseconds to its string value in
-	 * milliseconds, to 3 decimal places.
-	 *
-	 * @param nanos
-	 *          the nanos
-	 * @return the string
-	 */
-	public static String toMillis(Long nanos) {
-		return new BigDecimal(nanos).divide(ONE_MILLION, 3, RoundingMode.HALF_UP).toPlainString();
 	}
 }

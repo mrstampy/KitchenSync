@@ -44,17 +44,6 @@ public class KiSyMessageByteBufCreator implements ByteBufCreator {
 	 * (non-Javadoc)
 	 * 
 	 * @see com.github.mrstampy.kitchensync.netty.channel.payload.ByteBufCreator#
-	 * isForMessage(java.lang.Object, java.net.InetSocketAddress)
-	 */
-	@Override
-	public <MSG> boolean isForMessage(MSG message, InetSocketAddress recipient) {
-		return message instanceof KiSyMessage;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.github.mrstampy.kitchensync.netty.channel.payload.ByteBufCreator#
 	 * createBytes(java.lang.Object, java.net.InetSocketAddress)
 	 */
 	@Override

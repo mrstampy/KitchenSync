@@ -19,9 +19,6 @@
 package com.github.mrstampy.kitchensync.test;
 
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.DatagramChannel;
-import io.netty.channel.socket.nio.NioDatagramChannel;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -29,9 +26,8 @@ import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
 import com.github.mrstampy.kitchensync.message.inbound.ack.AckInboundMessageHandler;
-import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyChannel;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
-import com.github.mrstampy.kitchensync.netty.channel.initializer.KiSyMessageInitializer;
+import com.github.mrstampy.kitchensync.test.channel.KiSyMessageChannel;
 
 /**
  * Tests {@link KiSyMessage} acknowledgment messages. Logging at debug
@@ -66,19 +62,7 @@ public class AckTester extends AbstractTester {
 	 * @return the default ki sy channel
 	 */
 	protected KiSyChannel initChannel() {
-		AbstractKiSyChannel channel = new AbstractKiSyChannel() {
-
-			@Override
-			protected ChannelInitializer<DatagramChannel> initializer() {
-				return new KiSyMessageInitializer();
-			}
-
-			@Override
-			protected Class<? extends DatagramChannel> getChannelClass() {
-				return NioDatagramChannel.class;
-			}
-
-		};
+		KiSyMessageChannel channel = new KiSyMessageChannel();
 
 		channel.bind();
 

@@ -18,9 +18,11 @@
  */
 package com.github.mrstampy.kitchensync.message.inbound.ack;
 
+import java.net.InetSocketAddress;
+
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
-import com.github.mrstampy.kitchensync.message.inbound.AbstractInboundKiSyMessageHandler;
+import com.github.mrstampy.kitchensync.message.inbound.AbstractInboundKiSyHandler;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
 /**
@@ -30,7 +32,7 @@ import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
  * @param <MSG>
  *          the generic type
  */
-public class AckInboundMessageHandler<MSG> extends AbstractInboundKiSyMessageHandler<MSG> {
+public class AckInboundMessageHandler<MSG> extends AbstractInboundKiSyHandler<MSG> {
 
 	private static final long serialVersionUID = -4104267454467349973L;
 
@@ -70,14 +72,14 @@ public class AckInboundMessageHandler<MSG> extends AbstractInboundKiSyMessageHan
 	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel)
 	 */
 	@Override
-	protected void onReceive(MSG message, KiSyChannel channel) throws Exception {
+	protected void onReceive(MSG message, KiSyChannel channel, InetSocketAddress sender) throws Exception {
 		if (!(message instanceof KiSyMessage)) return;
 
 		KiSyMessage msg = (KiSyMessage) message;
 
 		KiSyMessage ack = KiSyMessageCreator.createAck(msg, channel);
 
-		channel.send(ack, msg.getReturnAddress());
+		channel.send(ack, sender);
 	}
 
 }

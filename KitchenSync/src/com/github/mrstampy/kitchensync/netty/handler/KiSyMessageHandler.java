@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
+import com.github.mrstampy.kitchensync.message.inbound.KiSyMessageInboundMessageManager;
 
 /**
  * This class marshals the Json string in the message to a {@link KiSyMessage}
@@ -40,7 +41,7 @@ public class KiSyMessageHandler extends AbstractKiSyNettyHandler<KiSyMessage> {
 	 * The Constructor.
 	 */
 	public KiSyMessageHandler() {
-		super(HandlerType.KISY_MESSAGE);
+		super(KiSyMessageInboundMessageManager.INSTANCE);
 	}
 
 	/*

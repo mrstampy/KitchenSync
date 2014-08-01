@@ -18,10 +18,12 @@
  */
 package com.github.mrstampy.kitchensync.message.inbound.pingpong;
 
+import java.net.InetSocketAddress;
+
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
-import com.github.mrstampy.kitchensync.message.inbound.AbstractInboundKiSyMessageHandler;
+import com.github.mrstampy.kitchensync.message.inbound.AbstractInboundKiSyHandler;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
 /**
@@ -31,7 +33,7 @@ import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
  * @param <MSG>
  *          the generic type
  */
-public class PingInboundMessageHandler<MSG> extends AbstractInboundKiSyMessageHandler<MSG> {
+public class PingInboundMessageHandler<MSG> extends AbstractInboundKiSyHandler<MSG> {
 	private static final long serialVersionUID = -3848676913366352139L;
 
 	/*
@@ -58,14 +60,12 @@ public class PingInboundMessageHandler<MSG> extends AbstractInboundKiSyMessageHa
 	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel)
 	 */
 	@Override
-	protected void onReceive(MSG message, KiSyChannel channel) {
+	protected void onReceive(MSG message, KiSyChannel channel, InetSocketAddress sender) {
 		if (!(message instanceof KiSyMessage)) return;
-
-		KiSyMessage msg = (KiSyMessage) message;
 
 		KiSyMessage pong = KiSyMessageCreator.createPong(channel);
 
-		channel.send(pong, msg.getReturnAddress());
+		channel.send(pong, sender);
 	}
 
 	/*

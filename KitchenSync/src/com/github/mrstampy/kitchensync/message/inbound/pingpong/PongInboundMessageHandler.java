@@ -23,7 +23,7 @@ import java.net.InetSocketAddress;
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
-import com.github.mrstampy.kitchensync.message.inbound.AbstractInboundKiSyMessageHandler;
+import com.github.mrstampy.kitchensync.message.inbound.AbstractInboundKiSyHandler;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
 
 /**
@@ -33,7 +33,7 @@ import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
  * @param <MSG>
  *          the generic type
  */
-public abstract class PongInboundMessageHandler<MSG> extends AbstractInboundKiSyMessageHandler<MSG> {
+public abstract class PongInboundMessageHandler<MSG> extends AbstractInboundKiSyHandler<MSG> {
 	private static final long serialVersionUID = -8836666741037023222L;
 
 	private PingPongMessageTimer timer = PingPongMessageTimer.TIMER;
@@ -62,18 +62,14 @@ public abstract class PongInboundMessageHandler<MSG> extends AbstractInboundKiSy
 	 * com.github.mrstampy.kitchensync.netty.channel.KiSyChannel)
 	 */
 	@Override
-	protected void onReceive(MSG message, KiSyChannel channel) {
+	protected void onReceive(MSG message, KiSyChannel channel, InetSocketAddress sender) {
 		if (!(message instanceof KiSyMessage)) return;
 
-		KiSyMessage msg = (KiSyMessage) message;
-
-		InetSocketAddress remoteAddress = msg.createReturnAddress();
-
-		long time = timer.pongReceived(remoteAddress);
+		long time = timer.pongReceived(sender);
 
 		if (time < 0) return;
 
-		KiSyMessage pingTime = KiSyMessageCreator.createPingTime(channel.localAddress(), remoteAddress, time);
+		KiSyMessage pingTime = KiSyMessageCreator.createPingTime(channel.localAddress(), sender, time);
 
 		handlePingTimeMessage(pingTime);
 	}

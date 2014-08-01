@@ -19,17 +19,14 @@
 package com.github.mrstampy.kitchensync.test;
 
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.DatagramChannel;
-import io.netty.channel.socket.nio.NioDatagramChannel;
 
 import java.util.concurrent.CountDownLatch;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
-import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyChannel;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
+import com.github.mrstampy.kitchensync.test.channel.SslKiSyMessageChannel;
 
 /**
  * Creates secure channels and sends 100 {@link KiSyMessage} pings from the
@@ -62,19 +59,7 @@ public class SecurePointToPointTester extends AbstractTester {
 	 * @return the default ki sy channel
 	 */
 	protected KiSyChannel initChannel() {
-		AbstractKiSyChannel channel = new AbstractKiSyChannel() {
-
-			@Override
-			protected ChannelInitializer<DatagramChannel> initializer() {
-				return new SslInitializer();
-			}
-
-			@Override
-			protected Class<? extends DatagramChannel> getChannelClass() {
-				return NioDatagramChannel.class;
-			}
-
-		};
+		SslKiSyMessageChannel channel = new SslKiSyMessageChannel();
 
 		channel.bind();
 

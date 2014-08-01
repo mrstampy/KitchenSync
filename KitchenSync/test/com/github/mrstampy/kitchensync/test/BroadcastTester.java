@@ -19,18 +19,14 @@
 package com.github.mrstampy.kitchensync.test;
 
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.DatagramChannel;
-import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import java.net.UnknownHostException;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
-import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyMulticastChannel;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyMulticastChannel;
-import com.github.mrstampy.kitchensync.netty.channel.initializer.KiSyMessageInitializer;
+import com.github.mrstampy.kitchensync.test.channel.KiSyMessageMulticastChannel;
 
 /**
  * Tests multicast broadcasting by creating 3 channels and having one leave the
@@ -85,19 +81,7 @@ public class BroadcastTester extends AbstractTester {
 	 *           the unknown host exception
 	 */
 	protected KiSyMulticastChannel createMulticastChannel() throws UnknownHostException {
-		AbstractKiSyMulticastChannel channel = new AbstractKiSyMulticastChannel(MULTICAST_IP, MULTICAST_PORT) {
-
-			@Override
-			protected ChannelInitializer<DatagramChannel> initializer() {
-				return new KiSyMessageInitializer();
-			}
-
-			@Override
-			protected Class<? extends DatagramChannel> getChannelClass() {
-				return NioDatagramChannel.class;
-			}
-
-		};
+		KiSyMessageMulticastChannel channel = new KiSyMessageMulticastChannel(MULTICAST_IP, MULTICAST_PORT);
 
 		channel.bind();
 		channel.joinGroup();

@@ -19,18 +19,14 @@
 package com.github.mrstampy.kitchensync.test;
 
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.DatagramChannel;
-import io.netty.channel.socket.nio.NioDatagramChannel;
 
 import java.util.concurrent.CountDownLatch;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
-import com.github.mrstampy.kitchensync.netty.channel.AbstractPortSpecificKiSyChannel;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
-import com.github.mrstampy.kitchensync.netty.channel.initializer.KiSyMessageInitializer;
+import com.github.mrstampy.kitchensync.test.channel.PortSpecificKiSyMessageChannel;
 
 /**
  * Creates port specific channels (56789, 56790) and sends 100
@@ -63,19 +59,7 @@ public class PingPongTester extends AbstractTester {
 	 * @return the default port specific ki sy channel
 	 */
 	protected KiSyChannel initChannel(int port) {
-		AbstractPortSpecificKiSyChannel channel = new AbstractPortSpecificKiSyChannel(port) {
-
-			@Override
-			protected ChannelInitializer<DatagramChannel> initializer() {
-				return new KiSyMessageInitializer();
-			}
-
-			@Override
-			protected Class<? extends DatagramChannel> getChannelClass() {
-				return NioDatagramChannel.class;
-			}
-
-		};
+		PortSpecificKiSyMessageChannel channel = new PortSpecificKiSyMessageChannel(port);
 
 		channel.bind();
 

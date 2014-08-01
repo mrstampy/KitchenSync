@@ -19,18 +19,14 @@
 package com.github.mrstampy.kitchensync.test;
 
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.DatagramChannel;
-import io.netty.channel.socket.nio.NioDatagramChannel;
 
 import java.util.concurrent.CountDownLatch;
 
 import com.github.mrstampy.kitchensync.message.KiSyMessage;
 import com.github.mrstampy.kitchensync.message.KiSyMessageCreator;
 import com.github.mrstampy.kitchensync.message.KiSyMessageType;
-import com.github.mrstampy.kitchensync.netty.channel.AbstractKiSyChannel;
 import com.github.mrstampy.kitchensync.netty.channel.KiSyChannel;
-import com.github.mrstampy.kitchensync.netty.channel.initializer.KiSyMessageInitializer;
+import com.github.mrstampy.kitchensync.test.channel.KiSyMessageChannel;
 
 /**
  * Creates channels and sends 100 {@link KiSyMessage} pings from the former to
@@ -61,19 +57,7 @@ public class PointToPointTester extends AbstractTester {
 	 * @return the default ki sy channel
 	 */
 	protected KiSyChannel initChannel() {
-		AbstractKiSyChannel channel = new AbstractKiSyChannel() {
-
-			@Override
-			protected ChannelInitializer<DatagramChannel> initializer() {
-				return new KiSyMessageInitializer();
-			}
-
-			@Override
-			protected Class<? extends DatagramChannel> getChannelClass() {
-				return NioDatagramChannel.class;
-			}
-
-		};
+		KiSyMessageChannel channel = new KiSyMessageChannel();
 
 		channel.bind();
 
