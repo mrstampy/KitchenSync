@@ -11,7 +11,7 @@
   <groupId>com.github.mrstampy</groupId>
   <artifactId>KitchenSync</artifactId>
   <packaging>jar</packaging>
-  <version>$KitchenSync.version</version>
+  <version>$project.version</version>
   <description>KitchenSync - A Java Library for Distributed Communication</description>
   <url>http://mrstampy.github.io/KitchenSync/</url>
   <licenses>
